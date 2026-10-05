@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XADIKOA, on se dit tout</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&amp;display=swap">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#000;font-family:'General Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#000;text-decoration:none;cursor:pointer}a:hover{color:#0066FC}
+::selection{background:#D3F90F;color:#000}
+:focus-visible{outline:2px solid #0066FC;outline-offset:2px}
+input,select,textarea,button{font-family:inherit}
+input::placeholder,textarea::placeholder{color:#777}
+@keyframes xdkMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes xdkPulse{0%,100%{opacity:.25}50%{opacity:1}}
+@keyframes xdkRing{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.7);opacity:0}}
+@keyframes xdkWobble{0%,100%{transform:translate(-50%,-50%) rotate(-3deg)}50%{transform:translate(-50%,-54%) rotate(2deg)}}
+@keyframes xdkUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes xdkFade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column;font-family:'General Sans',system-ui,sans-serif">
+
+<div style="background:#000;color:#fff">
+<div style="max-width:1440px;margin:0 auto;padding:0 48px;height:38px;display:flex;align-items:center;justify-content:space-between;gap:24px;font:500 13px/1 'General Sans',sans-serif">
+<span>{{ todayLabel }}</span>
+<span style="font:700 22px/1 'Caveat',cursive;color:#D3F90F">XADIKOA, on se dit tout.</span>
+<div style="display:flex;gap:18px">
+<sc-for list="{{ socials }}" as="s" hint-placeholder-count="6"><a href="#" onClick="{{ s.open }}" style="color:#fff" style-hover="color:#D3F90F">{{ s.name }}</a></sc-for>
+</div>
+</div>
+</div>
+
+<header style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid rgba(0,0,0,.08)">
+<div style="max-width:1440px;margin:0 auto;padding:0 48px;height:78px;display:flex;align-items:center;gap:24px">
+<a href="#" onClick="{{ goHome }}" style="display:block;flex:none"><img src="assets/xadikoa-logo.png" alt="XADIKOA" style="height:34px;display:block"></a>
+<nav style="display:flex;gap:2px;flex:1;min-width:0;flex-wrap:nowrap;overflow:hidden">
+<sc-for list="{{ navCats }}" as="c" hint-placeholder-count="5">
+<a href="#" onClick="{{ c.open }}" style="padding:10px 14px;border-radius:999px;white-space:nowrap;font:500 15px/1 'General Sans',sans-serif;color:#000;background:{{ c.navBg }};transition:background .2s" style-hover="background:#F1F0EB;color:#000">{{ c.name }}</a>
+</sc-for>
+</nav>
+<div style="display:flex;gap:10px;flex:none">
+<a href="#" onClick="{{ goVideos }}" style="flex:none;display:flex;align-items:center;gap:8px;height:46px;padding:0 16px;border:1px solid rgba(0,0,0,.16);border-radius:999px;white-space:nowrap;font:600 15px/1 'General Sans',sans-serif;color:#000;background:{{ videosNavBg }};transition:background .2s" style-hover="background:#F1F0EB;color:#000"><span style="width:8px;height:8px;border-radius:50%;background:#FC4284;animation:xdkPulse 1.6s ease-in-out infinite"></span>Vidéos</a>
+<a href="#" onClick="{{ goSearch }}" aria-label="Rechercher" style="border-radius:999px;width:46px;height:46px;display:grid;place-items:center;border:1px solid rgba(0,0,0,.16);background:{{ searchBtnBg }}" style-hover="background:#D3F90F;color:#000"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></a>
+<a href="#" onClick="{{ goNewsletter }}" style="border-radius:999px;display:flex;align-items:center;gap:12px;padding:0 14px;white-space:nowrap;height:46px;background:#000;color:#fff;font:600 15px/1 'General Sans',sans-serif;border:0;" style-hover="background:#0066FC;color:#fff">Newsletter<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+</div>
+</div>
+</header>
+
+<div style="background:#D3F90F;overflow:hidden;border-bottom:1px solid rgba(0,0,0,.1)">
+<div style="display:flex;width:max-content;animation:xdkMarquee 48s linear infinite" style-hover="animation-play-state:paused">
+<sc-for list="{{ tickerItems }}" as="t" hint-placeholder-count="10"><a href="#" onClick="{{ t.open }}" style="display:flex;align-items:center;gap:14px;padding:13px 30px;white-space:nowrap;color:#000;font:600 15px/1 'General Sans',sans-serif" style-hover="color:#0066FC"><span style="font:700 21px/1 'Caveat',cursive;color:#0066FC">{{ t.c.name }}</span>{{ t.title }}</a></sc-for>
+</div>
+</div>
+
+<main style="flex:1">
+
+<sc-if value="{{ isHomeA }}" hint-placeholder-val="{{ true }}">
+<div data-screen-label="Accueil A — Couverture">
+<section style="max-width:1440px;margin:0 auto;padding:56px 48px 72px">
+<div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-end">
+<div style="flex:1 1 440px;min-width:0;display:flex;flex-direction:column;gap:24px;align-items:flex-start">
+<span style="font:700 38px/1 'Caveat',cursive;color:#0066FC;transform:rotate(-4deg);margin-bottom:-6px">On vous explique.</span>
+<div style="display:flex;align-items:center;gap:12px">
+<a href="#" onClick="{{ hero.openCat }}" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:{{ hero.c.bg }};color:{{ hero.c.fg }};font:600 12px/1 'General Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase">{{ hero.c.name }}</a>
+<span style="font:500 14px/1 'General Sans',sans-serif;color:#444;white-space:nowrap">{{ hero.dateLabel }} · {{ hero.read }} min de lecture</span>
+</div>
+<h1 style="margin:0;font:600 clamp(44px,4.6vw,74px)/1.0 'General Sans',sans-serif;letter-spacing:-.03em;text-wrap:balance"><a href="#" onClick="{{ hero.open }}" style="color:#000" style-hover="color:#0066FC">{{ hero.title }}</a></h1>
+<p style="margin:0;font:400 20px/1.45 'General Sans',sans-serif;color:#222;max-width:50ch;text-wrap:pretty">{{ hero.chapo }}</p>
+<div style="display:flex;align-items:center;gap:20px;padding-top:4px">
+<a href="#" onClick="{{ hero.open }}" style="border-radius:999px;display:flex;align-items:center;gap:28px;white-space:nowrap;height:50px;padding:0 18px;background:#000;color:#fff;font:600 16px/1 'General Sans',sans-serif" style-hover="background:#0066FC;color:#fff">Lire l’article<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+<span style="font:500 15px/1.3 'General Sans',sans-serif">Par <a href="#" onClick="{{ hero.openAuthor }}" style="font-weight:600;text-decoration:underline;text-underline-offset:3px">{{ hero.authorName }}</a></span>
+</div>
+</div>
+<div style="flex:1.4 1 520px;min-width:0;position:relative;aspect-ratio:4/3;border-radius:28px;overflow:hidden;background:#EFEDE8;box-shadow:0 40px 80px -40px rgba(0,0,0,.45)"><img src="{{ hero.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+</div>
+</section>
+
+<sc-if value="{{ patterns }}" hint-placeholder-val="{{ true }}"><div style="height:26px;background:repeating-linear-gradient(180deg,#000 0 2px,#0066FC 2px 6.5px);border-radius:999px;margin:0 48px;max-width:1344px"></div></sc-if>
+
+<section style="max-width:1440px;margin:0 auto;padding:56px 48px 0">
+<div style="display:flex;align-items:baseline;gap:20px;margin-bottom:28px">
+<h2 style="margin:0;font:600 44px/1 'General Sans',sans-serif;letter-spacing:-.02em">À la une</h2>
+<span style="font:700 28px/1 'Caveat',cursive;color:#0066FC">le reste de l’actu, en bref</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px">
+<sc-for list="{{ aLaUne }}" as="a" hint-placeholder-count="4">
+<article style="display:flex;flex-direction:column;gap:14px;min-width:0;border-top:6px solid {{ a.c.bgLine }};padding-top:16px">
+<div style="position:relative;aspect-ratio:3/2;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ a.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+<div style="display:flex;align-items:center;gap:10px"><a href="#" onClick="{{ a.openCat }}" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:{{ a.c.bg }};color:{{ a.c.fg }};font:600 11px/1 'General Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase">{{ a.c.name }}</a><span style="font:500 13px/1 'General Sans',sans-serif;color:#555">{{ a.dateLabel }}</span></div>
+<h3 style="margin:0;font:600 22px/1.15 'General Sans',sans-serif;letter-spacing:-.01em;text-wrap:pretty"><a href="#" onClick="{{ a.open }}" style="color:#000" style-hover="color:#0066FC">{{ a.title }}</a></h3>
+<p style="margin:0;font:400 15px/1.5 'General Sans',sans-serif;color:#333;text-wrap:pretty">{{ a.chapo }}</p>
+</article>
+</sc-for>
+</div>
+</section>
+
+<section style="max-width:1440px;margin:0 auto;padding:104px 48px 0">
+<div style="background:#FFF3C0;border-radius:32px;padding:64px;display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:64px">
+<div style="display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+<span style="font:700 34px/1 'Caveat',cursive;color:#0066FC;transform:rotate(-3deg)">Vous avez vu ça ?</span>
+<h2 style="margin:0;font:600 56px/0.98 'General Sans',sans-serif;letter-spacing:-.03em">Ce qui fait parler</h2>
+<p style="margin:0;font:400 17px/1.5 'General Sans',sans-serif;max-width:34ch">Les sujets qui circulent cette semaine, sur le site et dans vos conversations.</p>
+</div>
+<ol style="list-style:none;margin:0;padding:0;border-top:1px solid rgba(0,0,0,.12)">
+<sc-for list="{{ trending }}" as="a" hint-placeholder-count="5">
+<li style="display:grid;grid-template-columns:84px minmax(0,1fr) auto;gap:24px;align-items:center;padding:20px 0;border-bottom:1px solid rgba(0,0,0,.12)">
+<span style="font:700 56px/1 'General Sans',sans-serif;color:#FFF3C0;-webkit-text-stroke:2px #000;letter-spacing:-.02em">{{ a.rank }}</span>
+<div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+<h3 style="margin:0;font:600 23px/1.2 'General Sans',sans-serif;letter-spacing:-.01em;text-wrap:pretty"><a href="#" onClick="{{ a.open }}" style="color:#000" style-hover="color:#0066FC">{{ a.title }}</a></h3>
+<span style="font:500 14px/1 'General Sans',sans-serif;color:#444">{{ a.authorName }} · {{ a.dateLabel }}</span>
+</div>
+<a href="#" onClick="{{ a.openCat }}" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:{{ a.c.bg }};color:{{ a.c.fg }};font:600 11px/1 'General Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase">{{ a.c.name }}</a>
+</li>
+</sc-for>
+</ol>
+</div>
+</section>
+
+<sc-for list="{{ secTop }}" as="s" hint-placeholder-count="2">
+<section style="max-width:1440px;margin:0 auto;padding:112px 48px 0">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding-bottom:20px;border-bottom:1px solid rgba(0,0,0,.12);margin-bottom:32px">
+<div style="display:flex;align-items:center;gap:28px;min-width:0">
+<a href="#" onClick="{{ s.c.open }}" style="display:inline-block;padding:12px 24px 18px;border-radius:18px;background:{{ s.c.bg }};flex:none"><span style="display:inline-block;font:700 40px/1 'General Sans',sans-serif;color:#fff;-webkit-text-stroke:2px #000;paint-order:stroke fill;text-shadow:1px 1px 0 #000,2px 2px 0 #000,3px 3px 0 #000,4px 4px 0 #000,5px 5px 0 #000;transform:rotate(-2deg)">{{ s.c.name }}</span></a>
+<p style="margin:0;font:400 16px/1.45 'General Sans',sans-serif;color:#333;max-width:44ch">{{ s.c.role }}</p>
+</div>
+<a href="#" onClick="{{ s.c.open }}" style="display:flex;align-items:center;gap:10px;font:600 15px/1 'General Sans',sans-serif;flex:none">Tout voir<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+</div>
+<div style="display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:48px">
+<article style="display:flex;flex-direction:column;gap:16px;min-width:0">
+<div style="position:relative;aspect-ratio:16/10;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ s.lead.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+<span style="font:500 14px/1 'General Sans',sans-serif;color:#444">{{ s.lead.dateLabel }} · {{ s.lead.read }} min</span>
+<h3 style="margin:0;font:600 34px/1.08 'General Sans',sans-serif;letter-spacing:-.02em;text-wrap:balance"><a href="#" onClick="{{ s.lead.open }}" style="color:#000" style-hover="color:#0066FC">{{ s.lead.title }}</a></h3>
+<p style="margin:0;font:400 17px/1.5 'General Sans',sans-serif;color:#333;max-width:60ch">{{ s.lead.chapo }}</p>
+</article>
+<div style="display:flex;flex-direction:column;border-top:1px solid rgba(0,0,0,.12)">
+<sc-for list="{{ s.rest }}" as="a" hint-placeholder-count="3">
+<article style="display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:20px;padding:20px 0;border-bottom:1px solid rgba(0,0,0,.12);align-items:start">
+<div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+<h3 style="margin:0;font:600 20px/1.2 'General Sans',sans-serif;letter-spacing:-.01em;text-wrap:pretty"><a href="#" onClick="{{ a.open }}" style="color:#000" style-hover="color:#0066FC">{{ a.title }}</a></h3>
+<span style="font:500 13px/1 'General Sans',sans-serif;color:#555">{{ a.authorName }} · {{ a.dateLabel }}</span>
+</div>
+<div style="position:relative;aspect-ratio:3/2;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ a.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+</article>
+</sc-for>
+</div>
+</div>
+</section>
+</sc-for>
+
+<section style="max-width:1440px;margin:0 auto;padding:112px 48px 0">
+<div style="background:#000;color:#fff;border-radius:32px;padding:64px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:56px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:20px">
+<span style="font:700 30px/1 'Caveat',cursive;color:#D3F90F">l’émission</span>
+<h2 style="margin:0;font:600 64px/0.95 'General Sans',sans-serif;letter-spacing:-.03em">Le Brief XDK</h2>
+<p style="margin:0;font:400 18px/1.5 'General Sans',sans-serif;color:#ddd;max-width:40ch">L’actu de la semaine en dix minutes, chaque vendredi à 18h. Sur le site, YouTube et TikTok.</p>
+<div style="border-top:1px solid rgba(255,255,255,.16);margin-top:8px">
+<sc-for list="{{ episodes }}" as="e" hint-placeholder-count="3">
+<a href="#" onClick="{{ e.play }}" style="display:grid;grid-template-columns:70px minmax(0,1fr) auto;gap:16px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.16);color:#fff;font:500 16px/1.3 'General Sans',sans-serif" style-hover="color:#D3F90F"><span style="color:#D3F90F;font-weight:600">{{ e.n }}</span><span>{{ e.t }}</span><span style="color:#aaa">{{ e.d }}</span></a>
+</sc-for>
+</div>
+<a href="#" onClick="{{ goVideos }}" style="align-self:flex-start;display:flex;align-items:center;gap:10px;color:#D3F90F;font:600 16px/1 'General Sans',sans-serif" style-hover="color:#fff">Tous les épisodes<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+</div>
+<div style="position:relative;aspect-ratio:16/9;background:#0066FC;border-radius:22px;overflow:hidden">
+<sc-if value="{{ patterns }}" hint-placeholder-val="{{ true }}"><sc-for list="{{ tunnel }}" as="r" hint-placeholder-count="9"><div style="position:absolute;top:{{ r.t }};left:{{ r.l }};right:{{ r.l }};bottom:{{ r.b }};border:2px solid #000;border-radius:{{ r.r }};animation:xdkPulse 3.2s ease-in-out {{ r.delay }} infinite"></div></sc-for></sc-if>
+<img src="assets/xadikoa-logo.png" alt="" style="position:absolute;left:50%;top:44%;width:38%;transform:translate(-50%,-50%) rotate(-3deg);animation:xdkWobble 5s ease-in-out infinite">
+<a href="#" onClick="{{ playEpisode }}" style="border-radius:999px;position:absolute;left:24px;bottom:24px;display:flex;align-items:center;gap:14px;height:56px;padding:0 20px;background:#D3F90F;color:#000;border:0;font:600 16px/1 'General Sans',sans-serif" style-hover="background:#fff;color:#000"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>Regarder l’épisode 42</a>
+</div>
+</div>
+</section>
+
+<sc-for list="{{ secBottom }}" as="s" hint-placeholder-count="3">
+<section style="max-width:1440px;margin:0 auto;padding:112px 48px 0">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding-bottom:20px;border-bottom:1px solid rgba(0,0,0,.12);margin-bottom:32px">
+<div style="display:flex;align-items:center;gap:28px;min-width:0">
+<a href="#" onClick="{{ s.c.open }}" style="display:inline-block;padding:12px 24px 18px;border-radius:18px;background:{{ s.c.bg }};flex:none"><span style="display:inline-block;font:700 40px/1 'General Sans',sans-serif;color:#fff;-webkit-text-stroke:2px #000;paint-order:stroke fill;text-shadow:1px 1px 0 #000,2px 2px 0 #000,3px 3px 0 #000,4px 4px 0 #000,5px 5px 0 #000;transform:rotate(-2deg)">{{ s.c.name }}</span></a>
+<p style="margin:0;font:400 16px/1.45 'General Sans',sans-serif;color:#333;max-width:44ch">{{ s.c.role }}</p>
+</div>
+<a href="#" onClick="{{ s.c.open }}" style="display:flex;align-items:center;gap:10px;font:600 15px/1 'General Sans',sans-serif;flex:none">Tout voir<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px">
+<sc-for list="{{ s.all }}" as="a" hint-placeholder-count="4">
+<article style="display:flex;flex-direction:column;gap:12px;min-width:0">
+<div style="position:relative;aspect-ratio:4/5;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ a.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+<span style="font:500 13px/1 'General Sans',sans-serif;color:#555">{{ a.dateLabel }} · {{ a.read }} min</span>
+<h3 style="margin:0;font:600 21px/1.18 'General Sans',sans-serif;letter-spacing:-.01em;text-wrap:pretty"><a href="#" onClick="{{ a.open }}" style="color:#000" style-hover="color:#0066FC">{{ a.title }}</a></h3>
+</article>
+</sc-for>
+</div>
+</section>
+</sc-for>
+
+<section style="max-width:1440px;margin:0 auto;padding:112px 48px 0">
+<div style="position:relative;overflow:hidden;background:#D3F90F;border-radius:32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;padding:56px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:16px">
+<span style="font:600 13px/1 'General Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase">Newsletter</span>
+<h2 style="margin:0;font:600 52px/1 'General Sans',sans-serif;letter-spacing:-.03em;text-wrap:balance">Le Brief du matin. L’essentiel, avant le café.</h2>
+<p style="margin:0;font:400 18px/1.5 'General Sans',sans-serif;max-width:44ch">Chaque matin à 7h : ce qu’il faut retenir de l’actu au Cameroun, en cinq minutes de lecture.</p>
+</div>
+<div>
+<sc-if value="{{ nlInlineOpen }}" hint-placeholder-val="{{ true }}">
+<form onSubmit="{{ submitInline }}" style="display:flex;flex-direction:column;gap:12px">
+<label style="font:600 14px/1 'General Sans',sans-serif">Votre adresse e-mail</label>
+<div style="display:flex;border-radius:999px;overflow:hidden;background:#fff;padding:6px">
+<input type="email" required="" value="{{ nlInline }}" onChange="{{ onInlineEmail }}" placeholder="vous@exemple.cm" style="flex:1;min-width:0;height:60px;padding:0 18px;border:0;font:500 18px/1 'General Sans',sans-serif;background:transparent;outline:none">
+<button type="submit" style="display:flex;align-items:center;gap:22px;padding:0 22px;border:0;background:#000;color:#fff;font:600 16px/1 'General Sans',sans-serif;cursor:pointer" style-hover="background:#0066FC">Je m’abonne<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+</div>
+<span style="font:700 24px/1 'Caveat',cursive">promis, on ne spamme pas.</span>
+</form>
+</sc-if>
+<sc-if value="{{ nlInlineDone }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:10px;padding:28px;background:#fff;border-radius:24px;box-shadow:0 30px 60px -30px rgba(0,0,0,.45)">
+<span style="font:700 30px/1 'Caveat',cursive;color:#0066FC">C’est noté !</span>
+<p style="margin:0;font:500 18px/1.45 'General Sans',sans-serif">Premier Brief demain à 7h dans <strong>{{ nlInline }}</strong>. On se dit tout.</p>
+</div>
+</sc-if>
+</div>
+</div>
+</section>
+
+<section style="max-width:1440px;margin:0 auto;padding:96px 48px 112px">
+<div style="display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:28px">
+<h2 style="margin:0;font:600 44px/1 'General Sans',sans-serif;letter-spacing:-.02em">On se retrouve aussi ici</h2>
+<p style="margin:0;font:400 16px/1.45 'General Sans',sans-serif;color:#333;max-width:42ch">Chaque article se décline en post, story, vidéo courte ou carrousel.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px">
+<sc-for list="{{ socials }}" as="s" hint-placeholder-count="6">
+<a href="#" onClick="{{ s.open }}" style="display:flex;flex-direction:column;gap:28px;justify-content:space-between;min-height:170px;padding:24px;border-radius:22px;background:#F4F3EE;color:#000;transition:background .25s" style-hover="background:{{ s.hover }};color:#000">
+<span style="font:600 22px/1 'General Sans',sans-serif">{{ s.name }}</span>
+<span style="display:flex;flex-direction:column;gap:6px"><span style="font:600 14px/1 'General Sans',sans-serif">@xadikoa</span><span style="font:400 14px/1.35 'General Sans',sans-serif;color:#333">{{ s.format }}</span></span>
+</a>
+</sc-for>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isHomeB }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Accueil B — Kiosque">
+<section style="position:relative;overflow:hidden;background:#0066FC;border-bottom:1px solid rgba(0,0,0,.12)">
+<sc-if value="{{ patterns }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:0;bottom:0;left:48%;right:-4%;pointer-events:none"><sc-for list="{{ tunnel }}" as="r" hint-placeholder-count="9"><div style="position:absolute;top:{{ r.t }};left:{{ r.l }};right:{{ r.l }};bottom:{{ r.b }};border:2px solid #000;border-radius:{{ r.r }};animation:xdkPulse 3.2s ease-in-out {{ r.delay }} infinite"></div></sc-for></div></sc-if>
+<div style="position:relative;max-width:1440px;margin:0 auto;padding:72px 48px 88px;display:flex;flex-wrap:wrap;gap:72px;align-items:center">
+<div style="flex:1.4 1 460px;min-width:0;display:flex;flex-direction:column;gap:26px;align-items:flex-start;color:#fff">
+<div style="display:flex;align-items:center;gap:12px"><a href="#" onClick="{{ hero.openCat }}" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:{{ hero.c.bg }};color:{{ hero.c.fg }};font:600 12px/1 'General Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase">{{ hero.c.name }}</a><span style="font:500 14px/1 'General Sans',sans-serif;white-space:nowrap">{{ hero.dateLabel }} · {{ hero.read }} min de lecture</span></div>
+<h1 style="margin:0;font:600 clamp(48px,5.4vw,86px)/0.98 'General Sans',sans-serif;letter-spacing:-.035em;text-wrap:balance"><a href="#" onClick="{{ hero.open }}" style="color:#fff" style-hover="color:#D3F90F">{{ hero.title }}</a></h1>
+<p style="margin:0;font:400 20px/1.45 'General Sans',sans-serif;max-width:50ch">{{ hero.chapo }}</p>
+<div style="display:flex;align-items:center;gap:22px">
+<a href="#" onClick="{{ hero.open }}" style="border-radius:999px;display:flex;align-items:center;gap:28px;white-space:nowrap;height:54px;padding:0 20px;background:#D3F90F;color:#000;border:0;font:600 16px/1 'General Sans',sans-serif" style-hover="background:#fff;color:#000">Lire l’article<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+<span style="font:500 15px/1.3 'General Sans',sans-serif">Par <a href="#" onClick="{{ hero.openAuthor }}" style="color:#fff;font-weight:600;text-decoration:underline;text-underline-offset:3px" style-hover="color:#D3F90F">{{ hero.authorName }}</a></span>
+</div>
+</div>
+<div style="flex:1 1 340px;max-width:520px;min-width:0;position:relative;aspect-ratio:4/5;border-radius:28px;overflow:hidden;background:#EFEDE8;box-shadow:0 40px 80px -30px rgba(0,0,0,.55)"><img src="{{ hero.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+</div>
+</section>
+
+<section style="max-width:1440px;margin:0 auto;padding:24px 48px 0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px">
+<sc-for list="{{ navCats }}" as="c" hint-placeholder-count="5">
+<a href="#" onClick="{{ c.open }}" style="display:flex;flex-direction:column;justify-content:space-between;gap:24px;min-height:156px;padding:26px 26px 22px;border-radius:24px;background:{{ c.bg }};color:{{ c.fg }};transition:transform .25s" style-hover="color:{{ c.fg }};transform:translateY(-4px)">
+<span style="display:inline-block;font:700 34px/1 'General Sans',sans-serif;color:#fff;-webkit-text-stroke:2px #000;paint-order:stroke fill;text-shadow:1px 1px 0 #000,2px 2px 0 #000,3px 3px 0 #000,4px 4px 0 #000;transform:rotate(-2deg);align-self:flex-start">{{ c.name }}</span>
+<span style="display:flex;justify-content:space-between;align-items:center;font:600 14px/1.3 'General Sans',sans-serif">{{ c.short }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
+</a>
+</sc-for>
+</section>
+
+<section style="max-width:1440px;margin:0 auto;padding:24px 48px 0">
+<div style="background:#000;color:#fff;border-radius:999px;padding:0 36px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:36px;align-items:center;min-height:76px">
+<span style="font:700 30px/1 'Caveat',cursive;color:#D3F90F;white-space:nowrap">Ce qui fait parler</span>
+<div style="display:flex;gap:36px;overflow-x:auto;padding:14px 0">
+<sc-for list="{{ trending }}" as="a" hint-placeholder-count="5"><a href="#" onClick="{{ a.open }}" style="display:flex;gap:10px;align-items:baseline;color:#fff;white-space:nowrap;font:500 16px/1.2 'General Sans',sans-serif" style-hover="color:#D3F90F"><span style="font:700 14px/1 'General Sans',sans-serif;color:#D3F90F">{{ a.rank }}</span>{{ a.title }}</a></sc-for>
+</div>
+</div>
+</section>
+
+<section style="max-width:1440px;margin:0 auto;padding:104px 48px 0">
+<div style="display:flex;align-items:baseline;gap:20px;margin-bottom:28px">
+<h2 style="margin:0;font:600 52px/1 'General Sans',sans-serif;letter-spacing:-.03em">À la une</h2>
+<span style="font:700 28px/1 'Caveat',cursive;color:#0066FC">le reste de l’actu, en bref</span>
+</div>
+<div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:28px">
+<article style="grid-row:span 2;display:flex;flex-direction:column;gap:16px;min-width:0">
+<div style="position:relative;aspect-ratio:4/3;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ m1.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+<div style="display:flex;align-items:center;gap:10px"><a href="#" onClick="{{ m1.openCat }}" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:{{ m1.c.bg }};color:{{ m1.c.fg }};font:600 11px/1 'General Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase">{{ m1.c.name }}</a><span style="font:500 13px/1 'General Sans',sans-serif;color:#555">{{ m1.dateLabel }} · {{ m1.authorName }}</span></div>
+<h3 style="margin:0;font:600 40px/1.04 'General Sans',sans-serif;letter-spacing:-.025em;text-wrap:balance"><a href="#" onClick="{{ m1.open }}" style="color:#000" style-hover="color:#0066FC">{{ m1.title }}</a></h3>
+<p style="margin:0;font:400 17px/1.5 'General Sans',sans-serif;color:#333;max-width:60ch">{{ m1.chapo }}</p>
+</article>
+<a href="#" onClick="{{ m2.open }}" style="display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding:26px;background:{{ m2.c.bg }};border:1px solid rgba(0,0,0,.12);color:{{ m2.c.fg }};min-height:320px;border-radius:24px;transition:transform .25s,box-shadow .25s" style-hover="color:{{ m2.c.fg }};transform:translateY(-4px);box-shadow:0 30px 60px -30px rgba(0,0,0,.45)">
+<span style="align-self:flex-start;display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:#fff;color:#000;font:600 11px/1 'General Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase">{{ m2.c.name }}</span>
+<span style="font:600 28px/1.1 'General Sans',sans-serif;letter-spacing:-.02em;text-wrap:pretty">{{ m2.title }}</span>
+<span style="font:500 14px/1 'General Sans',sans-serif">{{ m2.authorName }} · {{ m2.read }} min</span>
+</a>
+<article style="display:flex;flex-direction:column;gap:12px;min-width:0">
+<div style="position:relative;aspect-ratio:3/2;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ m3.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+<div style="display:flex;align-items:center;gap:10px"><a href="#" onClick="{{ m3.openCat }}" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:{{ m3.c.bg }};color:{{ m3.c.fg }};font:600 11px/1 'General Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase">{{ m3.c.name }}</a><span style="font:500 13px/1 'General Sans',sans-serif;color:#555">{{ m3.dateLabel }}</span></div>
+<h3 style="margin:0;font:600 21px/1.18 'General Sans',sans-serif;text-wrap:pretty"><a href="#" onClick="{{ m3.open }}" style="color:#000" style-hover="color:#0066FC">{{ m3.title }}</a></h3>
+</article>
+<article style="display:flex;flex-direction:column;gap:12px;min-width:0">
+<div style="position:relative;aspect-ratio:3/2;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ m4.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+<div style="display:flex;align-items:center;gap:10px"><a href="#" onClick="{{ m4.openCat }}" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:{{ m4.c.bg }};color:{{ m4.c.fg }};font:600 11px/1 'General Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase">{{ m4.c.name }}</a><span style="font:500 13px/1 'General Sans',sans-serif;color:#555">{{ m4.dateLabel }}</span></div>
+<h3 style="margin:0;font:600 21px/1.18 'General Sans',sans-serif;text-wrap:pretty"><a href="#" onClick="{{ m4.open }}" style="color:#000" style-hover="color:#0066FC">{{ m4.title }}</a></h3>
+</article>
+<a href="#" onClick="{{ m5.open }}" style="display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding:26px;background:{{ m5.c.bg }};border:1px solid rgba(0,0,0,.12);color:{{ m5.c.fg }};min-height:320px;border-radius:24px;transition:transform .25s,box-shadow .25s" style-hover="color:{{ m5.c.fg }};transform:translateY(-4px);box-shadow:0 30px 60px -30px rgba(0,0,0,.45)">
+<span style="align-self:flex-start;display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:#fff;color:#000;font:600 11px/1 'General Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase">{{ m5.c.name }}</span>
+<span style="font:600 28px/1.1 'General Sans',sans-serif;letter-spacing:-.02em;text-wrap:pretty">{{ m5.title }}</span>
+<span style="font:500 14px/1 'General Sans',sans-serif">{{ m5.authorName }} · {{ m5.read }} min</span>
+</a>
+</div>
+</section>
+
+<section style="max-width:1440px;margin:0 auto;padding:112px 48px 0">
+<div style="display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:28px">
+<h2 style="margin:0;font:600 52px/1 'General Sans',sans-serif;letter-spacing:-.03em">Par rubrique</h2>
+<a href="#" onClick="{{ tab.open }}" style="display:flex;align-items:center;gap:10px;font:600 15px/1 'General Sans',sans-serif">Toute la rubrique {{ tab.name }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5"><button type="button" onClick="{{ t.select }}" style="padding:14px 22px;border:0;border-radius:999px;background:{{ t.tabBg }};color:{{ t.tabFg }};font:600 17px/1 'General Sans',sans-serif;cursor:pointer" style-hover="background:{{ t.bg }};color:{{ t.fg }}">{{ t.name }}</button></sc-for>
+</div>
+<div style="border-radius:32px;background:{{ tab.tint }};padding:48px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:48px">
+<article style="display:flex;flex-direction:column;gap:16px;min-width:0">
+<div style="position:relative;aspect-ratio:16/10;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ tabLead.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+<span style="font:500 14px/1 'General Sans',sans-serif;color:#333">{{ tabLead.dateLabel }} · {{ tabLead.authorName }}</span>
+<h3 style="margin:0;font:600 34px/1.08 'General Sans',sans-serif;letter-spacing:-.02em;text-wrap:balance"><a href="#" onClick="{{ tabLead.open }}" style="color:#000" style-hover="color:#0066FC">{{ tabLead.title }}</a></h3>
+<p style="margin:0;font:400 17px/1.5 'General Sans',sans-serif;color:#222">{{ tabLead.chapo }}</p>
+</article>
+<div style="display:flex;flex-direction:column;border-top:1px solid rgba(0,0,0,.12)">
+<sc-for list="{{ tabRest }}" as="a" hint-placeholder-count="3">
+<article style="display:flex;flex-direction:column;gap:8px;padding:22px 0;border-bottom:1px solid rgba(0,0,0,.12)">
+<h3 style="margin:0;font:600 22px/1.18 'General Sans',sans-serif;text-wrap:pretty"><a href="#" onClick="{{ a.open }}" style="color:#000" style-hover="color:#0066FC">{{ a.title }}</a></h3>
+<p style="margin:0;font:400 15px/1.45 'General Sans',sans-serif;color:#333">{{ a.chapo }}</p>
+<span style="font:500 13px/1 'General Sans',sans-serif;color:#444">{{ a.authorName }} · {{ a.dateLabel }}</span>
+</article>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section style="max-width:1440px;margin:0 auto;padding:112px 48px 0">
+<div style="display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:28px">
+<div style="display:flex;align-items:baseline;gap:20px"><h2 style="margin:0;font:600 52px/1 'General Sans',sans-serif;letter-spacing:-.03em">XDK en 60 secondes</h2><span style="font:700 28px/1 'Caveat',cursive;color:#0066FC">les formats courts</span></div>
+<div style="display:flex;flex-direction:column;gap:12px;align-items:flex-end"><p style="margin:0;font:400 16px/1.45 'General Sans',sans-serif;color:#333;max-width:36ch">Aussi sur TikTok, Instagram et YouTube Shorts.</p><a href="#" onClick="{{ goVideos }}" style="display:flex;align-items:center;gap:10px;color:#000;font:600 16px/1 'General Sans',sans-serif" style-hover="color:#0066FC">Toutes les vidéos<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px">
+<sc-for list="{{ shorts }}" as="v" hint-placeholder-count="5">
+<div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+<div style="position:relative;aspect-ratio:9/16;border-radius:22px;overflow:hidden;background:#EFEDE8;box-shadow:inset 0 -6px 0 {{ v.c.bg }}"><img src="{{ v.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+<div style="display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:start">
+<a href="#" onClick="{{ v.play }}" aria-label="Lire" style="border-radius:999px;width:44px;height:44px;display:grid;place-items:center;background:#D3F90F;border:0;color:#000" style-hover="background:#000;color:#D3F90F"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg></a>
+<div style="display:flex;flex-direction:column;gap:5px;min-width:0"><span style="font:600 16px/1.2 'General Sans',sans-serif">{{ v.t }}</span><span style="font:500 13px/1 'General Sans',sans-serif;color:#555">{{ v.c.name }} · {{ v.d }}</span></div>
+</div>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section style="max-width:1440px;margin:0 auto;padding:112px 48px 0">
+<div style="position:relative;overflow:hidden;background:#CA41CD;border-radius:32px;padding:64px 56px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center">
+<sc-if value="{{ patterns }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:0;bottom:0;right:0;width:44%;background:repeating-linear-gradient(97deg,transparent 0 44px,#fff 44px 47px);opacity:.9;pointer-events:none"></div></sc-if>
+<div style="position:relative;display:flex;flex-direction:column;gap:18px;align-items:flex-start">
+<span style="display:inline-block;font:700 76px/1 'General Sans',sans-serif;color:#fff;-webkit-text-stroke:3px #000;paint-order:stroke fill;text-shadow:1px 1px 0 #000,2px 2px 0 #000,3px 3px 0 #000,4px 4px 0 #000,5px 5px 0 #000,6px 6px 0 #000,7px 7px 0 #000;transform:rotate(-2deg)">On se dit tout ?</span>
+<p style="margin:0;font:500 19px/1.45 'General Sans',sans-serif;max-width:40ch">Le Brief du matin : l’essentiel de l’actu au Cameroun, chaque jour à 7h. Cinq minutes, pas une de plus.</p>
+</div>
+<div style="position:relative">
+<sc-if value="{{ nlInlineOpen }}" hint-placeholder-val="{{ true }}">
+<form onSubmit="{{ submitInline }}" style="display:flex;flex-direction:column;gap:12px;padding:28px;background:#fff;border-radius:24px;box-shadow:0 30px 60px -30px rgba(0,0,0,.45)">
+<label style="font:600 14px/1 'General Sans',sans-serif">Votre adresse e-mail</label>
+<input type="email" required="" value="{{ nlInline }}" onChange="{{ onInlineEmail }}" placeholder="vous@exemple.cm" style="height:58px;padding:0 16px;border:1px solid rgba(0,0,0,.2);border-radius:14px;background:#fff;font:500 18px/1 'General Sans',sans-serif;outline:none">
+<button type="submit" style="border-radius:999px;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 18px;border:0;background:#000;color:#fff;font:600 16px/1 'General Sans',sans-serif;cursor:pointer" style-hover="background:#0066FC">Je m’abonne au Brief<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+</form>
+</sc-if>
+<sc-if value="{{ nlInlineDone }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:10px;padding:28px;background:#fff;border-radius:24px;box-shadow:0 30px 60px -30px rgba(0,0,0,.45)">
+<span style="font:700 30px/1 'Caveat',cursive;color:#0066FC">C’est noté !</span>
+<p style="margin:0;font:500 18px/1.45 'General Sans',sans-serif">Premier Brief demain à 7h dans <strong>{{ nlInline }}</strong>.</p>
+</div>
+</sc-if>
+</div>
+</div>
+</section>
+
+<section style="max-width:1440px;margin:0 auto;padding:72px 48px 112px">
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+<span style="font:600 18px/1 'General Sans',sans-serif;margin-right:12px">Suivez @xadikoa</span>
+<sc-for list="{{ socials }}" as="s" hint-placeholder-count="6"><a href="#" onClick="{{ s.open }}" style="border-radius:999px;display:flex;align-items:center;height:48px;padding:0 18px;border:1px solid rgba(0,0,0,.16);font:600 15px/1 'General Sans',sans-serif;color:#000" style-hover="background:{{ s.hover }};color:#000">{{ s.name }}</a></sc-for>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isRubrique }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Rubrique">
+<section style="position:relative;overflow:hidden;background:{{ rub.bg }};border-bottom:1px solid rgba(0,0,0,.12);color:{{ rub.fg }}">
+<sc-if value="{{ patterns }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:0;bottom:0;right:0;width:42%;background:repeating-linear-gradient(180deg,#000 0 2px,transparent 2px 12px);-webkit-mask-image:linear-gradient(90deg,transparent,#000 40%);mask-image:linear-gradient(90deg,transparent,#000 40%);pointer-events:none"></div></sc-if>
+<div style="position:relative;max-width:1440px;margin:0 auto;padding:40px 48px 56px;display:flex;flex-direction:column;gap:22px;align-items:flex-start">
+<div style="display:flex;gap:10px;font:500 14px/1 'General Sans',sans-serif"><a href="#" onClick="{{ goHome }}" style="color:{{ rub.fg }};text-decoration:underline;text-underline-offset:3px">Accueil</a><span>/</span><span>{{ rub.name }}</span></div>
+<span style="display:inline-block;font:700 clamp(72px,9vw,132px)/1 'General Sans',sans-serif;color:#fff;-webkit-text-stroke:3px #000;paint-order:stroke fill;text-shadow:1px 1px 0 #000,2px 2px 0 #000,3px 3px 0 #000,4px 4px 0 #000,5px 5px 0 #000,6px 6px 0 #000,7px 7px 0 #000,8px 8px 0 #000;transform:rotate(-2deg);margin:8px 0 6px">{{ rub.name }}</span>
+<p style="margin:0;font:500 21px/1.4 'General Sans',sans-serif;max-width:40ch">{{ rub.role }}</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px;padding-top:6px">
+<sc-for list="{{ rubTags }}" as="t" hint-placeholder-count="5"><button type="button" onClick="{{ t.select }}" style="border-radius:999px;height:40px;padding:0 14px;border:1px solid rgba(0,0,0,.16);background:{{ t.bg }};color:{{ t.fg }};font:600 14px/1 'General Sans',sans-serif;cursor:pointer" style-hover="background:#000;color:#fff">{{ t.name }}</button></sc-for>
+</div>
+</div>
+</section>
+<section style="max-width:1440px;margin:0 auto;padding:56px 48px 112px;display:grid;grid-template-columns:minmax(0,8fr) minmax(0,4fr);gap:64px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:48px;min-width:0">
+<sc-if value="{{ rubHas }}" hint-placeholder-val="{{ true }}">
+<article style="display:flex;flex-direction:column;gap:16px">
+<div style="position:relative;aspect-ratio:16/9;border-radius:28px;overflow:hidden;background:#EFEDE8"><img src="{{ rubLead.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+<span style="font:500 14px/1 'General Sans',sans-serif;color:#444;padding-top:8px">{{ rubLead.dateLabel }} · {{ rubLead.read }} min · Par {{ rubLead.authorName }}</span>
+<h2 style="margin:0;font:600 46px/1.04 'General Sans',sans-serif;letter-spacing:-.025em;text-wrap:balance"><a href="#" onClick="{{ rubLead.open }}" style="color:#000" style-hover="color:#0066FC">{{ rubLead.title }}</a></h2>
+<p style="margin:0;font:400 19px/1.5 'General Sans',sans-serif;color:#222;max-width:62ch">{{ rubLead.chapo }}</p>
+</article>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 32px;border-top:1px solid rgba(0,0,0,.12);padding-top:32px">
+<sc-for list="{{ rubRest }}" as="a" hint-placeholder-count="3">
+<article style="display:flex;flex-direction:column;gap:12px;min-width:0">
+<div style="position:relative;aspect-ratio:3/2;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ a.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+<span style="font:500 13px/1 'General Sans',sans-serif;color:#555">{{ a.dateLabel }} · {{ a.read }} min</span>
+<h3 style="margin:0;font:600 24px/1.15 'General Sans',sans-serif;letter-spacing:-.01em;text-wrap:pretty"><a href="#" onClick="{{ a.open }}" style="color:#000" style-hover="color:#0066FC">{{ a.title }}</a></h3>
+<p style="margin:0;font:400 15px/1.5 'General Sans',sans-serif;color:#333">{{ a.chapo }}</p>
+</article>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ rubEmpty }}" hint-placeholder-val="{{ false }}">
+<div style="padding:48px;border-radius:28px;background:#F4F3EE;display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+<span style="font:700 32px/1 'Caveat',cursive;color:#0066FC">bientôt…</span>
+<p style="margin:0;font:500 20px/1.4 'General Sans',sans-serif">Rien pour l’instant sur ce sujet. On y travaille.</p>
+</div>
+</sc-if>
+</div>
+<aside style="position:sticky;top:110px;display:flex;flex-direction:column;gap:32px">
+<div>
+<h3 style="margin:0 0 14px;font:600 14px/1 'General Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase">Les autres rubriques</h3>
+<div style="border-top:1px solid rgba(0,0,0,.12)">
+<sc-for list="{{ otherCats }}" as="c" hint-placeholder-count="4"><a href="#" onClick="{{ c.open }}" style="display:grid;grid-template-columns:14px minmax(0,1fr) auto;gap:14px;align-items:center;padding:16px 0;border-bottom:1px solid rgba(0,0,0,.12);font:600 20px/1 'General Sans',sans-serif;color:#000" style-hover="color:#0066FC"><span style="width:14px;height:14px;border-radius:50%;background:{{ c.bg }};box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)"></span>{{ c.name }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a></sc-for>
+</div>
+</div>
+<div style="padding:28px;background:#D3F90F;border-radius:24px;display:flex;flex-direction:column;gap:14px">
+<span style="font:600 26px/1.1 'General Sans',sans-serif;letter-spacing:-.02em">Le Brief du matin</span>
+<p style="margin:0;font:400 15px/1.45 'General Sans',sans-serif">L’essentiel de l’actu, chaque jour à 7h.</p>
+<a href="#" onClick="{{ goNewsletter }}" style="border-radius:999px;display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 16px;background:#000;color:#fff;font:600 15px/1 'General Sans',sans-serif" style-hover="background:#0066FC;color:#fff">S’abonner<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+</div>
+</aside>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isArticle }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Article">
+<section style="max-width:1440px;margin:0 auto;padding:40px 48px 0">
+<div style="display:flex;gap:10px;font:500 14px/1 'General Sans',sans-serif;color:#444;margin-bottom:36px"><a href="#" onClick="{{ goHome }}" style="text-decoration:underline;text-underline-offset:3px">Accueil</a><span>/</span><a href="#" onClick="{{ art.openCat }}" style="text-decoration:underline;text-underline-offset:3px">{{ art.c.name }}</a></div>
+<div style="max-width:1080px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;align-items:center;gap:12px"><a href="#" onClick="{{ art.openCat }}" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:{{ art.c.bg }};color:{{ art.c.fg }};font:600 12px/1 'General Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase">{{ art.c.name }}</a><span style="font:500 14px/1 'General Sans',sans-serif;color:#444;white-space:nowrap">Publié le {{ art.dateLong }}</span></div>
+<h1 style="margin:0;font:600 clamp(44px,5vw,76px)/1.0 'General Sans',sans-serif;letter-spacing:-.035em;text-wrap:balance">{{ art.title }}</h1>
+<p style="margin:0;font:400 24px/1.42 'General Sans',sans-serif;color:#222;max-width:58ch;text-wrap:pretty">{{ art.chapo }}</p>
+</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-top:32px;padding:18px 0;border-top:1px solid rgba(0,0,0,.12);border-bottom:1px solid rgba(0,0,0,.12)">
+<a href="#" onClick="{{ art.openAuthor }}" style="display:flex;align-items:center;gap:14px;color:#000">
+<span style="width:52px;height:52px;border-radius:50%;background:{{ artAuthor.color }};color:{{ artAuthor.initFg }};display:grid;place-items:center;flex:none;font:700 17px/1 'General Sans',sans-serif">{{ artAuthor.initials }}</span>
+<span style="display:flex;flex-direction:column;gap:5px"><span style="font:600 17px/1 'General Sans',sans-serif">Par {{ artAuthor.name }}</span><span style="font:500 14px/1 'General Sans',sans-serif;color:#555;white-space:nowrap">{{ artAuthor.role }} · {{ art.read }} min de lecture</span></span>
+</a>
+<div style="display:flex;gap:8px;align-items:center">
+<span style="font:600 14px/1 'General Sans',sans-serif;margin-right:6px">Partager</span>
+<sc-for list="{{ shareBtns }}" as="b" hint-placeholder-count="5"><button type="button" onClick="{{ b.share }}" style="border-radius:999px;height:42px;padding:0 13px;border:1px solid rgba(0,0,0,.16);background:#fff;font:600 14px/1 'General Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px" style-hover="background:#D3F90F">{{ b.name }}</button></sc-for>
+</div>
+</div>
+<figure style="margin:40px 0 0;display:flex;flex-direction:column;gap:12px">
+<div style="position:relative;aspect-ratio:21/9;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ art.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+<figcaption style="font:500 14px/1.4 'General Sans',sans-serif;color:#555">{{ art.photo }}. Photo : Unsplash</figcaption>
+</figure>
+</section>
+<section style="max-width:1440px;margin:0 auto;padding:56px 48px 0;display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+<article style="flex:1 1 560px;max-width:760px;display:flex;flex-direction:column;gap:26px;min-width:0">
+<sc-if value="{{ hasBody }}" hint-placeholder-val="{{ true }}">
+<sc-for list="{{ artBody }}" as="b" hint-placeholder-count="5">
+<sc-if value="{{ b.isP }}"><p style="margin:0;font:400 19px/1.7 'General Sans',sans-serif;color:#111;text-wrap:pretty">{{ b.text }}</p></sc-if>
+<sc-if value="{{ b.isH2 }}"><h2 style="margin:18px 0 0;font:600 32px/1.12 'General Sans',sans-serif;letter-spacing:-.02em">{{ b.text }}</h2></sc-if>
+<sc-if value="{{ b.isQuote }}"><figure style="margin:14px 0;padding:28px 0;border-top:1px solid rgba(0,0,0,.12);border-bottom:1px solid rgba(0,0,0,.12);display:flex;flex-direction:column;gap:14px"><blockquote style="margin:0;font:500 30px/1.25 'General Sans',sans-serif;letter-spacing:-.015em;text-wrap:pretty">{{ b.text }}</blockquote><figcaption style="font:700 26px/1 'Caveat',cursive;color:#0066FC">— {{ b.by }}</figcaption></figure></sc-if>
+<sc-if value="{{ b.isImg }}"><figure style="margin:14px 0;display:flex;flex-direction:column;gap:10px"><div style="position:relative;aspect-ratio:3/2;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ b.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div><figcaption style="font:500 14px/1.4 'General Sans',sans-serif;color:#555">{{ b.text }}. Photo : XADIKOA</figcaption></figure></sc-if>
+<sc-if value="{{ b.isRetenir }}"><div style="background:#FFF3C0;border-radius:24px;padding:32px 34px;display:flex;flex-direction:column;gap:16px"><span style="font:700 30px/1 'Caveat',cursive;color:#0066FC">Voilà ce qu’il faut retenir.</span><ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px"><sc-for list="{{ b.items }}" as="it" hint-placeholder-count="3"><li style="display:grid;grid-template-columns:20px minmax(0,1fr);gap:12px;font:500 17px/1.5 'General Sans',sans-serif"><span style="width:8px;height:8px;border-radius:50%;background:#0066FC;margin-top:9px"></span>{{ it }}</li></sc-for></ul></div></sc-if>
+</sc-for>
+</sc-if>
+<sc-if value="{{ noBody }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:14px">
+<span style="font:600 13px/1 'General Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#555">Corps de l’article — contenu géré dans le CMS</span>
+<div style="height:14px;border-radius:999px;background:#EEECE6"></div><div style="height:14px;border-radius:999px;background:#EEECE6;width:96%"></div><div style="height:14px;border-radius:999px;background:#EEECE6;width:98%"></div><div style="height:14px;border-radius:999px;background:#EEECE6;width:64%"></div>
+<div style="height:26px;border-radius:999px;background:#E2DFD6;width:46%;margin-top:22px"></div>
+<div style="height:14px;border-radius:999px;background:#EEECE6"></div><div style="height:14px;border-radius:999px;background:#EEECE6;width:92%"></div><div style="height:14px;border-radius:999px;background:#EEECE6;width:97%"></div><div style="height:14px;border-radius:999px;background:#EEECE6;width:58%"></div>
+</div>
+</sc-if>
+<div style="display:flex;flex-wrap:wrap;gap:8px;padding-top:20px;border-top:1px solid rgba(0,0,0,.12);margin-top:12px">
+<sc-for list="{{ art.tagList }}" as="t" hint-placeholder-count="2"><a href="#" onClick="{{ t.open }}" style="border-radius:999px;height:38px;display:flex;align-items:center;padding:0 13px;border:1px solid rgba(0,0,0,.16);font:600 14px/1 'General Sans',sans-serif" style-hover="background:#000;color:#fff"># {{ t.name }}</a></sc-for>
+</div>
+<div style="position:relative;overflow:hidden;background:#0066FC;color:#fff;border-radius:28px;padding:40px;display:flex;flex-direction:column;gap:16px;margin-top:20px">
+<span style="font:700 30px/1 'Caveat',cursive;color:#D3F90F">vous avez aimé ?</span>
+<span style="font:600 32px/1.1 'General Sans',sans-serif;letter-spacing:-.02em;max-width:22ch">On se dit tout, chaque matin à 7h.</span>
+<sc-if value="{{ nlInlineOpen }}" hint-placeholder-val="{{ true }}">
+<form onSubmit="{{ submitInline }}" style="display:flex;border-radius:999px;overflow:hidden;background:#fff;margin-top:4px;padding:6px">
+<input type="email" required="" value="{{ nlInline }}" onChange="{{ onInlineEmail }}" placeholder="vous@exemple.cm" style="flex:1;min-width:0;height:56px;padding:0 16px;border:0;font:500 17px/1 'General Sans',sans-serif;outline:none;color:#000">
+<button type="submit" style="padding:0 20px;border:0;background:#D3F90F;color:#000;font:600 16px/1 'General Sans',sans-serif;cursor:pointer" style-hover="background:#fff">Je m’abonne</button>
+</form>
+</sc-if>
+<sc-if value="{{ nlInlineDone }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font:500 18px/1.4 'General Sans',sans-serif">C’est noté. Premier Brief demain à 7h dans {{ nlInline }}.</p></sc-if>
+</div>
+</article>
+<aside style="flex:1 1 260px;min-width:0;max-width:420px;position:sticky;top:110px;display:flex;flex-direction:column;gap:12px">
+<span style="font:600 13px/1 'General Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase">Dans cet article</span>
+<div style="border-top:1px solid rgba(0,0,0,.12)">
+<sc-for list="{{ artToc }}" as="h" hint-placeholder-count="3"><div style="padding:12px 0;border-bottom:1px solid rgba(0,0,0,.12);font:500 15px/1.3 'General Sans',sans-serif">{{ h.text }}</div></sc-for>
+</div>
+<button type="button" onClick="{{ copyLink }}" style="border-radius:999px;margin-top:8px;height:44px;padding:0 14px;border:1px solid rgba(0,0,0,.16);background:#fff;font:600 14px/1 'General Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:space-between" style-hover="background:#D3F90F">Copier le lien<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></button>
+<span style="font:600 13px/1 'General Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;margin-top:28px">Plus de {{ art.c.name }}</span>
+<div style="border-top:1px solid rgba(0,0,0,.12)">
+<sc-for list="{{ sameCat }}" as="a" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:6px;padding:16px 0;border-bottom:1px solid rgba(0,0,0,.12)"><a href="#" onClick="{{ a.open }}" style="font:600 17px/1.25 'General Sans',sans-serif;color:#000" style-hover="color:#0066FC">{{ a.title }}</a><span style="font:500 13px/1 'General Sans',sans-serif;color:#555">{{ a.dateLabel }}</span></div></sc-for>
+</div>
+</aside>
+</section>
+<section style="max-width:1440px;margin:0 auto;padding:96px 48px 112px">
+<div style="display:flex;align-items:baseline;gap:20px;padding-bottom:20px;border-bottom:1px solid rgba(0,0,0,.12);margin-bottom:32px">
+<h2 style="margin:0;font:600 44px/1 'General Sans',sans-serif;letter-spacing:-.02em">À lire aussi</h2>
+<span style="font:700 28px/1 'Caveat',cursive;color:#0066FC">dans le même esprit</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px">
+<sc-for list="{{ related }}" as="a" hint-placeholder-count="4">
+<article style="display:flex;flex-direction:column;gap:12px;min-width:0">
+<div style="position:relative;aspect-ratio:3/2;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ a.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+<div style="display:flex;align-items:center;gap:10px"><a href="#" onClick="{{ a.openCat }}" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:{{ a.c.bg }};color:{{ a.c.fg }};font:600 11px/1 'General Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase">{{ a.c.name }}</a><span style="font:500 13px/1 'General Sans',sans-serif;color:#555">{{ a.dateLabel }}</span></div>
+<h3 style="margin:0;font:600 21px/1.18 'General Sans',sans-serif;text-wrap:pretty"><a href="#" onClick="{{ a.open }}" style="color:#000" style-hover="color:#0066FC">{{ a.title }}</a></h3>
+</article>
+</sc-for>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSearch }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Recherche">
+<section style="background:#fff">
+<div style="max-width:1440px;margin:0 auto;padding:56px 48px 36px;display:flex;flex-direction:column;gap:26px">
+<span style="font:700 32px/1 'Caveat',cursive;color:#0066FC">on cherche quoi ?</span>
+<div style="display:flex;align-items:center;gap:18px;border-bottom:2px solid #000;padding-bottom:14px">
+<svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+<input ref="{{ searchRef }}" type="search" value="{{ query }}" onChange="{{ onQuery }}" placeholder="Un sujet, un nom, un quartier…" style="flex:1;min-width:0;border:0;outline:none;font:600 clamp(34px,4vw,56px)/1.1 'General Sans',sans-serif;letter-spacing:-.025em;background:transparent">
+<sc-if value="{{ hasQuery }}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{ clearQuery }}" style="border-radius:999px;height:44px;padding:0 14px;border:1px solid rgba(0,0,0,.16);background:#fff;font:600 14px/1 'General Sans',sans-serif;cursor:pointer" style-hover="background:#D3F90F">Effacer</button></sc-if>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{ searchCats }}" as="c" hint-placeholder-count="6"><button type="button" onClick="{{ c.select }}" style="border-radius:999px;height:40px;padding:0 14px;border:1px solid rgba(0,0,0,.16);background:{{ c.chipBg }};color:{{ c.chipFg }};font:600 14px/1 'General Sans',sans-serif;cursor:pointer" style-hover="box-shadow:3px 3px 0 #000">{{ c.name }}</button></sc-for>
+</div>
+<div style="display:flex;align-items:center;gap:12px">
+<span style="font:600 14px/1 'General Sans',sans-serif">Trier par</span>
+<div style="display:flex;gap:4px;padding:4px;border-radius:999px;background:#F1F0EB">
+<sc-for list="{{ sortOpts }}" as="o" hint-placeholder-count="2"><button type="button" onClick="{{ o.select }}" style="border-radius:999px;height:38px;padding:0 14px;border:0;background:{{ o.bg }};color:{{ o.fg }};font:600 14px/1 'General Sans',sans-serif;cursor:pointer">{{ o.name }}</button></sc-for>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section style="max-width:1440px;margin:0 auto;padding:40px 48px 112px;display:grid;grid-template-columns:minmax(0,8fr) minmax(0,4fr);gap:64px;align-items:start">
+<div style="display:flex;flex-direction:column;min-width:0">
+<span style="font:600 16px/1 'General Sans',sans-serif;padding-bottom:18px;border-bottom:1px solid rgba(0,0,0,.12)">{{ resultsLabel }}</span>
+<sc-for list="{{ results }}" as="a" hint-placeholder-count="5">
+<article style="display:grid;grid-template-columns:220px minmax(0,1fr);gap:28px;padding:26px 0;border-bottom:1px solid rgba(0,0,0,.12);align-items:start">
+<div style="position:relative;aspect-ratio:3/2;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ a.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+<div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+<div style="display:flex;align-items:center;gap:10px"><a href="#" onClick="{{ a.openCat }}" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:{{ a.c.bg }};color:{{ a.c.fg }};font:600 11px/1 'General Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase">{{ a.c.name }}</a><span style="font:500 13px/1 'General Sans',sans-serif;color:#555">{{ a.dateLabel }} · {{ a.authorName }}</span></div>
+<h3 style="margin:0;font:600 26px/1.15 'General Sans',sans-serif;letter-spacing:-.015em;text-wrap:pretty"><a href="#" onClick="{{ a.open }}" style="color:#000" style-hover="color:#0066FC">{{ a.title }}</a></h3>
+<p style="margin:0;font:400 16px/1.5 'General Sans',sans-serif;color:#333">{{ a.chapo }}</p>
+</div>
+</article>
+</sc-for>
+<sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+<div style="padding:48px 0;display:flex;flex-direction:column;gap:12px">
+<span style="font:700 32px/1 'Caveat',cursive;color:#0066FC">aïe, rien trouvé.</span>
+<p style="margin:0;font:500 20px/1.4 'General Sans',sans-serif">Essayez « Douala », « tontine » ou « makossa ».</p>
+</div>
+</sc-if>
+</div>
+<aside style="position:sticky;top:110px;display:flex;flex-direction:column;gap:14px;padding:28px;background:#FFF3C0;border-radius:24px">
+<span style="font:600 14px/1 'General Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase">Sujets du moment</span>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{ hotTags }}" as="t" hint-placeholder-count="8"><button type="button" onClick="{{ t.select }}" style="border-radius:999px;height:38px;padding:0 12px;border:1px solid rgba(0,0,0,.16);background:#fff;font:600 14px/1 'General Sans',sans-serif;cursor:pointer" style-hover="background:#000;color:#fff">{{ t.name }}</button></sc-for>
+</div>
+</aside>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isAuthor }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Auteur">
+<section style="border-bottom:1px solid rgba(0,0,0,.12)">
+<div style="max-width:1440px;margin:0 auto;padding:56px 48px 64px;display:grid;grid-template-columns:300px minmax(0,1fr);gap:64px;align-items:end">
+<div style="position:relative;aspect-ratio:1/1;border-radius:28px;overflow:hidden;background:#EFEDE8;box-shadow:0 0 0 10px {{ author.color }}"><img src="{{ author.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+<div style="display:flex;flex-direction:column;gap:18px;align-items:flex-start">
+<span style="font:700 30px/1 'Caveat',cursive;color:#0066FC">{{ author.hello }}</span>
+<h1 style="margin:0;font:600 clamp(48px,5.4vw,84px)/0.98 'General Sans',sans-serif;letter-spacing:-.035em">{{ author.name }}</h1>
+<span style="font:600 18px/1 'General Sans',sans-serif">{{ author.role }}</span>
+<p style="margin:0;font:400 19px/1.5 'General Sans',sans-serif;color:#222;max-width:56ch">{{ author.bio }}</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+<sc-for list="{{ authorCats }}" as="c" hint-placeholder-count="2"><a href="#" onClick="{{ c.open }}" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:{{ c.bg }};color:{{ c.fg }};font:600 12px/1 'General Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase">{{ c.name }}</a></sc-for>
+<span style="font:500 15px/1 'General Sans',sans-serif;color:#444;margin-left:8px">{{ authorCount }}</span>
+</div>
+</div>
+</div>
+</section>
+<section style="max-width:1440px;margin:0 auto;padding:56px 48px 112px">
+<h2 style="margin:0 0 28px;font:600 36px/1 'General Sans',sans-serif;letter-spacing:-.02em">Ses derniers articles</h2>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:44px 32px">
+<sc-for list="{{ authorArticles }}" as="a" hint-placeholder-count="6">
+<article style="display:flex;flex-direction:column;gap:12px;min-width:0">
+<div style="position:relative;aspect-ratio:3/2;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ a.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
+<div style="display:flex;align-items:center;gap:10px"><a href="#" onClick="{{ a.openCat }}" style="display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:{{ a.c.bg }};color:{{ a.c.fg }};font:600 11px/1 'General Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase">{{ a.c.name }}</a><span style="font:500 13px/1 'General Sans',sans-serif;color:#555">{{ a.dateLabel }} · {{ a.read }} min</span></div>
+<h3 style="margin:0;font:600 23px/1.16 'General Sans',sans-serif;letter-spacing:-.01em;text-wrap:pretty"><a href="#" onClick="{{ a.open }}" style="color:#000" style-hover="color:#0066FC">{{ a.title }}</a></h3>
+<p style="margin:0;font:400 15px/1.5 'General Sans',sans-serif;color:#333">{{ a.chapo }}</p>
+</article>
+</sc-for>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isNewsletter }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Newsletter">
+<section style="position:relative;overflow:hidden;background:#D3F90F;border-bottom:1px solid rgba(0,0,0,.12)">
+<sc-if value="{{ patterns }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:0;bottom:0;left:52%;right:-6%;pointer-events:none"><sc-for list="{{ tunnel }}" as="r" hint-placeholder-count="9"><div style="position:absolute;top:{{ r.t }};left:{{ r.l }};right:{{ r.l }};bottom:{{ r.b }};border:2px solid #000;border-radius:{{ r.r }};animation:xdkPulse 3.2s ease-in-out {{ r.delay }} infinite"></div></sc-for></div></sc-if>
+<div style="position:relative;max-width:1440px;margin:0 auto;padding:64px 48px 80px;display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:72px;align-items:start">
+<div style="display:flex;flex-direction:column;gap:22px">
+<span style="font:700 34px/1 'Caveat',cursive;color:#000;transform:rotate(-3deg);align-self:flex-start">on se dit tout, avant le café.</span>
+<h1 style="margin:0;font:600 clamp(56px,6vw,96px)/0.95 'General Sans',sans-serif;letter-spacing:-.04em">Le Brief du matin</h1>
+<p style="margin:0;font:400 20px/1.45 'General Sans',sans-serif;max-width:46ch">Chaque matin à 7h, ce qu’il faut retenir de l’actu au Cameroun. Le vendredi, le récap de la semaine et l’épisode du Brief XDK.</p>
+<sc-if value="{{ nlPageOpen }}" hint-placeholder-val="{{ true }}">
+<form onSubmit="{{ submitPage }}" style="display:flex;flex-direction:column;gap:22px;padding:30px;background:#fff;border-radius:24px;box-shadow:0 30px 60px -30px rgba(0,0,0,.45);margin-top:8px">
+<div style="display:flex;flex-direction:column;gap:10px">
+<label style="font:600 14px/1 'General Sans',sans-serif">Adresse e-mail</label>
+<input type="email" required="" value="{{ nlEmail }}" onChange="{{ onPageEmail }}" placeholder="vous@exemple.cm" style="height:56px;padding:0 16px;border:1px solid rgba(0,0,0,.2);border-radius:14px;background:#fff;font:500 18px/1 'General Sans',sans-serif;outline:none">
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 14px/1 'General Sans',sans-serif">Vos rubriques</span>
+<div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ nlCatList }}" as="c" hint-placeholder-count="5"><button type="button" onClick="{{ c.toggle }}" style="border-radius:999px;height:40px;padding:0 14px;border:1px solid rgba(0,0,0,.16);background:{{ c.chipBg }};color:{{ c.chipFg }};font:600 14px/1 'General Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px">{{ c.mark }} {{ c.name }}</button></sc-for></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<span style="font:600 14px/1 'General Sans',sans-serif">Fréquence</span>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:#F1F0EB"><sc-for list="{{ nlFreqs }}" as="f" hint-placeholder-count="2"><button type="button" onClick="{{ f.select }}" style="border-radius:999px;height:48px;padding:0 14px;border:0;background:{{ f.bg }};color:{{ f.fg }};font:600 15px/1 'General Sans',sans-serif;cursor:pointer;text-align:left">{{ f.name }}</button></sc-for></div>
+</div>
+<button type="submit" style="border-radius:999px;display:flex;align-items:center;justify-content:space-between;height:58px;padding:0 20px;border:0;background:#000;color:#fff;font:600 17px/1 'General Sans',sans-serif;cursor:pointer" style-hover="background:#0066FC">Je m’abonne<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+<span style="font:400 13px/1.45 'General Sans',sans-serif;color:#444">Désinscription en un clic, à tout moment. Vos données restent chez XADIKOA (voir notre politique de confidentialité).</span>
+</form>
+</sc-if>
+<sc-if value="{{ nlDone }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:12px;padding:32px;background:#fff;border-radius:24px;box-shadow:0 30px 60px -30px rgba(0,0,0,.45);margin-top:8px">
+<span style="font:700 36px/1 'Caveat',cursive;color:#0066FC">Bienvenue dans la conversation !</span>
+<p style="margin:0;font:500 19px/1.45 'General Sans',sans-serif">Premier Brief {{ nlFreqDone }} dans <strong>{{ nlEmail }}</strong>. Rubriques : {{ nlCatsDone }}.</p>
+<button type="button" onClick="{{ resetNl }}" style="border-radius:999px;align-self:flex-start;height:42px;padding:0 14px;border:1px solid rgba(0,0,0,.16);background:#fff;font:600 14px/1 'General Sans',sans-serif;cursor:pointer" style-hover="background:#D3F90F">Modifier mes choix</button>
+</div>
+</sc-if>
+</div>
+<div style="position:relative;background:#fff;border-radius:28px;overflow:hidden;box-shadow:0 40px 80px -30px rgba(0,0,0,.45);transform:rotate(1.5deg);margin-top:24px">
+<div style="display:flex;justify-content:space-between;align-items:center;padding:16px 22px;border-bottom:1px solid rgba(0,0,0,.12);font:500 13px/1 'General Sans',sans-serif;color:#444"><span>De : Le Brief XADIKOA</span><span>07:00</span></div>
+<div style="padding:26px 26px 30px;display:flex;flex-direction:column;gap:18px">
+<img src="assets/xadikoa-logo.png" alt="XADIKOA" style="height:34px;align-self:flex-start">
+<span style="font:500 14px/1 'General Sans',sans-serif;color:#444">{{ todayLabel }}</span>
+<span style="font:600 26px/1.15 'General Sans',sans-serif;letter-spacing:-.02em">Bonjour ! Voilà ce qu’il faut retenir ce matin.</span>
+<div style="border-top:1px solid rgba(0,0,0,.12)">
+<sc-for list="{{ briefItems }}" as="a" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:8px;padding:16px 0;border-bottom:1px solid rgba(0,0,0,.12)"><span style="align-self:flex-start;display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;background:{{ a.c.bg }};color:{{ a.c.fg }};font:600 10px/1 'General Sans',sans-serif;letter-spacing:.06em;text-transform:uppercase">{{ a.c.name }}</span><span style="font:600 17px/1.25 'General Sans',sans-serif">{{ a.title }}</span></div></sc-for>
+</div>
+<span style="font:700 24px/1 'Caveat',cursive;color:#0066FC">Bonne journée. On se dit tout demain.</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="À propos &amp; Partenariats">
+<section style="position:relative;overflow:hidden;background:#0066FC;color:#fff;border-bottom:1px solid rgba(0,0,0,.12)">
+<sc-if value="{{ patterns }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;inset:0;background:repeating-linear-gradient(180deg,#000 0 2px,transparent 2px 14px);opacity:.55;pointer-events:none"></div></sc-if>
+<div style="position:relative;max-width:1440px;margin:0 auto;padding:80px 48px 96px;display:flex;flex-direction:column;gap:22px;align-items:flex-start">
+<img src="assets/xadikoa-logo.png" alt="XADIKOA" style="width:min(640px,80%);transform:rotate(-3deg);margin-bottom:24px">
+<h1 style="margin:0;font:600 clamp(56px,7vw,112px)/0.95 'General Sans',sans-serif;letter-spacing:-.04em">L’actualité autrement.</h1>
+<span style="font:700 40px/1 'Caveat',cursive;color:#D3F90F">XADIKOA, on se dit tout.</span>
+</div>
+</section>
+<section style="max-width:1440px;margin:0 auto;padding:112px 48px 0;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px">
+<h2 style="margin:0;font:600 44px/1.02 'General Sans',sans-serif;letter-spacing:-.025em;text-wrap:balance">Le contenu reste roi ; la marque crée le rythme.</h2>
+<div style="display:flex;flex-direction:column;gap:20px">
+<p style="margin:0;font:400 21px/1.55 'General Sans',sans-serif">XADIKOA est un média digital éditorial destiné à raconter l’actualité et les sujets qui font bouger le Cameroun avec un ton accessible, visuel, contemporain et légèrement décalé.</p>
+<p style="margin:0;font:400 19px/1.6 'General Sans',sans-serif;color:#333">Sérieux sur les faits, léger dans la manière de les raconter. On distingue les faits, les déclarations et les analyses. On ancre nos sujets dans le contexte camerounais, en restant ouverts à l’Afrique et à l’international.</p>
+</div>
+</section>
+<section style="max-width:1440px;margin:0 auto;padding:104px 48px 0">
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px">
+<sc-for list="{{ values }}" as="v" hint-placeholder-count="4"><div style="padding:30px 28px 34px;border-radius:24px;background:#F4F3EE;display:flex;flex-direction:column;gap:14px"><span style="font:700 26px/1 'Caveat',cursive;color:#0066FC">{{ v.k }}</span><span style="font:600 21px/1.25 'General Sans',sans-serif;letter-spacing:-.01em">{{ v.t }}</span></div></sc-for>
+</div>
+</section>
+<section style="max-width:1440px;margin:0 auto;padding:88px 48px 0">
+<h2 style="margin:0 0 28px;font:600 44px/1 'General Sans',sans-serif;letter-spacing:-.02em">Cinq rubriques</h2>
+<div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px">
+<sc-for list="{{ navCats }}" as="c" hint-placeholder-count="5"><a href="#" onClick="{{ c.open }}" style="display:flex;flex-direction:column;gap:18px;min-height:260px;padding:26px;border-radius:24px;background:{{ c.bg }};color:{{ c.fg }};transition:transform .25s" style-hover="color:{{ c.fg }};transform:translateY(-4px)"><span style="display:inline-block;font:700 30px/1 'General Sans',sans-serif;color:#fff;-webkit-text-stroke:2px #000;paint-order:stroke fill;text-shadow:1px 1px 0 #000,2px 2px 0 #000,3px 3px 0 #000,4px 4px 0 #000;transform:rotate(-2deg);align-self:flex-start">{{ c.name }}</span><span style="font:500 16px/1.45 'General Sans',sans-serif">{{ c.role }}</span></a></sc-for>
+</div>
+</section>
+<section style="max-width:1440px;margin:0 auto;padding:88px 48px 0">
+<div style="display:flex;align-items:baseline;gap:20px;margin-bottom:28px"><h2 style="margin:0;font:600 44px/1 'General Sans',sans-serif;letter-spacing:-.02em">La rédaction</h2><span style="font:700 28px/1 'Caveat',cursive;color:#0066FC">ceux qui vous racontent tout</span></div>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px">
+<sc-for list="{{ team }}" as="p" hint-placeholder-count="4"><a href="#" onClick="{{ p.open }}" style="display:flex;flex-direction:column;gap:12px;color:#000" style-hover="color:#0066FC"><div style="position:relative;aspect-ratio:1/1;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ p.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div><span style="font:600 22px/1.1 'General Sans',sans-serif">{{ p.name }}</span><span style="font:500 15px/1.3 'General Sans',sans-serif;color:#444">{{ p.role }}</span></a></sc-for>
+</div>
+</section>
+<section style="max-width:1440px;margin:0 auto;padding:96px 48px 112px">
+<div style="display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);border-radius:32px;overflow:hidden;background:#F4F3EE">
+<div style="background:#000;color:#fff;padding:48px;display:flex;flex-direction:column;gap:20px">
+<span style="font:700 30px/1 'Caveat',cursive;color:#D3F90F">on travaille ensemble ?</span>
+<h2 style="margin:0;font:600 44px/1.02 'General Sans',sans-serif;letter-spacing:-.025em">Contact &amp; partenariats</h2>
+<p style="margin:0;font:400 17px/1.55 'General Sans',sans-serif;color:#ddd">Contenus sponsorisés, partenariats éditoriaux, brand content, newsletter sponsorisée, événements et émissions partenaires.</p>
+<p style="margin:0;font:500 16px/1.5 'General Sans',sans-serif;color:#fff;padding-top:16px;border-top:1px solid rgba(255,255,255,.16)">Les formats sponsorisés restent clairement identifiés, pour préserver la confiance de nos lecteurs.</p>
+</div>
+<div style="padding:48px">
+<sc-if value="{{ contactOpen }}" hint-placeholder-val="{{ true }}">
+<form onSubmit="{{ submitContact }}" style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+<label style="display:flex;flex-direction:column;gap:8px;font:600 14px/1 'General Sans',sans-serif">Nom<input required="" placeholder="Votre nom" style="height:52px;padding:0 14px;border:1px solid rgba(0,0,0,.2);border-radius:14px;background:#fff;font:500 16px/1 'General Sans',sans-serif;outline:none"></label>
+<label style="display:flex;flex-direction:column;gap:8px;font:600 14px/1 'General Sans',sans-serif">Structure<input placeholder="Entreprise, marque, association" style="height:52px;padding:0 14px;border:1px solid rgba(0,0,0,.2);border-radius:14px;background:#fff;font:500 16px/1 'General Sans',sans-serif;outline:none"></label>
+<label style="display:flex;flex-direction:column;gap:8px;font:600 14px/1 'General Sans',sans-serif">E-mail<input type="email" required="" placeholder="vous@exemple.cm" style="height:52px;padding:0 14px;border:1px solid rgba(0,0,0,.2);border-radius:14px;background:#fff;font:500 16px/1 'General Sans',sans-serif;outline:none"></label>
+<label style="display:flex;flex-direction:column;gap:8px;font:600 14px/1 'General Sans',sans-serif">Objet<select style="height:52px;padding:0 12px;border:1px solid rgba(0,0,0,.2);border-radius:14px;font:500 16px/1 'General Sans',sans-serif;background:#fff;outline:none"><option>Partenariat éditorial</option><option>Brand content</option><option>Newsletter sponsorisée</option><option>Événement / émission</option><option>Contacter la rédaction</option></select></label>
+<label style="grid-column:1 / -1;display:flex;flex-direction:column;gap:8px;font:600 14px/1 'General Sans',sans-serif">Message<textarea rows="5" placeholder="Dites-nous tout." style="padding:14px;border:1px solid rgba(0,0,0,.2);border-radius:14px;background:#fff;font:500 16px/1.5 'General Sans',sans-serif;resize:vertical;outline:none"></textarea></label>
+<button type="submit" style="border-radius:999px;grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 20px;border:0;background:#0066FC;color:#fff;font:600 17px/1 'General Sans',sans-serif;cursor:pointer" style-hover="background:#000">Envoyer<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></button>
+</form>
+</sc-if>
+<sc-if value="{{ contactDone }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:12px;height:100%;justify-content:center">
+<span style="font:700 36px/1 'Caveat',cursive;color:#0066FC">Message reçu !</span>
+<p style="margin:0;font:500 20px/1.45 'General Sans',sans-serif">On revient vers vous sous 48h ouvrées.</p>
+</div>
+</sc-if>
+</div>
+</div>
+</section>
+</div>
+</sc-if>
+
+<sc-if value="{{ isVideos }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Vidéos">
+<section style="position:relative;overflow:hidden;background:#000;color:#fff">
+<sc-if value="{{ patterns }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:0;bottom:0;left:-6%;width:46%;pointer-events:none;opacity:.55"><sc-for list="{{ tunnel }}" as="r" hint-placeholder-count="9"><div style="position:absolute;top:{{ r.t }};left:{{ r.l }};right:{{ r.l }};bottom:{{ r.b }};border:2px solid #0066FC;border-radius:{{ r.r }};animation:xdkPulse 3.2s ease-in-out {{ r.delay }} infinite"></div></sc-for></div></sc-if>
+<div style="position:relative;max-width:1440px;margin:0 auto;padding:48px 48px 72px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:56px;align-items:center">
+<div style="display:flex;flex-direction:column;gap:22px;align-items:flex-start;min-width:0">
+<div style="display:flex;gap:10px;font:500 14px/1 'General Sans',sans-serif"><a href="#" onClick="{{ goHome }}" style="color:#fff;text-decoration:underline;text-underline-offset:3px">Accueil</a><span>/</span><span>Vidéos</span></div>
+<span style="display:inline-block;font:700 clamp(72px,9vw,132px)/1 'General Sans',sans-serif;color:#fff;-webkit-text-stroke:3px #0066FC;paint-order:stroke fill;text-shadow:1px 1px 0 #0066FC,2px 2px 0 #0066FC,3px 3px 0 #0066FC,4px 4px 0 #0066FC,5px 5px 0 #0066FC,6px 6px 0 #0066FC,7px 7px 0 #0066FC,8px 8px 0 #0066FC;transform:rotate(-2deg);margin:8px 0 6px">Vidéos</span>
+<p style="margin:0;font:500 20px/1.45 'General Sans',sans-serif;color:#ddd;max-width:38ch">Le Brief XDK chaque vendredi à 18h, et les formats courts de la semaine. À regarder ici, sur YouTube ou sur TikTok.</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px;padding-top:6px">
+<sc-for list="{{ videoFilters }}" as="t" hint-placeholder-count="3"><button type="button" onClick="{{ t.select }}" style="border-radius:999px;height:42px;padding:0 16px;border:1px solid rgba(255,255,255,.28);background:{{ t.bg }};color:{{ t.fg }};font:600 14px/1 'General Sans',sans-serif;cursor:pointer;transition:background .2s" style-hover="background:#D3F90F;color:#000">{{ t.name }}</button></sc-for>
+</div>
+</div>
+<sc-for list="{{ featuredList }}" as="featured" hint-placeholder-count="1"><a href="#" onClick="{{ featured.play }}" style="position:relative;display:block;aspect-ratio:16/9;border-radius:26px;overflow:hidden;background:#111;color:#fff;box-shadow:0 40px 80px -30px rgba(0,102,252,.6)">
+<img src="{{ featured.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.05)">
+<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.82));pointer-events:none"></div>
+<div style="position:absolute;left:50%;top:34%;width:72px;height:72px;margin:-36px 0 0 -36px;pointer-events:none"><div style="position:absolute;inset:0;border-radius:50%;background:#D3F90F;animation:xdkRing 1.8s ease-out infinite"></div><div style="position:absolute;inset:0;border-radius:50%;background:#D3F90F;color:#000;display:grid;place-items:center"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg></div></div>
+<div style="position:absolute;left:28px;right:28px;bottom:24px;display:flex;flex-direction:column;gap:8px;pointer-events:none"><span style="font:700 26px/1 'Caveat',cursive;color:#D3F90F">nouvel épisode · {{ featured.n }}</span><span style="font:600 30px/1.1 'General Sans',sans-serif;letter-spacing:-.02em">{{ featured.t }}</span><span style="font:500 14px/1 'General Sans',sans-serif;color:#ddd">{{ featured.dateLabel }} · {{ featured.d }}</span></div>
+</a></sc-for>
+</div>
+</section>
+
+<sc-if value="{{ showEpisodes }}" hint-placeholder-val="{{ true }}">
+<section style="max-width:1440px;margin:0 auto;padding:88px 48px 0">
+<div style="display:flex;align-items:end;justify-content:space-between;gap:24px;padding-bottom:20px;border-bottom:1px solid rgba(0,0,0,.12);margin-bottom:32px">
+<div style="display:flex;align-items:baseline;gap:20px"><h2 style="margin:0;font:600 52px/1 'General Sans',sans-serif;letter-spacing:-.03em">Le Brief XDK</h2><span style="font:700 28px/1 'Caveat',cursive;color:#0066FC">l’émission</span></div>
+<p style="margin:0;font:400 16px/1.45 'General Sans',sans-serif;color:#333">Dix minutes, chaque vendredi à 18h.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px">
+<sc-for list="{{ episodesAll }}" as="e" hint-placeholder-count="6">
+<a href="#" onClick="{{ e.play }}" style="display:flex;flex-direction:column;gap:12px;min-width:0;color:#000" style-hover="color:#0066FC">
+<div style="position:relative;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:#EFEDE8">
+<img src="{{ e.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)">
+<span style="position:absolute;left:14px;bottom:14px;width:48px;height:48px;border-radius:50%;background:#D3F90F;color:#000;display:grid;place-items:center;pointer-events:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg></span>
+<span style="position:absolute;right:14px;bottom:14px;padding:7px 10px;border-radius:999px;background:rgba(0,0,0,.72);color:#fff;font:600 13px/1 'General Sans',sans-serif;pointer-events:none">{{ e.d }}</span>
+</div>
+<span style="font:500 13px/1 'General Sans',sans-serif;color:#555">{{ e.n }} · {{ e.dateLabel }}</span>
+<h3 style="margin:0;font:600 23px/1.16 'General Sans',sans-serif;letter-spacing:-.01em;text-wrap:pretty">{{ e.t }}</h3>
+<p style="margin:0;font:400 15px/1.45 'General Sans',sans-serif;color:#333">{{ e.desc }}</p>
+</a>
+</sc-for>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{ showShorts }}" hint-placeholder-val="{{ true }}">
+<section style="max-width:1440px;margin:0 auto;padding:88px 48px 0">
+<div style="display:flex;align-items:end;justify-content:space-between;gap:24px;padding-bottom:20px;border-bottom:1px solid rgba(0,0,0,.12);margin-bottom:32px">
+<div style="display:flex;align-items:baseline;gap:20px"><h2 style="margin:0;font:600 52px/1 'General Sans',sans-serif;letter-spacing:-.03em">XDK en 60 secondes</h2><span style="font:700 28px/1 'Caveat',cursive;color:#0066FC">les formats courts</span></div>
+<p style="margin:0;font:400 16px/1.45 'General Sans',sans-serif;color:#333">Aussi sur TikTok, Instagram et YouTube Shorts.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px">
+<sc-for list="{{ shorts }}" as="v" hint-placeholder-count="5">
+<a href="#" onClick="{{ v.play }}" style="display:flex;flex-direction:column;gap:12px;min-width:0;color:#000" style-hover="color:#0066FC">
+<div style="position:relative;aspect-ratio:9/16;border-radius:22px;overflow:hidden;background:#EFEDE8;box-shadow:inset 0 -6px 0 {{ v.c.bg }}">
+<img src="{{ v.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)">
+<div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.7));pointer-events:none"></div>
+<span style="position:absolute;left:12px;top:12px;padding:6px 11px;border-radius:999px;background:{{ v.c.bg }};color:{{ v.c.fg }};font:600 12px/1 'General Sans',sans-serif;pointer-events:none">{{ v.c.name }}</span>
+<span style="position:absolute;left:12px;bottom:14px;width:44px;height:44px;border-radius:50%;background:#D3F90F;color:#000;display:grid;place-items:center;pointer-events:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg></span>
+<span style="position:absolute;right:12px;bottom:22px;color:#fff;font:600 13px/1 'General Sans',sans-serif;pointer-events:none">{{ v.d }}</span>
+</div>
+<span style="font:600 16px/1.2 'General Sans',sans-serif">{{ v.t }}</span>
+</a>
+</sc-for>
+</div>
+</section>
+</sc-if>
+
+<section style="max-width:1440px;margin:0 auto;padding:88px 48px 112px">
+<div style="position:relative;overflow:hidden;background:#FC4284;border-radius:32px;padding:56px;display:flex;flex-wrap:wrap;gap:32px;align-items:center;justify-content:space-between">
+<sc-if value="{{ patterns }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;top:0;bottom:0;right:0;width:40%;background:repeating-linear-gradient(97deg,transparent 0 44px,#fff 44px 47px);opacity:.7;pointer-events:none"></div></sc-if>
+<div style="position:relative;display:flex;flex-direction:column;gap:12px"><span style="font:700 30px/1 'Caveat',cursive;color:#000">on se dit tout, en vidéo</span><h2 style="margin:0;font:600 44px/1.02 'General Sans',sans-serif;letter-spacing:-.025em">Ne ratez aucun épisode</h2></div>
+<div style="position:relative;display:flex;flex-wrap:wrap;gap:10px"><sc-for list="{{ videoSocials }}" as="s" hint-placeholder-count="3"><a href="#" onClick="{{ s.open }}" style="display:flex;align-items:center;gap:12px;height:54px;padding:0 20px;border-radius:999px;background:#000;color:#fff;font:600 16px/1 'General Sans',sans-serif" style-hover="background:#fff;color:#000">{{ s.name }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a></sc-for></div>
+</div>
+</section>
+</div>
+</sc-if>
+
+</main>
+
+<footer style="background:#0066FC;color:#fff;border-top:1px solid rgba(0,0,0,.12)">
+<div style="max-width:1440px;margin:0 auto;padding:64px 48px 40px;display:grid;grid-template-columns:minmax(0,5fr) repeat(3,minmax(0,2fr));gap:48px">
+<div style="display:flex;flex-direction:column;gap:22px;align-items:flex-start">
+<img src="assets/xadikoa-logo.png" alt="XADIKOA" style="height:56px">
+<span style="font:700 34px/1 'Caveat',cursive;color:#D3F90F">XADIKOA, on se dit tout.</span>
+<p style="margin:0;font:400 15px/1.5 'General Sans',sans-serif;max-width:36ch">Média digital éditorial. L’actualité et les sujets qui font bouger le Cameroun.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px"><span style="font:600 13px/1 'General Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;padding-bottom:12px;border-bottom:1px solid rgba(0,0,0,.12)">Rubriques</span><sc-for list="{{ navCats }}" as="c" hint-placeholder-count="5"><a href="#" onClick="{{ c.open }}" style="color:#fff;font:500 16px/1.2 'General Sans',sans-serif" style-hover="color:#D3F90F">{{ c.name }}</a></sc-for></div>
+<div style="display:flex;flex-direction:column;gap:12px"><span style="font:600 13px/1 'General Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;padding-bottom:12px;border-bottom:1px solid rgba(0,0,0,.12)">XADIKOA</span><sc-for list="{{ footerLinks }}" as="l" hint-placeholder-count="5"><a href="#" onClick="{{ l.open }}" style="color:#fff;font:500 16px/1.2 'General Sans',sans-serif" style-hover="color:#D3F90F">{{ l.name }}</a></sc-for></div>
+<div style="display:flex;flex-direction:column;gap:12px"><span style="font:600 13px/1 'General Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;padding-bottom:12px;border-bottom:1px solid rgba(0,0,0,.12)">Suivre</span><sc-for list="{{ socials }}" as="s" hint-placeholder-count="6"><a href="#" onClick="{{ s.open }}" style="color:#fff;font:500 16px/1.2 'General Sans',sans-serif" style-hover="color:#D3F90F">{{ s.name }}</a></sc-for></div>
+</div>
+<div style="max-width:1440px;margin:0 auto;padding:20px 48px 28px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;border-top:1px solid rgba(0,0,0,.12);font:500 14px/1 'General Sans',sans-serif">
+<span>© 2026 XADIKOA — L’actualité autrement. Photos : Unsplash (licence libre).</span>
+<div style="display:flex;gap:22px"><sc-for list="{{ legalLinks }}" as="l" hint-placeholder-count="3"><a href="#" onClick="{{ l.open }}" style="color:#fff" style-hover="color:#D3F90F">{{ l.name }}</a></sc-for></div>
+</div>
+</footer>
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<div style="position:fixed;left:20px;bottom:20px;z-index:70;display:flex;align-items:center;gap:4px;padding:5px;border-radius:999px;background:#000;box-shadow:0 20px 40px -16px rgba(0,0,0,.5)">
+<span style="font:600 12px/1 'General Sans',sans-serif;color:#fff;padding:0 10px;letter-spacing:.06em;text-transform:uppercase">Accueil</span>
+<sc-for list="{{ dirOpts }}" as="o" hint-placeholder-count="2"><button type="button" onClick="{{ o.select }}" style="border-radius:999px;height:36px;padding:0 12px;border:0;background:{{ o.bg }};color:{{ o.fg }};font:600 14px/1 'General Sans',sans-serif;cursor:pointer">{{ o.name }}</button></sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ hasVideo }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeVideo }}" style="position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.84);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:grid;place-items:center;padding:28px;animation:xdkFade .25s ease">
+<div onClick="{{ stopClick }}" style="width:min(1100px,100%);display:flex;flex-direction:column;gap:16px;animation:xdkUp .4s cubic-bezier(.2,.7,.2,1)">
+<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;color:#fff">
+<div style="display:flex;flex-direction:column;gap:8px;min-width:0"><span style="font:700 26px/1 'Caveat',cursive;color:#D3F90F">{{ video.kicker }}</span><span style="font:600 28px/1.1 'General Sans',sans-serif;letter-spacing:-.02em">{{ video.t }}</span></div>
+<button type="button" onClick="{{ closeVideo }}" aria-label="Fermer" style="flex:none;width:48px;height:48px;border-radius:50%;border:0;background:#fff;color:#000;display:grid;place-items:center;cursor:pointer" style-hover="background:#D3F90F"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+</div>
+<div style="position:relative;width:{{ video.boxW }};aspect-ratio:{{ video.ratio }};margin:0 auto;border-radius:22px;overflow:hidden;background:#000;box-shadow:0 40px 90px -30px rgba(0,102,252,.55)">
+<sc-for list="{{ videoList }}" as="vid" hint-placeholder-count="0"><video src="{{ vid.src }}" poster="{{ vid.img }}" controls="" autoplay="" playsinline="" ref="{{ videoRef }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></video></sc-for>
+<sc-if value="{{ videoErr }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center;color:#fff;background:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.75)),center/cover no-repeat url({{ video.img }})"><span style="font:700 30px/1 'Caveat',cursive;color:#D3F90F">vidéo bientôt disponible</span><a href="#" onClick="{{ videoYoutube }}" style="display:flex;align-items:center;gap:10px;height:52px;padding:0 20px;border-radius:999px;background:#D3F90F;color:#000;font:600 16px/1 'General Sans',sans-serif" style-hover="background:#fff">Voir sur YouTube</a></div></sc-if>
+</div>
+<div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font:500 14px/1.3 'General Sans',sans-serif;color:#aaa"><span>{{ video.meta }}</span><span>Vidéo de démonstration, à remplacer par le lecteur YouTube ou TikTok.</span></div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:80;padding:16px 24px;border-radius:999px;background:#000;color:#fff;box-shadow:0 20px 40px -16px rgba(0,0,0,.5);font:600 16px/1 'General Sans',sans-serif">{{ toast }}</div>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;homeDirection&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;A&quot;,&quot;B&quot;],&quot;default&quot;:&quot;A&quot;,&quot;tsType&quot;:&quot;'A' | 'B'&quot;,&quot;section&quot;:&quot;Accueil&quot;},&quot;patterns&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Marque&quot;}}">
+class Component extends DCLogic {
+  D = (() => {
+    const CATS = [
+      { id: 'actualite', name: 'Actualité', bg: '#D3F90F', fg: '#000', tint: '#F4FDD0', short: 'Décrypter l’actu', role: 'Décrypter ce qui se passe au Cameroun et dans l’environnement proche.', tags: ['Faits', 'Décryptages', 'Réactions', 'Chroniques'] },
+      { id: 'business', name: 'Business', bg: '#0066FC', fg: '#fff', tint: '#E2EDFF', short: 'L’économie qui bouge', role: 'Raconter l’économie, les entreprises et les initiatives qui bougent.', tags: ['Entrepreneurs', 'Startups', 'Marchés', 'Emploi'] },
+      { id: 'societe', name: 'Société', bg: '#CA41CD', fg: '#000', tint: '#F7E3F7', short: 'Nos réalités', role: 'Parler des réalités et conversations de société.', tags: ['Vie quotidienne', 'Jeunesse', 'Tendances sociales'] },
+      { id: 'culture', name: 'Culture', bg: '#FC4284', fg: '#000', tint: '#FFE4EE', short: 'Ceux qui créent', role: 'Mettre en lumière la création et les acteurs culturels.', tags: ['Musique', 'Artistes', 'Événements', 'Cinéma'] },
+      { id: 'tendances', name: 'Tendances', bg: '#FFF3C0', fg: '#000', tint: '#FFF9DF', short: 'Ce qui circule', role: 'Capturer les sujets qui circulent et les conversations du moment.', tags: ['Internet', 'Réseaux sociaux', 'Phénomènes'] },
+    ];
+    const AUTHORS = [
+      { id: 'a1', name: 'Ariane Mbarga', role: 'Rédactrice en chef adjointe', color: '#D3F90F', hello: 'elle couvre la ville', bio: 'Elle couvre Douala et ses embouteillages depuis huit ans. Transport, logement, services publics : les sujets qui touchent le quotidien, expliqués sans détour.' },
+      { id: 'a2', name: 'Junior Ndzana', role: 'Journaliste Business', color: '#0066FC', hello: 'il parle chiffres', bio: 'Ancien analyste bancaire passé au journalisme. Il traduit les chiffres en histoires que tout le monde comprend, du marché Mokolo au port de Kribi.' },
+      { id: 'a3', name: 'Flore Ekambi', role: 'Culture & Tendances', color: '#FC4284', hello: 'elle suit le son', bio: 'Elle passe ses nuits en concert et ses journées sur TikTok. Par conscience professionnelle, évidemment.' },
+      { id: 'a4', name: 'Samuel Tchoumi', role: 'Reporter Société', color: '#CA41CD', hello: 'il écoute la rue', bio: 'Reporter de terrain, il aime les sujets qu’on raconte rarement et les gens qu’on entend peu.' },
+    ];
+    const A = (id, cat, title, chapo, author, date, read, tags, photo) => ({ id, cat, title, chapo, author, date, read, tags, photo });
+    const ARTICLES = [
+      A(1, 'actualite', 'Douala sous la pluie : pourquoi les mêmes quartiers sont inondés chaque année', 'Ndokoti, Makepe, Bonamoussadi… Les mêmes noms reviennent à chaque grosse averse. Drainage, constructions sur les zones humides, caniveaux bouchés : on vous explique ce qui bloque.', 'a1', '2026-10-01', 7, ['Décryptages', 'Faits'], 'Rue inondée à Douala'),
+      A(2, 'actualite', 'Rentrée 2026 : ce que coûte vraiment un cartable', 'Fournitures, uniformes, frais APEE : on a fait les comptes avec trois familles de Yaoundé. Le total pique un peu.', 'a1', '2026-09-29', 5, ['Faits', 'Chroniques'], 'Fournitures scolaires au marché'),
+      A(3, 'actualite', 'Délestages à Yaoundé : ce qu’il faut retenir du nouveau planning', 'Quartiers concernés, horaires, durée annoncée. L’essentiel en deux minutes, et ce qu’on sait (ou pas) sur la suite.', 'a1', '2026-09-30', 3, ['Faits'], 'Poteau électrique au crépuscule'),
+      A(4, 'actualite', 'Carte d’identité biométrique : les délais ont-ils vraiment raccourci ?', 'Les autorités annoncent quelques semaines d’attente. Sur le terrain, les témoignages varient. On a vérifié.', 'a4', '2026-09-26', 6, ['Décryptages', 'Réactions'], 'File d’attente devant un guichet'),
+      A(5, 'business', 'Les fintechs veulent remplacer la tontine. Pas si vite.', 'Applications d’épargne collective, mobile money, cagnottes en ligne : la tontine se digitalise. Mais ce qui fait sa force ne tient pas dans une appli.', 'a2', '2026-09-30', 8, ['Startups', 'Marchés'], 'Réunion de tontine, carnet et billets'),
+      A(6, 'business', 'Le prix du plantain a presque doublé en un an. Voilà pourquoi.', 'Routes, saison, exportations vers les pays voisins : trois raisons qui expliquent la facture au marché.', 'a2', '2026-09-28', 5, ['Marchés'], 'Régimes de plantain au marché'),
+      A(7, 'business', 'Elle a lancé sa marque de cosmétiques avec 200 000 FCFA', 'Beurre de karité, packaging fait maison et beaucoup de WhatsApp. Portrait d’une entrepreneuse de Bafoussam qui vend aujourd’hui dans quatre villes.', 'a2', '2026-09-25', 6, ['Entrepreneurs'], 'Entrepreneuse dans son atelier'),
+      A(8, 'business', 'Port de Kribi : ce que le nouveau terminal change pour l’emploi local', 'Promesses d’embauche, formations, sous-traitance : on a demandé aux habitants ce qu’ils en voient vraiment.', 'a2', '2026-09-22', 7, ['Emploi', 'Marchés'], 'Grues du port de Kribi'),
+      A(9, 'societe', 'Colocation à Yaoundé : les étudiants écrivent leurs propres règles', 'Loyer partagé, tours de ménage, visiteurs après 22h. À Ngoa-Ekellé, la coloc s’organise comme une petite république.', 'a4', '2026-09-29', 6, ['Jeunesse', 'Vie quotidienne'], 'Chambre d’étudiants à Ngoa-Ekellé'),
+      A(10, 'societe', 'La dot, combien et pour qui ? On en a parlé (calmement) en famille', 'Entre tradition, pression sociale et budgets serrés, la question divise les générations. Cinq témoignages, zéro jugement.', 'a4', '2026-09-27', 9, ['Tendances sociales'], 'Cérémonie de mariage coutumier'),
+      A(11, 'societe', 'Une journée avec les benskineurs qui font rouler Douala', 'Départ à 5h, 120 km dans la journée, et une connaissance de la ville que Google Maps peut envier.', 'a4', '2026-09-24', 7, ['Vie quotidienne'], 'Moto-taxi dans la circulation'),
+      A(12, 'societe', 'Santé mentale : les jeunes en parlent enfin, un peu', 'Comptes Instagram, groupes de parole, psychologues en ligne. Le sujet sort doucement du silence, avec ses limites.', 'a1', '2026-09-20', 8, ['Jeunesse'], 'Groupe de parole'),
+      A(13, 'culture', 'Le makossa revient-il vraiment ? On a posé la question aux DJ', 'Samples dans l’afrobeats, soirées revival, playlists de mariage : le son de Douala a la cote. Effet nostalgie ou vrai retour ?', 'a3', '2026-09-30', 6, ['Musique', 'Artistes'], 'DJ en soirée à Akwa'),
+      A(14, 'culture', 'Écrans Noirs : les cinq films à ne pas rater cette année', 'Comédie, documentaire, drame. Notre sélection pour le festival de Yaoundé, avec ce qu’il faut savoir avant d’y aller.', 'a3', '2026-09-26', 5, ['Cinéma', 'Événements'], 'Salle de cinéma'),
+      A(15, 'culture', 'Bikutsi, mbolé, afro-trap : la nouvelle carte du son camerounais', 'D’Ebolowa à Bonabéri, on a cartographié les scènes qui comptent. Spoiler : tout se passe sur les réseaux.', 'a3', '2026-09-23', 10, ['Musique'], 'Concert en plein air'),
+      A(16, 'culture', 'Il dessine des BD en ewondo, et les lecteurs en redemandent', 'Trois tomes autoédités, une communauté fidèle sur Facebook et une ambition : que les enfants lisent dans leur langue.', 'a3', '2026-09-19', 5, ['Artistes'], 'Planches de BD sur une table'),
+      A(17, 'tendances', 'Vous avez vu ça ? Le défi du ndolé en 15 minutes envahit TikTok', 'Le plat qui prend normalement une demi-journée, version chrono. Les puristes s’étranglent, les vidéos cumulent les vues. On a testé.', 'a3', '2026-10-01', 4, ['Réseaux sociaux', 'Phénomènes'], 'Plat de ndolé filmé au téléphone'),
+      A(18, 'tendances', 'Camfranglais : les expressions de l’année, expliquées à votre tonton', 'Vous les entendez partout sans toujours oser demander. Petit lexique pour suivre la conversation au prochain repas de famille.', 'a3', '2026-09-28', 4, ['Internet', 'Phénomènes'], 'Jeunes qui discutent en terrasse'),
+      A(19, 'tendances', 'Les friperies de Mokolo, nouveau spot mode de la Gen Z', 'Vintage, pièces rares et négociation obligatoire. Le marché devient un décor de shooting à ciel ouvert.', 'a3', '2026-09-25', 5, ['Phénomènes'], 'Stand de friperie au marché'),
+      A(20, 'tendances', 'Statuts WhatsApp, chaînes, captures : comment l’info circule vraiment', 'Une rumeur peut faire le tour de la ville avant midi. On a suivi le parcours d’un message, du premier partage au démenti.', 'a1', '2026-09-21', 7, ['Réseaux sociaux', 'Internet'], 'Téléphone affichant des messages'),
+    ];
+    const P = t => ({ t: 'p', text: t }), H = t => ({ t: 'h2', text: t }), Q = (t, by) => ({ t: 'quote', text: t, by }), I = t => ({ t: 'img', text: t }), R = items => ({ t: 'retenir', items });
+    const BODIES = {
+      1: [
+        P('Il suffit d’une nuit de pluie. Le matin, les mêmes images tournent sur WhatsApp : des voitures à l’arrêt à Ndokoti, des riverains qui écopent leur salon à Makepe, des enfants portés sur les épaules pour aller à l’école. Et chaque année, la même question : pourquoi encore ici ?'),
+        R(['Plusieurs quartiers sont construits sur d’anciennes zones humides qui absorbaient l’eau.', 'Les caniveaux bouchés par les déchets réduisent fortement l’écoulement.', 'Les travaux de drainage avancent, mais par tronçons, et pas toujours là où l’eau stagne le plus.']),
+        H('Une ville construite sur l’eau'),
+        P('Douala est une ville d’estuaire. Une partie de son territoire se trouve à peine au-dessus du niveau de la mer, entre mangroves, rivières et marécages. À mesure que la ville grandit, ces espaces sont remblayés pour construire. L’eau, elle, n’a pas changé d’avis : elle continue de suivre la pente.'),
+        Q('« Avant, ici, c’était un bas-fond. On cultivait du macabo. Aujourd’hui il y a des maisons partout, et l’eau ne sait plus où aller. »', 'Pauline, 54 ans, habitante de Makepe'),
+        H('Des caniveaux qui servent de poubelle'),
+        P('Deuxième coupable, moins spectaculaire : les déchets. Bouteilles, sachets, sable des chantiers. Quand le caniveau est plein avant la pluie, il ne sert à rien pendant. Les opérations de curage existent, mais elles arrivent souvent après les premières grosses averses.'),
+        I('Caniveau obstrué après une averse'),
+        H('Ce qui peut changer'),
+        P('Les chantiers de drainage en cours sur certains axes devraient soulager une partie des quartiers. Les urbanistes que nous avons interrogés insistent sur un autre point : arrêter de construire dans les zones inondables, et garder des espaces où l’eau peut s’infiltrer. Moins visible qu’un pont, mais plus efficace sur la durée.'),
+        P('En attendant, les habitants s’adaptent : murets devant les portes, meubles surélevés, groupes WhatsApp d’alerte par quartier. La débrouille, encore. On se dit tout : elle ne devrait pas être la seule solution.'),
+      ],
+      5: [
+        P('Chaque dernier dimanche du mois, la scène est la même chez Mama Rose, à Bépanda : un cahier d’écolier, des billets comptés deux fois, et une vingtaine de membres qui se connaissent depuis quinze ans. Sa tontine a survécu à trois déménagements et une crise sanitaire. Une appli peut-elle faire mieux ?'),
+        R(['Plusieurs applications proposent désormais des tontines gérées par mobile money.', 'Elles promettent transparence et rappels automatiques des cotisations.', 'La confiance entre membres reste le vrai moteur, et elle ne se télécharge pas.']),
+        H('Ce que les applis apportent'),
+        P('Fini le trésorier qui « oublie » le cahier. Les plateformes affichent qui a payé, qui doit, et qui touche le pot ce mois-ci. Pour les tontines entre collègues ou avec la diaspora, c’est un vrai plus : plus besoin d’être dans la même pièce.'),
+        Q('« Avec l’appli, je vois tout en temps réel. Avant, je devais appeler trois personnes pour savoir où on en était. »', 'Kévin, 29 ans, comptable à Douala'),
+        H('Ce qu’elles ne remplacent pas'),
+        P('La tontine n’est pas qu’un outil d’épargne. C’est un réseau d’entraide, un rendez-vous, parfois une assurance maladie informelle. Quand un membre ne peut pas cotiser, on discute, on arrange. Une appli, elle, envoie une relance.'),
+        P('Les fintechs l’ont compris et ajoutent des fonctions « communauté » : messagerie, votes, caisse de secours. Reste une question que plusieurs utilisateurs nous ont posée : que se passe-t-il si l’application ferme ? Voilà ce qu’il faut vérifier avant de confier votre cotisation à un écran.'),
+      ],
+      17: [
+        P('Il est 19h, la cuisine est filmée en plongée, un chronomètre s’affiche en haut de l’écran. Feuilles de ndolé déjà lavées, arachides moulues d’avance, crevettes prêtes. Quinze minutes plus tard, le plat est servi. Les commentaires, eux, mijotent beaucoup plus longtemps.'),
+        R(['Le défi consiste à préparer un ndolé en 15 minutes chrono, en vidéo.', 'La plupart des participants préparent les ingrédients à l’avance (et ne le disent pas toujours).', 'Le débat oppose surtout la « team rapide » aux gardiens de la recette familiale.']),
+        H('Pourquoi ça marche'),
+        P('Le format coche toutes les cases : un plat que tout le monde connaît, un défi simple à comprendre, et un débat garanti. Chaque vidéo ressemble à une provocation polie envers les mamans et les tantes.'),
+        Q('« Quinze minutes ? Mon ndolé, c’est un projet de week-end. Mais j’avoue que j’ai regardé toutes les vidéos. »', 'Une internaute, en commentaire'),
+        H('On a testé'),
+        P('Verdict de la rédaction : c’est faisable, à condition de tricher un peu sur la préparation. Le goût ? Correct. Pas celui du dimanche chez la grand-mère, mais personne n’a laissé son assiette. On attend vos chronos.'),
+      ],
+    };
+    const SHORTS = [
+      { id: 's1', t: 'Le plantain en 60 secondes', d: '0:58', cat: 'business', photo: 'Vidéo verticale — marché' },
+      { id: 's2', t: 'Ndolé chrono : on a testé', d: '1:12', cat: 'tendances', photo: 'Vidéo verticale — cuisine' },
+      { id: 's3', t: '3 choses à savoir sur les délestages', d: '0:45', cat: 'actualite', photo: 'Vidéo verticale — Yaoundé' },
+      { id: 's4', t: 'Makossa revival : le son de la semaine', d: '0:52', cat: 'culture', photo: 'Vidéo verticale — DJ' },
+      { id: 's5', t: 'Coloc à Ngoa-Ekellé : le règlement', d: '1:05', cat: 'societe', photo: 'Vidéo verticale — étudiants' },
+    ];
+    const U = (id, w) => 'https://images.unsplash.com/photo-' + id + '?auto=format&fit=crop&w=' + (w || 1400) + '&q=70';
+    const PH = { 1: '1594386479412-fa62932f4cdc', 2: '1748708986722-fa98ea7e35ee', 3: '1474302173007-293973cab927', 4: '1659947234294-b217aaeb25f8', 5: '1513904989243-829fd07f1725', 6: '1666281005061-97380deccc50', 7: '1608560938854-96a63d9214a8', 8: '1576487194710-67873008c0c6', 9: '1486487687687-e105fd869528', 10: '1594385464373-91a02a3afeda', 11: '1601979112151-26f9fa4520b5', 12: '1642344741786-97a10415a0ba', 13: '1630163664357-370482810342', 14: '1563303672-ab195c9c1610', 15: '1544293161-64ee2334980d', 16: '1741211699648-8884bc6f70f2', 17: '1594999945795-e570338fdd12', 18: '1601979112079-f08540b2a4f7', 19: '1594386167307-e448a81529ab', 20: '1659947234309-804b7fa01cf2' };
+    const AUTH_PH = { a1: '1648090326914-fcf7ad3f5aa1', a2: '1648090327161-7be068ca3790', a3: '1648090322527-138e464a299e', a4: '1601979107535-46367552bc25' };
+    const SHORT_PH = { s1: '1601979107569-731e84cee3e8', s2: '1655074084308-901ea6b88fd3', s3: '1659947234324-635155dbca59', s4: '1777734448502-33378ae93861', s5: '1615463669098-521a22047a1e' };
+    const BODY_PH = ['1659947234278-feed1ed2e3c6', '1682924754698-9f0a3bcef68f', '1637244018403-785e7fa8707a', '1578222587194-d69bbe8ef092'];
+    const VS = { ForBiggerJoyrides: 'friday', ForBiggerFun: 'flower', ForBiggerBlazes: 'friday', ForBiggerEscapes: 'flower', ForBiggerMeltdowns: 'friday' };
+    const SAMPLE = n => 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/' + VS[n] + '.mp4';
+    const EPISODES = [
+      { n: 'Ép. 42', t: 'La pluie, le plantain et le port', d: '12 min', date: '2026-09-25', ph: '1659947234309-804b7fa01cf2', src: SAMPLE('ForBiggerJoyrides'), desc: 'Inondations à Douala, prix du plantain et nouveau terminal de Kribi : les trois sujets de la semaine.' },
+      { n: 'Ép. 41', t: 'Rentrée : ce que ça coûte vraiment', d: '11 min', date: '2026-09-18', ph: '1748708986722-fa98ea7e35ee', src: SAMPLE('ForBiggerFun'), desc: 'Fournitures, uniformes, frais APEE. On refait les comptes avec des familles de Yaoundé.' },
+      { n: 'Ép. 40', t: 'Le retour du makossa', d: '14 min', date: '2026-09-11', ph: '1777734448502-33378ae93861', src: SAMPLE('ForBiggerBlazes'), desc: 'DJ, playlists de mariage et samples afrobeats : le son de Douala revient sur le devant de la scène.' },
+      { n: 'Ép. 39', t: 'Kribi, le port qui fait rêver', d: '13 min', date: '2026-09-04', ph: '1659947234285-ebf2826cfe15', src: SAMPLE('ForBiggerEscapes'), desc: 'Emplois promis, formations, sous-traitance : ce que les habitants voient vraiment.' },
+      { n: 'Ép. 38', t: 'Délestages : la ville dans le noir', d: '10 min', date: '2026-08-28', ph: '1636385918427-7aa474ffa8ae', src: SAMPLE('ForBiggerMeltdowns'), desc: 'Nouveau planning, quartiers concernés et débrouille au quotidien.' },
+      { n: 'Ép. 37', t: 'Tontines 2.0', d: '12 min', date: '2026-08-21', ph: '1597340432864-d2daf0051d99', src: SAMPLE('ForBiggerJoyrides'), desc: 'Les fintechs veulent digitaliser la tontine. Ce qui marche, et ce qui ne passe pas.' },
+    ];
+    const SHORT_SRC = { s1: SAMPLE('ForBiggerFun'), s2: SAMPLE('ForBiggerBlazes'), s3: SAMPLE('ForBiggerEscapes'), s4: SAMPLE('ForBiggerJoyrides'), s5: SAMPLE('ForBiggerMeltdowns') };
+    return { CATS, AUTHORS, ARTICLES, BODIES, SHORTS, U, PH, AUTH_PH, SHORT_PH, BODY_PH, EPISODES, SHORT_SRC };
+  })();
+
+  state = { page: 'home', cat: 'actualite', articleId: 1, authorId: 'a1', query: '', searchCat: 'all', sort: 'pertinence', rubTag: 'all', homeTab: 'business', dir: null, toast: null, nlEmail: '', nlDone: false, nlFreq: 'matin', nlCats: ['actualite', 'business', 'societe', 'culture', 'tendances'], nlInline: '', nlInlineDone: false, contactDone: false, video: null, vFilter: 'all' };
+  searchRef = React.createRef();
+
+  go(page, extra = {}) { this.setState({ page, ...extra }); try { window.scrollTo(0, 0); } catch (e) {} }
+  showToast(msg) { clearTimeout(this._t); this.setState({ toast: msg }); this._t = setTimeout(() => this.setState({ toast: null }), 2400); }
+  componentDidMount() {
+    this._key = e => { if (e.key === 'Escape' && this.state.video) this.setState({ video: null }); };
+    window.addEventListener('keydown', this._key);
+    this.reveal();
+  }
+  componentDidUpdate(pp, ps) {
+    if (this.state.page === 'search' && ps.page !== 'search') setTimeout(() => this.searchRef.current && this.searchRef.current.focus(), 60);
+    this.reveal();
+    this.bindVideo();
+  }
+  componentWillUnmount() { clearTimeout(this._t); window.removeEventListener('keydown', this._key); this._io && this._io.disconnect(); }
+  reveal() {
+    try {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !window.IntersectionObserver) return;
+      if (!this._io) this._io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.style.opacity = '1'; en.target.style.transform = 'none'; this._io.unobserve(en.target); } }), { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+      clearTimeout(this._rv);
+      this._rv = setTimeout(() => {
+        document.querySelectorAll('main section, main article').forEach(el => {
+          if (el.dataset.xr) return; el.dataset.xr = '1';
+          const i = el.tagName === 'ARTICLE' ? Array.prototype.indexOf.call(el.parentNode.children, el) % 5 : 0;
+          el.style.opacity = '0'; el.style.transform = 'translateY(28px)';
+          el.style.transition = 'opacity .7s ease ' + (i * 80) + 'ms, transform .8s cubic-bezier(.2,.7,.2,1) ' + (i * 80) + 'ms';
+          this._io.observe(el);
+        });
+      }, 30);
+    } catch (e) {}
+  }
+  videoRef = React.createRef();
+  bindVideo() { const v = this.videoRef.current; if (v && v !== this._vEl) { this._vEl = v; v.addEventListener('error', () => this.setState({ videoErr: true })); } }
+  openVideo(v) { this.setState({ video: v, videoErr: false }); }
+
+  renderVals() {
+    const { CATS, AUTHORS, ARTICLES, BODIES, SHORTS, U, PH, AUTH_PH, SHORT_PH, BODY_PH, EPISODES, SHORT_SRC } = this.D;
+    const s = this.state;
+    const h = fn => e => { if (e && e.preventDefault) e.preventDefault(); fn(); };
+    const MONTHS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+    const MS = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+    const fmt = iso => { if (iso === '2026-10-01') return 'Aujourd’hui'; if (iso === '2026-09-30') return 'Hier'; const [, m, d] = iso.split('-').map(Number); return d + ' ' + MS[m - 1]; };
+    const fmtLong = iso => { const [y, m, d] = iso.split('-').map(Number); return (d === 1 ? '1er' : d) + ' ' + MONTHS[m - 1] + ' ' + y; };
+    const norm = t => (t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+    const CAT = {}; CATS.forEach(c => { CAT[c.id] = { ...c, bgLine: c.id === 'tendances' ? '#000' : c.bg, open: h(() => this.go('rubrique', { cat: c.id, rubTag: 'all' })) }; });
+    const AUTH = {}; AUTHORS.forEach(a => { AUTH[a.id] = { ...a, imgId: 'author-' + a.id, img: U(AUTH_PH[a.id], 800), initials: a.name.split(' ').map(w => w[0]).join(''), initFg: a.id === 'a2' ? '#fff' : '#000', open: h(() => this.go('author', { authorId: a.id })) }; });
+    const dec = a => ({ ...a, c: CAT[a.cat], authorName: AUTH[a.author].name, dateLabel: fmt(a.date), dateLong: fmtLong(a.date), imgId: 'img-' + a.id, img: U(PH[a.id]),
+      open: h(() => this.go('article', { articleId: a.id })), openCat: CAT[a.cat].open, openAuthor: AUTH[a.author].open,
+      tagList: a.tags.map(t => ({ name: t, open: h(() => this.go('search', { query: t, searchCat: 'all' })) })) });
+    const ALL = ARTICLES.map(dec);
+    const byId = id => ALL.find(a => a.id === id);
+    const byDate = (x, y) => y.date.localeCompare(x.date);
+    const ofCat = cid => ALL.filter(a => a.cat === cid).sort(byDate);
+
+    const page = s.page;
+    const dir = s.dir || this.props.homeDirection || 'A';
+    const patterns = this.props.patterns ?? true;
+
+    const navCats = CATS.map(c => { const C = CAT[c.id]; const active = page === 'rubrique' && s.cat === c.id; return { ...C, navBg: active ? c.bg : 'transparent', navBorder: active ? '#000' : 'transparent' }; });
+
+    const hero = byId(1);
+    const aLaUne = [5, 13, 9, 17].map(byId);
+    const trending = [17, 6, 13, 3, 10].map((id, i) => ({ ...byId(id), rank: '0' + (i + 1) }));
+    const exclude = new Set([1]);
+    const sec = c => { const list = ofCat(c.id).filter(a => !exclude.has(a.id)); const all = ofCat(c.id); return { c: CAT[c.id], lead: list[0], rest: list.slice(1, 4), all }; };
+    const secs = CATS.map(sec);
+
+    const tabC = CAT[s.homeTab];
+    const tabList = ofCat(s.homeTab);
+    const tabs = CATS.map(c => ({ ...CAT[c.id], tabBg: c.id === s.homeTab ? c.bg : '#fff', tabFg: c.id === s.homeTab ? c.fg : '#000', select: () => this.setState({ homeTab: c.id }) }));
+
+    const socials = [
+      { name: 'Instagram', format: 'Carrousels & stories', hover: '#FC4284' }, { name: 'TikTok', format: 'Vidéos courtes', hover: '#D3F90F' },
+      { name: 'Facebook', format: 'Articles & lives', hover: '#0066FC' }, { name: 'YouTube', format: 'Le Brief XDK', hover: '#FC4284' },
+      { name: 'LinkedIn', format: 'Business & partenaires', hover: '#CA41CD' }, { name: 'WhatsApp', format: 'La chaîne XADIKOA', hover: '#D3F90F' },
+    ].map(x => ({ ...x, open: h(() => this.showToast(x.name + ' — lien externe (hors maquette)')) }));
+
+    const H16 = 'min(100%, calc(70vh * 16 / 9))', V916 = 'min(100%, calc(70vh * 9 / 16))';
+    const episodesAll = EPISODES.map(e => { const img = U(e.ph); const dateLabel = fmt(e.date); return { ...e, img, dateLabel,
+      play: h(() => this.openVideo({ t: e.t, kicker: 'Le Brief XDK · ' + e.n, meta: e.d + ' · ' + fmtLong(e.date), img, src: e.src, ratio: '16 / 9', boxW: H16 })) }; });
+    const episodes = episodesAll.slice(0, 3);
+    const shorts = SHORTS.map(v => { const img = U(SHORT_PH[v.id], 800); return { ...v, c: CAT[v.cat], imgId: 'short-' + v.id, img,
+      play: h(() => this.openVideo({ t: v.t, kicker: 'XDK en 60 secondes · ' + CAT[v.cat].name, meta: v.d, img, src: SHORT_SRC[v.id], ratio: '9 / 16', boxW: V916 })) }; });
+    const tunnel = Array.from({ length: 9 }, (_, i) => ({ t: (i * 7.5) + '%', l: (i * 5.2) + '%', b: (i * 2.2) + '%', r: Math.max(6, 34 - i * 3.5) + 'px', delay: (i * 0.22).toFixed(2) + 's' }));
+    const tickerBase = [17, 6, 13, 3, 10, 1, 5].map(byId);
+    const tickerItems = [...tickerBase, ...tickerBase].map((a, i) => ({ ...a, key: i }));
+    const videoFilters = [{ id: 'all', name: 'Tout' }, { id: 'brief', name: 'Le Brief XDK' }, { id: 'shorts', name: 'XDK en 60 secondes' }].map(o => { const on = s.vFilter === o.id; return { ...o, bg: on ? '#D3F90F' : 'transparent', fg: on ? '#000' : '#fff', select: () => this.setState({ vFilter: o.id }) }; });
+
+    // rubrique
+    const rubC = CAT[s.cat];
+    const rubAll = ofCat(s.cat);
+    const rubFiltered = s.rubTag === 'all' ? rubAll : rubAll.filter(a => a.tags.includes(s.rubTag));
+    const rubTags = [{ name: 'Tout', id: 'all' }, ...rubC.tags.map(t => ({ name: t, id: t }))].map(t => {
+      const on = s.rubTag === t.id; return { name: t.name, bg: on ? '#000' : '#fff', fg: on ? '#fff' : '#000', select: () => this.setState({ rubTag: t.id }) };
+    });
+
+    // article
+    const art = byId(s.articleId) || hero;
+    const body = (BODIES[art.id] || []).map((b, i) => ({ ...b, isP: b.t === 'p', isH2: b.t === 'h2', isQuote: b.t === 'quote', isImg: b.t === 'img', isRetenir: b.t === 'retenir', imgId: 'body-' + art.id + '-' + i, img: U(BODY_PH[i % BODY_PH.length]) }));
+    const artToc = body.filter(b => b.isH2);
+    const sameCat = ofCat(art.cat).filter(a => a.id !== art.id).slice(0, 3);
+    const related = ALL.filter(a => a.cat !== art.cat).map(a => ({ a, sc: a.tags.filter(t => art.tags.includes(t)).length })).sort((x, y) => y.sc - x.sc || byDate(x.a, y.a)).slice(0, 4).map(x => x.a);
+    const shareBtns = ['WhatsApp', 'Facebook', 'X', 'LinkedIn'].map(n => ({ name: n, share: () => this.showToast('Partage sur ' + n + ' (simulation)') }));
+
+    // search
+    const q = norm(s.query.trim());
+    let results = ALL.filter(a => s.searchCat === 'all' || a.cat === s.searchCat).map(a => {
+      if (!q) return { a, sc: 1 };
+      const words = q.split(/\s+/); let sc = 0;
+      words.forEach(w => { if (norm(a.title).includes(w)) sc += 3; if (norm(a.chapo).includes(w)) sc += 1; if (a.tags.some(t => norm(t).includes(w))) sc += 2; if (norm(a.c.name).includes(w)) sc += 2; if (norm(a.authorName).includes(w)) sc += 2; });
+      return { a, sc };
+    }).filter(x => x.sc > 0);
+    results.sort((x, y) => (s.sort === 'recence' || !q) ? byDate(x.a, y.a) : (y.sc - x.sc || byDate(x.a, y.a)));
+    results = results.map(x => x.a);
+    const searchCats = [{ id: 'all', name: 'Toutes', bg: '#000', fg: '#fff' }, ...CATS].map(c => { const on = s.searchCat === c.id; return { name: c.name, chipBg: on ? (c.id === 'all' ? '#000' : c.bg) : '#fff', chipFg: on ? (c.id === 'all' ? '#fff' : c.fg) : '#000', select: () => this.setState({ searchCat: c.id }) }; });
+    const sortOpts = [{ id: 'pertinence', name: 'Pertinence' }, { id: 'recence', name: 'Récence' }].map(o => ({ ...o, bg: s.sort === o.id ? '#000' : '#fff', fg: s.sort === o.id ? '#fff' : '#000', select: () => this.setState({ sort: o.id }) }));
+    const hotTags = ['Douala', 'Tontine', 'Plantain', 'Makossa', 'Ndolé', 'Délestages', 'Coloc', 'Kribi', 'Camfranglais'].map(t => ({ name: t, select: () => this.setState({ query: t }) }));
+    const n = results.length;
+    const resultsLabel = q ? (n + (n > 1 ? ' résultats' : ' résultat') + ' pour « ' + s.query.trim() + ' »') : 'Tous les articles, du plus récent au plus ancien';
+
+    // author
+    const author = AUTH[s.authorId];
+    const authorArticles = ALL.filter(a => a.author === author.id).sort(byDate);
+    const authorCats = [...new Set(authorArticles.map(a => a.cat))].map(cid => CAT[cid]);
+
+    // newsletter
+    const nlCatList = CATS.map(c => { const on = s.nlCats.includes(c.id); return { name: c.name, mark: on ? '✓' : '+', chipBg: on ? c.bg : '#fff', chipFg: on ? c.fg : '#000', toggle: () => this.setState(st => ({ nlCats: st.nlCats.includes(c.id) ? st.nlCats.filter(x => x !== c.id) : [...st.nlCats, c.id] })) }; });
+    const nlFreqs = [{ id: 'matin', name: 'Chaque matin, 7h' }, { id: 'vendredi', name: 'Le vendredi, le récap' }].map(f => ({ ...f, bg: s.nlFreq === f.id ? '#000' : '#fff', fg: s.nlFreq === f.id ? '#fff' : '#000', select: () => this.setState({ nlFreq: f.id }) }));
+
+    const values = [
+      { k: 'sérieux', t: 'Sérieux sur les faits, léger dans la manière de les raconter.' },
+      { k: 'naturel', t: 'Jeune et naturel : écrire comme on parle, sans langage forcé.' },
+      { k: 'complice', t: 'On vous raconte quelque chose. On ne vous fait pas la leçon.' },
+      { k: 'honnête', t: 'Jamais sensationnaliste : l’angle et l’écriture, pas des titres trompeurs.' },
+    ];
+
+    return {
+      todayLabel: 'Jeudi 1er octobre 2026', patterns, socials, navCats,
+      searchBtnBg: page === 'search' ? '#D3F90F' : '#fff',
+      goHome: h(() => this.go('home')), goSearch: h(() => this.go('search')), goNewsletter: h(() => this.go('newsletter')),
+      isHome: page === 'home', isHomeA: page === 'home' && dir === 'A', isHomeB: page === 'home' && dir === 'B',
+      isRubrique: page === 'rubrique', isArticle: page === 'article', isSearch: page === 'search', isAuthor: page === 'author', isNewsletter: page === 'newsletter', isAbout: page === 'about',
+      dirOpts: [{ id: 'A', name: 'A · Couverture' }, { id: 'B', name: 'B · Kiosque' }].map(o => ({ ...o, bg: dir === o.id ? '#D3F90F' : 'transparent', fg: dir === o.id ? '#000' : '#fff', select: () => this.setState({ dir: o.id }) })),
+      hero, aLaUne, trending, secTop: secs.slice(0, 2), secBottom: secs.slice(2), episodes, shorts, tunnel,
+      playEpisode: episodesAll[0].play, tickerItems,
+      isVideos: page === 'videos', goVideos: h(() => this.go('videos')), videosNavBg: page === 'videos' ? '#D3F90F' : 'transparent',
+      featuredList: [episodesAll[0]], videoList: s.video ? [s.video] : [], episodesAll, videoFilters, showEpisodes: s.vFilter !== 'shorts', showShorts: s.vFilter !== 'brief',
+      videoSocials: socials.filter(x => ['YouTube', 'TikTok', 'Instagram'].includes(x.name)),
+      hasVideo: !!s.video, videoErr: !!s.videoErr, videoRef: this.videoRef, videoYoutube: h(() => this.showToast('YouTube — lien externe (hors maquette)')), video: s.video || {}, closeVideo: h(() => this.setState({ video: null })), stopClick: e => e.stopPropagation(),
+      m1: aLaUne[0], m2: aLaUne[1], m3: aLaUne[2], m4: byId(6), m5: aLaUne[3],
+      tabs, tab: tabC, tabLead: tabList[0], tabRest: tabList.slice(1, 4),
+      nlInline: s.nlInline, nlInlineOpen: !s.nlInlineDone, nlInlineDone: s.nlInlineDone,
+      onInlineEmail: e => this.setState({ nlInline: e.target.value }),
+      submitInline: e => { e.preventDefault(); this.setState({ nlInlineDone: true }); },
+      rub: rubC, rubTags, rubHas: rubFiltered.length > 0, rubEmpty: rubFiltered.length === 0, rubLead: rubFiltered[0] || rubAll[0], rubRest: rubFiltered.slice(1),
+      otherCats: CATS.filter(c => c.id !== s.cat).map(c => CAT[c.id]),
+      art, artAuthor: AUTH[art.author], artBody: body, hasBody: body.length > 0, noBody: body.length === 0, artToc: artToc.length ? artToc : [{ text: 'L’essentiel' }, { text: 'Le contexte' }, { text: 'Et maintenant ?' }],
+      sameCat, related, shareBtns,
+      copyLink: () => { try { navigator.clipboard && navigator.clipboard.writeText(location.href); } catch (e) {} this.showToast('Lien copié'); },
+      query: s.query, searchRef: this.searchRef, hasQuery: s.query.length > 0,
+      onQuery: e => this.setState({ query: e.target.value }), clearQuery: () => this.setState({ query: '' }),
+      searchCats, sortOpts, results, noResults: n === 0, resultsLabel, hotTags,
+      author, authorArticles, authorCats, authorCount: authorArticles.length + ' articles publiés',
+      nlEmail: s.nlEmail, nlPageOpen: !s.nlDone, nlDone: s.nlDone, onPageEmail: e => this.setState({ nlEmail: e.target.value }),
+      submitPage: e => { e.preventDefault(); this.setState({ nlDone: true }); },
+      resetNl: () => this.setState({ nlDone: false }), nlCatList, nlFreqs,
+      nlFreqDone: s.nlFreq === 'matin' ? 'demain à 7h' : 'vendredi à 7h',
+      nlCatsDone: s.nlCats.length ? CATS.filter(c => s.nlCats.includes(c.id)).map(c => c.name).join(', ') : 'aucune (on vous enverra quand même l’essentiel)',
+      briefItems: [3, 6, 17].map(byId),
+      values, team: AUTHORS.map(a => AUTH[a.id]),
+      contactOpen: !s.contactDone, contactDone: s.contactDone, submitContact: e => { e.preventDefault(); this.setState({ contactDone: true }); },
+      footerLinks: [
+        { name: 'À propos', open: h(() => this.go('about')) }, { name: 'Contact & partenariats', open: h(() => this.go('about')) },
+        { name: 'Vidéos', open: h(() => this.go('videos')) }, { name: 'Newsletter', open: h(() => this.go('newsletter')) }, { name: 'Recherche', open: h(() => this.go('search')) },
+        { name: 'La rédaction', open: h(() => this.go('author', { authorId: 'a1' })) },
+      ],
+      legalLinks: ['Mentions légales', 'Confidentialité', 'Cookies'].map(n => ({ name: n, open: h(() => this.showToast(n + ' — page hors maquette')) })),
+      hasToast: !!s.toast, toast: s.toast,
+    };
+  }
+}
+</script>
+</body>
+</html>
