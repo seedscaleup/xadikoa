@@ -27,6 +27,9 @@ input::placeholder,textarea::placeholder{color:#777}
 @keyframes xdkFade{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
+/* Sélecteur de comparaison A/B (outil de maquette) : masqué sur le site public */
+[style*="position: fixed"][style*="left: 20px"][style*="bottom: 20px"]{display:none!important}
+
 /* ===== Version téléphone / petite tablette (écrans < 820 px) =====
    Le navigateur réécrit les styles en ligne avec des espaces ("height: 38px") :
    les sélecteurs ci-dessous sont écrits dans cette forme. */
@@ -542,8 +545,8 @@ footer [style*="display: flex"][style*="justify-content: space-between"]{flex-wr
 </sc-if>
 <sc-if value="{{ rubEmpty }}" hint-placeholder-val="{{ false }}">
 <div style="padding:48px;border-radius:28px;background:#F4F3EE;display:flex;flex-direction:column;gap:12px;align-items:flex-start">
-<span style="font:700 32px/1 'Caveat',cursive;color:#0066FC">bientôt…</span>
-<p style="margin:0;font:500 20px/1.4 'General Sans',sans-serif">Rien pour l’instant sur ce sujet. On y travaille.</p>
+<span style="font:700 32px/1 'Caveat',cursive;color:#0066FC">à suivre…</span>
+<p style="margin:0;font:500 20px/1.4 'General Sans',sans-serif">Pas encore d’article dans cette catégorie. Revenez bientôt.</p>
 </div>
 </sc-if>
 </div>
@@ -968,9 +971,9 @@ footer [style*="display: flex"][style*="justify-content: space-between"]{flex-wr
 </div>
 <div style="position:relative;width:{{ video.boxW }};aspect-ratio:{{ video.ratio }};margin:0 auto;border-radius:22px;overflow:hidden;background:#000;box-shadow:0 40px 90px -30px rgba(0,102,252,.55)">
 <sc-for list="{{ videoList }}" as="vid" hint-placeholder-count="0"><video src="{{ vid.src }}" poster="{{ vid.img }}" controls="" autoplay="" playsinline="" ref="{{ videoRef }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></video></sc-for>
-<sc-if value="{{ videoErr }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center;color:#fff;background:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.75)),center/cover no-repeat url({{ video.img }})"><span style="font:700 30px/1 'Caveat',cursive;color:#D3F90F">vidéo bientôt disponible</span><a href="#" onClick="{{ videoYoutube }}" style="display:flex;align-items:center;gap:10px;height:52px;padding:0 20px;border-radius:999px;background:#D3F90F;color:#000;font:600 16px/1 'General Sans',sans-serif" style-hover="background:#fff">Voir sur YouTube</a></div></sc-if>
+<sc-if value="{{ videoErr }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center;color:#fff;background:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.75)),center/cover no-repeat url({{ video.img }})"><span style="font:700 30px/1 'Caveat',cursive;color:#D3F90F">cette vidéo n’est pas disponible pour le moment</span><a href="#" onClick="{{ videoYoutube }}" style="display:flex;align-items:center;gap:10px;height:52px;padding:0 20px;border-radius:999px;background:#D3F90F;color:#000;font:600 16px/1 'General Sans',sans-serif" style-hover="background:#fff">Voir sur YouTube</a></div></sc-if>
 </div>
-<div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font:500 14px/1.3 'General Sans',sans-serif;color:#aaa"><span>{{ video.meta }}</span><span>Vidéo de démonstration, à remplacer par le lecteur YouTube ou TikTok.</span></div>
+<div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font:500 14px/1.3 'General Sans',sans-serif;color:#aaa"><span>{{ video.meta }}</span></div>
 </div>
 </div>
 </sc-if>
@@ -1158,7 +1161,7 @@ class Component extends DCLogic {
       { name: 'Instagram', format: 'Carrousels & stories', hover: '#FC4284' }, { name: 'TikTok', format: 'Vidéos courtes', hover: '#D3F90F' },
       { name: 'Facebook', format: 'Articles & lives', hover: '#0066FC' }, { name: 'YouTube', format: 'Le Brief XDK', hover: '#FC4284' },
       { name: 'LinkedIn', format: 'Business & partenaires', hover: '#CA41CD' }, { name: 'WhatsApp', format: 'La chaîne XADIKOA', hover: '#D3F90F' },
-    ].map(x => ({ ...x, open: h(() => this.showToast(x.name + ' — lien externe (hors maquette)')) }));
+    ].map(x => ({ ...x, open: h(() => this.showToast('Notre page ' + x.name + ' arrive très bientôt.')) }));
 
     const H16 = 'min(100%, calc(70vh * 16 / 9))', V916 = 'min(100%, calc(70vh * 9 / 16))';
     const episodesAll = EPISODES.map(e => { const img = U(e.ph); const dateLabel = fmt(e.date); return { ...e, img, dateLabel,
@@ -1185,7 +1188,9 @@ class Component extends DCLogic {
     const artToc = body.filter(b => b.isH2);
     const sameCat = ofCat(art.cat).filter(a => a.id !== art.id).slice(0, 3);
     const related = ALL.filter(a => a.cat !== art.cat).map(a => ({ a, sc: a.tags.filter(t => art.tags.includes(t)).length })).sort((x, y) => y.sc - x.sc || byDate(x.a, y.a)).slice(0, 4).map(x => x.a);
-    const shareBtns = ['WhatsApp', 'Facebook', 'X', 'LinkedIn'].map(n => ({ name: n, share: () => this.showToast('Partage sur ' + n + ' (simulation)') }));
+    const shareUrl = location.origin + location.pathname, shareTitle = art.title;
+    const shareLinks = { WhatsApp: 'https://wa.me/?text=' + encodeURIComponent(shareTitle + ' ' + shareUrl), Facebook: 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareUrl), X: 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareTitle) + '&url=' + encodeURIComponent(shareUrl), LinkedIn: 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(shareUrl) };
+    const shareBtns = ['WhatsApp', 'Facebook', 'X', 'LinkedIn'].map(n => ({ name: n, share: () => window.open(shareLinks[n], '_blank', 'noopener') }));
 
     // search
     const q = norm(s.query.trim());
@@ -1231,7 +1236,7 @@ class Component extends DCLogic {
       isVideos: page === 'videos', goVideos: h(() => this.go('videos')), videosNavBg: page === 'videos' ? '#D3F90F' : 'transparent',
       featuredList: [episodesAll[0]], videoList: s.video ? [s.video] : [], episodesAll, videoFilters, showEpisodes: s.vFilter !== 'shorts', showShorts: s.vFilter !== 'brief',
       videoSocials: socials.filter(x => ['YouTube', 'TikTok', 'Instagram'].includes(x.name)),
-      hasVideo: !!s.video, videoErr: !!s.videoErr, videoRef: this.videoRef, videoYoutube: h(() => this.showToast('YouTube — lien externe (hors maquette)')), video: s.video || {}, closeVideo: h(() => this.setState({ video: null })), stopClick: e => e.stopPropagation(),
+      hasVideo: !!s.video, videoErr: !!s.videoErr, videoRef: this.videoRef, videoYoutube: h(() => this.showToast('Notre chaîne YouTube arrive très bientôt.')), video: s.video || {}, closeVideo: h(() => this.setState({ video: null })), stopClick: e => e.stopPropagation(),
       m1: aLaUne[0], m2: aLaUne[1], m3: aLaUne[2], m4: byId(6), m5: aLaUne[3],
       tabs, tab: tabC, tabLead: tabList[0], tabRest: tabList.slice(1, 4),
       nlInline: s.nlInline, nlInlineOpen: !s.nlInlineDone, nlInlineDone: s.nlInlineDone,
@@ -1259,7 +1264,7 @@ class Component extends DCLogic {
         { name: 'Vidéos', open: h(() => this.go('videos')) }, { name: 'Newsletter', open: h(() => this.go('newsletter')) }, { name: 'Recherche', open: h(() => this.go('search')) },
         { name: 'La rédaction', open: h(() => this.go('author', { authorId: 'a1' })) },
       ],
-      legalLinks: ['Mentions légales', 'Confidentialité', 'Cookies'].map(n => ({ name: n, open: h(() => this.showToast(n + ' — page hors maquette')) })),
+      legalLinks: ['Mentions légales', 'Confidentialité', 'Cookies'].map(n => ({ name: n, open: h(() => this.showToast('La page « ' + n + ' » sera publiée prochainement.')) })),
       hasToast: !!s.toast, toast: s.toast,
     };
   }
