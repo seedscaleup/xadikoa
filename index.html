@@ -47,7 +47,7 @@ h1,h2,h3,h4,p,a,span{overflow-wrap:break-word}
 
 /* Grilles : une colonne (sauf petites grilles d'icônes / listes) */
 [style*="grid-template-columns"]:not([style*="grid-template-columns: 84px"]):not([style*="grid-template-columns: 70px"]):not([style*="grid-template-columns: 44px"]):not([style*="grid-template-columns: 20px"]):not([style*="grid-template-columns: 14px"]):not([style*="grid-template-columns: auto "]):not([style*="150px"]){grid-template-columns:minmax(0,1fr)!important}
-[style*="repeat(4, minmax"],[style*="repeat(5, minmax"],[style*="repeat(6, minmax"],[style*="repeat(2, minmax"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+[style*="repeat(4, minmax"]:not(#z),[style*="repeat(5, minmax"]:not(#z),[style*="repeat(6, minmax"]:not(#z),[style*="repeat(2, minmax"]:not(#z){grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
 [style*="grid-template-columns: 84px"],[style*="grid-template-columns: 70px"]{grid-template-columns:62px minmax(0,1fr)!important;align-items:start!important}
 [style*="grid-template-columns: 84px"]>:nth-child(3),[style*="grid-template-columns: 70px"]>:nth-child(3){grid-column:2;justify-self:start}
 
@@ -66,7 +66,7 @@ h1,h2,h3,h4,p,a,span{overflow-wrap:break-word}
 [style*="height: 78px"]>div>a:nth-child(3) svg{display:none}
 header nav{order:3;flex:1 0 100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
 header nav::-webkit-scrollbar{display:none}
-header nav a{padding:8px 12px!important;font-size:14px!important}
+header nav a{padding:11px 12px!important;font-size:14px!important}
 
 /* Bandeau défilant */
 [style*="xdkMarquee"] a{padding:11px 22px!important;font-size:14px!important}
@@ -85,6 +85,51 @@ header nav a{padding:8px 12px!important;font-size:14px!important}
 [style*="padding: 64px;"],[style*="padding: 56px;"],[style*="padding: 48px;"],[style*="padding: 40px;"],[style*="padding: 64px 56px;"]{padding:28px 20px!important}
 [style*="grid-template-columns: 84px"],[style*="grid-template-columns: 70px"]{gap:8px 14px!important}
 [style*="border-radius: 32px"]{border-radius:24px!important}
+
+/* Décors (rayures, cercles) : atténués pour ne pas gêner la lecture */
+[style*="position: absolute"][style*="top: 0px"][style*="bottom: 0px"],[style*="position: absolute"][style*="inset: 0px -"],[style*="position: absolute"][style*="repeating-linear-gradient"]{opacity:.14!important}
+[style*="rotate(1.5deg)"]{transform:none!important}
+
+/* En-têtes de section : titre / sous-titre / lien l'un sous l'autre */
+[style*="justify-content: space-between"][style*="gap: 24px"]:not([style*="height: 38px"]):not([style*="height: 78px"]){flex-direction:column!important;align-items:flex-start!important;gap:12px!important}
+[style*="align-items: baseline"][style*="gap: 20px"]{flex-wrap:wrap;gap:2px 14px!important}
+[style*="gap: 28px"][style*="min-width: 0px"]{flex-direction:column!important;align-items:flex-start!important;gap:12px!important}
+[style*="align-items: flex-end"][style*="flex-direction: column"]{align-items:flex-start!important}
+
+/* Bandeau « Ce qui fait parler » : libellé au-dessus, liste défilante dessous */
+[style*="grid-template-columns: auto minmax"]{grid-template-columns:minmax(0,1fr)!important;border-radius:26px!important;padding:14px 20px!important;gap:0!important}
+
+/* Formulaire e-mail intégré : champ et bouton l'un sous l'autre */
+form [style*="overflow: hidden"][style*="border-radius: 999px"]{flex-direction:column!important;border-radius:22px!important;gap:6px!important}
+form [style*="overflow: hidden"][style*="border-radius: 999px"] input{height:52px!important;width:100%}
+form [style*="overflow: hidden"][style*="border-radius: 999px"] button{justify-content:center!important;height:52px!important;border-radius:16px!important;gap:14px!important}
+
+/* Carte « nouvel épisode » : plus haute, texte et bouton lecture sans chevauchement */
+[style*="aspect-ratio: 16 / 9"][style*="border-radius: 26px"]{aspect-ratio:4/5!important;border-radius:22px!important}
+[style*="left: 28px"][style*="right: 28px"]{left:18px!important;right:18px!important;bottom:18px!important}
+[style*="left: 28px"][style*="right: 28px"] span[style*="font: 600 30px"]{font-size:24px!important}
+
+/* Recherche */
+input[type="search"]{font-size:22px!important}
+
+/* Menu des rubriques : dégradé à droite pour signaler qu'il défile */
+header nav{padding-right:36px!important;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 44px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 44px),transparent)}
+
+/* Hauteurs minimales réduites, pied de page plus aéré */
+[style*="min-height: 320px"]{min-height:200px!important}
+[style*="min-height: 260px"]{min-height:150px!important}
+[style*="min-height: 170px"],[style*="min-height: 156px"]{min-height:110px!important}
+footer span,footer p{line-height:1.5!important}
+footer a{padding-top:7px!important;padding-bottom:7px!important}
+
+/* Cartes à texte long : une colonne (valeurs, rubriques) */
+[style*="repeat(4, minmax"]:has(> div[style*="padding: 30px 28px"]):not(#z):not(#y),[style*="repeat(5, minmax"]:has(> a[style*="min-height: 260px"]):not(#z):not(#y){grid-template-columns:minmax(0,1fr)!important}
+
+/* Vignettes à 2 colonnes : titres et lignes d'infos plus compacts */
+[style*="repeat(2, minmax"] h3,[style*="repeat(4, minmax"] h3,[style*="repeat(5, minmax"] h3{font-size:18px!important;line-height:1.2!important}
+[style*="repeat(2, minmax"] [style*="align-items: center"],[style*="repeat(4, minmax"] [style*="align-items: center"]{flex-wrap:wrap}
+[style*="font: 700 34px"]{font-size:26px!important}
+[style*="grid-template-columns: 1fr 1fr"]{border-radius:22px!important}
 
 /* Formulaires et blocs larges */
 .xdk-share{flex-wrap:wrap!important}
