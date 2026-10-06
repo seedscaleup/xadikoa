@@ -348,11 +348,11 @@ footer [style*="display: flex"][style*="justify-content: space-between"]{flex-wr
 <h2 style="margin:0;font:600 44px/1 'General Sans',sans-serif;letter-spacing:-.02em">On se retrouve aussi ici</h2>
 <p style="margin:0;font:400 16px/1.45 'General Sans',sans-serif;color:#333;max-width:42ch">Chaque article se décline en post, story, vidéo courte ou carrousel.</p>
 </div>
-<div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px">
+<div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px">
 <sc-for list="{{ socials }}" as="s" hint-placeholder-count="6">
 <a href="#" onClick="{{ s.open }}" style="display:flex;flex-direction:column;gap:28px;justify-content:space-between;min-height:170px;padding:24px;border-radius:22px;background:#F4F3EE;color:#000;transition:background .25s" style-hover="background:{{ s.hover }};color:#000">
 <span style="font:600 22px/1 'General Sans',sans-serif">{{ s.name }}</span>
-<span style="display:flex;flex-direction:column;gap:6px"><span style="font:600 14px/1 'General Sans',sans-serif">@xadikoa</span><span style="font:400 14px/1.35 'General Sans',sans-serif;color:#333">{{ s.format }}</span></span>
+<span style="display:flex;flex-direction:column;gap:6px"><span style="font:600 14px/1 'General Sans',sans-serif">{{ s.handle }}</span><span style="font:400 14px/1.35 'General Sans',sans-serif;color:#333">{{ s.format }}</span></span>
 </a>
 </sc-for>
 </div>
@@ -1157,11 +1157,13 @@ class Component extends DCLogic {
     const tabList = ofCat(s.homeTab);
     const tabs = CATS.map(c => ({ ...CAT[c.id], tabBg: c.id === s.homeTab ? c.bg : '#fff', tabFg: c.id === s.homeTab ? c.fg : '#000', select: () => this.setState({ homeTab: c.id }) }));
 
+    const SOCIAL_URLS = { Instagram: 'https://www.instagram.com/xadikoa', TikTok: 'https://www.tiktok.com/@xadikoa', Facebook: 'https://www.facebook.com/profile.php?id=61593740588874', YouTube: 'https://www.youtube.com/@xadikoa', X: 'https://x.com/XaDiKoa_' };
+    const openSocial = name => window.open(SOCIAL_URLS[name], '_blank', 'noopener');
     const socials = [
-      { name: 'Instagram', format: 'Carrousels & stories', hover: '#FC4284' }, { name: 'TikTok', format: 'Vidéos courtes', hover: '#D3F90F' },
-      { name: 'Facebook', format: 'Articles & lives', hover: '#0066FC' }, { name: 'YouTube', format: 'Le Brief XDK', hover: '#FC4284' },
-      { name: 'LinkedIn', format: 'Business & partenaires', hover: '#CA41CD' }, { name: 'WhatsApp', format: 'La chaîne XADIKOA', hover: '#D3F90F' },
-    ].map(x => ({ ...x, open: h(() => this.showToast('Notre page ' + x.name + ' arrive très bientôt.')) }));
+      { name: 'Instagram', handle: '@xadikoa', format: 'Carrousels & stories', hover: '#FC4284' }, { name: 'TikTok', handle: '@xadikoa', format: 'Vidéos courtes', hover: '#D3F90F' },
+      { name: 'Facebook', handle: 'Page XADIKOA', format: 'Articles & lives', hover: '#0066FC' }, { name: 'YouTube', handle: '@xadikoa', format: 'Le Brief XDK', hover: '#FC4284' },
+      { name: 'X', handle: '@XaDiKoa_', format: 'Actus en bref', hover: '#D3F90F' },
+    ].map(x => ({ ...x, open: h(() => openSocial(x.name)) }));
 
     const H16 = 'min(100%, calc(70vh * 16 / 9))', V916 = 'min(100%, calc(70vh * 9 / 16))';
     const episodesAll = EPISODES.map(e => { const img = U(e.ph); const dateLabel = fmt(e.date); return { ...e, img, dateLabel,
@@ -1236,7 +1238,7 @@ class Component extends DCLogic {
       isVideos: page === 'videos', goVideos: h(() => this.go('videos')), videosNavBg: page === 'videos' ? '#D3F90F' : 'transparent',
       featuredList: [episodesAll[0]], videoList: s.video ? [s.video] : [], episodesAll, videoFilters, showEpisodes: s.vFilter !== 'shorts', showShorts: s.vFilter !== 'brief',
       videoSocials: socials.filter(x => ['YouTube', 'TikTok', 'Instagram'].includes(x.name)),
-      hasVideo: !!s.video, videoErr: !!s.videoErr, videoRef: this.videoRef, videoYoutube: h(() => this.showToast('Notre chaîne YouTube arrive très bientôt.')), video: s.video || {}, closeVideo: h(() => this.setState({ video: null })), stopClick: e => e.stopPropagation(),
+      hasVideo: !!s.video, videoErr: !!s.videoErr, videoRef: this.videoRef, videoYoutube: h(() => openSocial('YouTube')), video: s.video || {}, closeVideo: h(() => this.setState({ video: null })), stopClick: e => e.stopPropagation(),
       m1: aLaUne[0], m2: aLaUne[1], m3: aLaUne[2], m4: byId(6), m5: aLaUne[3],
       tabs, tab: tabC, tabLead: tabList[0], tabRest: tabList.slice(1, 4),
       nlInline: s.nlInline, nlInlineOpen: !s.nlInlineDone, nlInlineDone: s.nlInlineDone,
