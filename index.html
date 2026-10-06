@@ -26,6 +26,74 @@ input::placeholder,textarea::placeholder{color:#777}
 @keyframes xdkUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
 @keyframes xdkFade{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== Version téléphone / petite tablette (écrans < 820 px) =====
+   Le navigateur réécrit les styles en ligne avec des espaces ("height: 38px") :
+   les sélecteurs ci-dessous sont écrits dans cette forme. */
+@media (max-width:820px){
+body{overflow-x:clip}
+img,video,iframe{max-width:100%}
+h1,h2,h3,h4,p,a,span{overflow-wrap:break-word}
+
+/* Marges latérales : 48px -> 20px (conteneurs de page) */
+[style*="max-width: 1440px"],[style*="max-width: 1344px"],[style*="max-width: 1080px"],[style*="max-width: 760px"]{padding-left:20px!important;padding-right:20px!important}
+
+/* Espacements verticaux plus compacts */
+[style*="padding: 112px 48px"],[style*="padding: 104px 48px"],[style*="padding: 96px 48px"],[style*="padding: 88px 48px"],[style*="padding: 80px 48px"]{padding-top:56px!important}
+[style*="padding: 72px 48px"],[style*="padding: 64px 48px"],[style*="padding: 56px 48px"],[style*="padding: 48px 48px"]{padding-top:36px!important}
+[style*="48px 112px"],[style*="48px 96px"],[style*="48px 88px"],[style*="48px 80px"]{padding-bottom:56px!important}
+[style*="48px 72px"]{padding-bottom:40px!important}
+[style*="gap: 56px"],[style*="gap: 64px"],[style*="gap: 72px"],[style*="gap: 48px"],[style*="gap: 40px"]{gap:28px!important}
+
+/* Grilles : une colonne (sauf petites grilles d'icônes / listes) */
+[style*="grid-template-columns"]:not([style*="grid-template-columns: 84px"]):not([style*="grid-template-columns: 70px"]):not([style*="grid-template-columns: 44px"]):not([style*="grid-template-columns: 20px"]):not([style*="grid-template-columns: 14px"]):not([style*="grid-template-columns: auto "]):not([style*="150px"]){grid-template-columns:minmax(0,1fr)!important}
+[style*="repeat(4, minmax"],[style*="repeat(5, minmax"],[style*="repeat(6, minmax"],[style*="repeat(2, minmax"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+[style*="grid-template-columns: 84px"],[style*="grid-template-columns: 70px"]{grid-template-columns:62px minmax(0,1fr)!important;align-items:start!important}
+[style*="grid-template-columns: 84px"]>:nth-child(3),[style*="grid-template-columns: 70px"]>:nth-child(3){grid-column:2;justify-self:start}
+
+/* Barre noire du haut : seulement la signature */
+[style*="height: 38px"]{height:auto!important;padding-top:9px!important;padding-bottom:9px!important;justify-content:center!important}
+[style*="height: 38px"]>span:first-child,[style*="height: 38px"]>div{display:none!important}
+
+/* En-tête : logo + boutons sur la 1re ligne, rubriques défilantes sur la 2e */
+[style*="height: 78px"]{height:auto!important;flex-wrap:wrap!important;padding-top:10px!important;padding-bottom:6px!important;padding-left:16px!important;padding-right:16px!important;gap:8px 10px!important;justify-content:space-between}
+[style*="height: 78px"]>a img{height:28px!important}
+[style*="height: 78px"]>div{gap:6px!important;margin-left:auto}
+[style*="height: 78px"]>div>a{height:40px!important;font-size:13px!important}
+[style*="height: 78px"]>div>a:nth-child(1){padding:0 12px!important;gap:6px!important}
+[style*="height: 78px"]>div>a:nth-child(2){width:40px!important}
+[style*="height: 78px"]>div>a:nth-child(3){padding:0 14px!important;gap:6px!important}
+[style*="height: 78px"]>div>a:nth-child(3) svg{display:none}
+header nav{order:3;flex:1 0 100%!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
+header nav::-webkit-scrollbar{display:none}
+header nav a{padding:8px 12px!important;font-size:14px!important}
+
+/* Bandeau défilant */
+[style*="xdkMarquee"] a{padding:11px 22px!important;font-size:14px!important}
+
+/* Titres : tailles adaptées au téléphone */
+[style*="clamp(72px"]{font-size:46px!important;line-height:1!important}
+[style*="clamp(56px"]{font-size:40px!important;line-height:1.02!important}
+[style*="clamp(48px"]{font-size:36px!important;line-height:1.04!important}
+[style*="clamp(44px"]{font-size:34px!important;line-height:1.05!important}
+[style*="clamp(34px"]{font-size:28px!important}
+[style*="font: 700 76px"],[style*="font: 600 64px"],[style*="font: 700 56px"],[style*="font: 600 56px"]{font-size:40px!important}
+[style*="font: 600 52px"],[style*="font: 600 46px"],[style*="font: 600 44px"],[style*="font: 600 40px"]{font-size:32px!important}
+[style*="font: 700 40px"],[style*="font: 700 38px"]{font-size:30px!important}
+
+/* Grandes cartes : marges intérieures réduites pour garder la place au texte */
+[style*="padding: 64px;"],[style*="padding: 56px;"],[style*="padding: 48px;"],[style*="padding: 40px;"],[style*="padding: 64px 56px;"]{padding:28px 20px!important}
+[style*="grid-template-columns: 84px"],[style*="grid-template-columns: 70px"]{gap:8px 14px!important}
+[style*="border-radius: 32px"]{border-radius:24px!important}
+
+/* Formulaires et blocs larges */
+.xdk-share{flex-wrap:wrap!important}
+input,select,textarea{max-width:100%}
+footer [style*="display: flex"][style*="justify-content: space-between"]{flex-wrap:wrap;gap:14px}
+
+/* Sélecteur de comparaison A/B (outil de maquette) : masqué sur mobile */
+[style*="position: fixed"][style*="left: 20px"][style*="bottom: 20px"]{display:none!important}
+}
 </style>
 </helmet>
 <div style="min-height:100vh;display:flex;flex-direction:column;font-family:'General Sans',system-ui,sans-serif">
@@ -465,7 +533,7 @@ input::placeholder,textarea::placeholder{color:#777}
 <span style="width:52px;height:52px;border-radius:50%;background:{{ artAuthor.color }};color:{{ artAuthor.initFg }};display:grid;place-items:center;flex:none;font:700 17px/1 'General Sans',sans-serif">{{ artAuthor.initials }}</span>
 <span style="display:flex;flex-direction:column;gap:5px"><span style="font:600 17px/1 'General Sans',sans-serif">Par {{ artAuthor.name }}</span><span style="font:500 14px/1 'General Sans',sans-serif;color:#555;white-space:nowrap">{{ artAuthor.role }} · {{ art.read }} min de lecture</span></span>
 </a>
-<div style="display:flex;gap:8px;align-items:center">
+<div class="xdk-share" style="display:flex;gap:8px;align-items:center">
 <span style="font:600 14px/1 'General Sans',sans-serif;margin-right:6px">Partager</span>
 <sc-for list="{{ shareBtns }}" as="b" hint-placeholder-count="5"><button type="button" onClick="{{ b.share }}" style="border-radius:999px;height:42px;padding:0 13px;border:1px solid rgba(0,0,0,.16);background:#fff;font:600 14px/1 'General Sans',sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px" style-hover="background:#D3F90F">{{ b.name }}</button></sc-for>
 </div>
