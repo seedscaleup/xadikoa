@@ -1126,8 +1126,13 @@ class Component extends DCLogic {
     const h = fn => e => { if (e && e.preventDefault) e.preventDefault(); fn(); };
     const MONTHS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
     const MS = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
-    const fmt = iso => { if (iso === '2026-10-01') return 'Aujourd’hui'; if (iso === '2026-09-30') return 'Hier'; const [, m, d] = iso.split('-').map(Number); return d + ' ' + MS[m - 1]; };
+    const DAYS = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+    const isoOf = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    const NOW = new Date(), YEST = new Date(NOW.getFullYear(), NOW.getMonth(), NOW.getDate() - 1);
+    const TODAY_ISO = isoOf(NOW), YESTERDAY_ISO = isoOf(YEST);
+    const fmt = iso => { if (iso === TODAY_ISO) return 'Aujourd’hui'; if (iso === YESTERDAY_ISO) return 'Hier'; const [, m, d] = iso.split('-').map(Number); return d + ' ' + MS[m - 1]; };
     const fmtLong = iso => { const [y, m, d] = iso.split('-').map(Number); return (d === 1 ? '1er' : d) + ' ' + MONTHS[m - 1] + ' ' + y; };
+    const todayLabel = DAYS[NOW.getDay()].charAt(0).toUpperCase() + DAYS[NOW.getDay()].slice(1) + ' ' + fmtLong(TODAY_ISO);
     const norm = t => (t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
     const CAT = {}; CATS.forEach(c => { CAT[c.id] = { ...c, bgLine: c.id === 'tendances' ? '#000' : c.bg, open: h(() => this.go('rubrique', { cat: c.id, rubTag: 'all' })) }; });
@@ -1227,7 +1232,7 @@ class Component extends DCLogic {
     ];
 
     return {
-      todayLabel: 'Jeudi 1er octobre 2026', patterns, socials, navCats,
+      todayLabel, patterns, socials, navCats,
       searchBtnBg: page === 'search' ? '#D3F90F' : '#fff',
       goHome: h(() => this.go('home')), goSearch: h(() => this.go('search')), goNewsletter: h(() => this.go('newsletter')),
       isHome: page === 'home', isHomeA: page === 'home' && dir === 'A', isHomeB: page === 'home' && dir === 'B',
