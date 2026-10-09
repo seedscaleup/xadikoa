@@ -1,0 +1,8 @@
+node_modules/
+studio/dist/
+studio/.sanity/
+.DS_Store
+*.log
+.env
+.env.*
+schema-extract.json

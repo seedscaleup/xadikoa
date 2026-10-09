@@ -1,0 +1,29 @@
+name: Installer le contenu d'exemple dans Sanity
+
+# À lancer UNE SEULE FOIS, à la demande (onglet « Actions » → « Installer le contenu d'exemple » → « Run workflow »).
+# Sans danger si on le relance : les documents déjà présents ne sont jamais modifiés.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: studio
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Contrôler le contenu avant envoi
+        run: |
+          npm ci
+          node scripts/check-seed.mjs
+      - name: Installer le contenu d'exemple
+        run: node scripts/seed.mjs
+        env:
+          SANITY_WRITE_TOKEN: ${{ secrets.SANITY_WRITE_TOKEN }}

@@ -1,0 +1,60 @@
+name: Mettre en ligne l'éditeur (Sanity Studio)
+
+# Se déclenche à chaque modification du dossier studio/, ou à la demande
+# (onglet « Actions » du dépôt → « Mettre en ligne l'éditeur » → « Run workflow »).
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'studio/**'
+      - '.github/workflows/editeur.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: studio
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Vérifier la configuration
+        id: cfg
+        run: |
+          PROJECT_ID="$(node -p "require('./config.json').projectId")"
+          if [ -z "$PROJECT_ID" ]; then
+            echo "::notice::Éditeur non configuré : renseignez projectId dans studio/config.json. Rien n'est mis en ligne."
+            echo "pret=non" >> "$GITHUB_OUTPUT"
+          elif [ -z "$SANITY_AUTH_TOKEN" ]; then
+            echo "::error::Le secret SANITY_AUTH_TOKEN est absent (Settings → Secrets and variables → Actions)."
+            exit 1
+          else
+            echo "pret=oui" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        if: steps.cfg.outputs.pret == 'oui'
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: studio/package-lock.json
+
+      - name: Installer les outils
+        if: steps.cfg.outputs.pret == 'oui'
+        run: npm ci
+
+      - name: Contrôler le contenu d'exemple et le schéma
+        if: steps.cfg.outputs.pret == 'oui'
+        run: node scripts/check-seed.mjs
+
+      - name: Mettre en ligne l'éditeur
+        if: steps.cfg.outputs.pret == 'oui'
+        run: npx sanity deploy --yes --url xadikoa --schema-required
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}

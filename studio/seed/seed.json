@@ -1,0 +1,1147 @@
+[
+  {
+    "_id": "rubrique-actualite",
+    "_type": "rubrique",
+    "code": "actualite",
+    "nom": "Actualité",
+    "ordre": 1,
+    "couleurFond": "#D3F90F",
+    "couleurTexte": "#000",
+    "couleurPale": "#F4FDD0",
+    "accroche": "Décrypter l’actu",
+    "description": "Décrypter ce qui se passe au Cameroun et dans l’environnement proche.",
+    "themes": [
+      "Faits",
+      "Décryptages",
+      "Réactions",
+      "Chroniques"
+    ]
+  },
+  {
+    "_id": "rubrique-business",
+    "_type": "rubrique",
+    "code": "business",
+    "nom": "Business",
+    "ordre": 2,
+    "couleurFond": "#0066FC",
+    "couleurTexte": "#fff",
+    "couleurPale": "#E2EDFF",
+    "accroche": "L’économie qui bouge",
+    "description": "Raconter l’économie, les entreprises et les initiatives qui bougent.",
+    "themes": [
+      "Entrepreneurs",
+      "Startups",
+      "Marchés",
+      "Emploi"
+    ]
+  },
+  {
+    "_id": "rubrique-societe",
+    "_type": "rubrique",
+    "code": "societe",
+    "nom": "Société",
+    "ordre": 3,
+    "couleurFond": "#CA41CD",
+    "couleurTexte": "#000",
+    "couleurPale": "#F7E3F7",
+    "accroche": "Nos réalités",
+    "description": "Parler des réalités et conversations de société.",
+    "themes": [
+      "Vie quotidienne",
+      "Jeunesse",
+      "Tendances sociales"
+    ]
+  },
+  {
+    "_id": "rubrique-culture",
+    "_type": "rubrique",
+    "code": "culture",
+    "nom": "Culture",
+    "ordre": 4,
+    "couleurFond": "#FC4284",
+    "couleurTexte": "#000",
+    "couleurPale": "#FFE4EE",
+    "accroche": "Ceux qui créent",
+    "description": "Mettre en lumière la création et les acteurs culturels.",
+    "themes": [
+      "Musique",
+      "Artistes",
+      "Événements",
+      "Cinéma"
+    ]
+  },
+  {
+    "_id": "rubrique-tendances",
+    "_type": "rubrique",
+    "code": "tendances",
+    "nom": "Tendances",
+    "ordre": 5,
+    "couleurFond": "#FFF3C0",
+    "couleurTexte": "#000",
+    "couleurPale": "#FFF9DF",
+    "accroche": "Ce qui circule",
+    "description": "Capturer les sujets qui circulent et les conversations du moment.",
+    "themes": [
+      "Internet",
+      "Réseaux sociaux",
+      "Phénomènes"
+    ]
+  },
+  {
+    "_id": "auteur-a1",
+    "_type": "auteur",
+    "nom": "Ariane Mbarga",
+    "fonction": "Rédactrice en chef adjointe",
+    "couleur": "#D3F90F",
+    "accroche": "elle couvre la ville",
+    "bio": "Elle couvre Douala et ses embouteillages depuis huit ans. Transport, logement, services publics : les sujets qui touchent le quotidien, expliqués sans détour.",
+    "photoUrl": "https://images.unsplash.com/photo-1648090326914-fcf7ad3f5aa1?auto=format&fit=crop&w=1400&q=70",
+    "exemple": true
+  },
+  {
+    "_id": "auteur-a2",
+    "_type": "auteur",
+    "nom": "Junior Ndzana",
+    "fonction": "Journaliste Business",
+    "couleur": "#0066FC",
+    "accroche": "il parle chiffres",
+    "bio": "Ancien analyste bancaire passé au journalisme. Il traduit les chiffres en histoires que tout le monde comprend, du marché Mokolo au port de Kribi.",
+    "photoUrl": "https://images.unsplash.com/photo-1648090327161-7be068ca3790?auto=format&fit=crop&w=1400&q=70",
+    "exemple": true
+  },
+  {
+    "_id": "auteur-a3",
+    "_type": "auteur",
+    "nom": "Flore Ekambi",
+    "fonction": "Culture & Tendances",
+    "couleur": "#FC4284",
+    "accroche": "elle suit le son",
+    "bio": "Elle passe ses nuits en concert et ses journées sur TikTok. Par conscience professionnelle, évidemment.",
+    "photoUrl": "https://images.unsplash.com/photo-1648090322527-138e464a299e?auto=format&fit=crop&w=1400&q=70",
+    "exemple": true
+  },
+  {
+    "_id": "auteur-a4",
+    "_type": "auteur",
+    "nom": "Samuel Tchoumi",
+    "fonction": "Reporter Société",
+    "couleur": "#CA41CD",
+    "accroche": "il écoute la rue",
+    "bio": "Reporter de terrain, il aime les sujets qu’on raconte rarement et les gens qu’on entend peu.",
+    "photoUrl": "https://images.unsplash.com/photo-1601979107535-46367552bc25?auto=format&fit=crop&w=1400&q=70",
+    "exemple": true
+  },
+  {
+    "_id": "article-1",
+    "_type": "article",
+    "titre": "Douala sous la pluie : pourquoi les mêmes quartiers sont inondés chaque année",
+    "slug": {
+      "_type": "slug",
+      "current": "douala-sous-la-pluie-pourquoi-les-memes-quartiers-sont-inondes-chaque-annee"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-actualite"
+    },
+    "themes": [
+      "Décryptages",
+      "Faits"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a1"
+    },
+    "datePublication": "2026-10-01T08:00:00.000Z",
+    "tempsLecture": 7,
+    "chapo": "Ndokoti, Makepe, Bonamoussadi… Les mêmes noms reviennent à chaque grosse averse. Drainage, constructions sur les zones humides, caniveaux bouchés : on vous explique ce qui bloque.",
+    "photoDescription": "Rue inondée à Douala",
+    "photoUrl": "https://images.unsplash.com/photo-1594386479412-fa62932f4cdc?auto=format&fit=crop&w=1400&q=70",
+    "corps": [
+      {
+        "_key": "b-00",
+        "_type": "paragraphe",
+        "texte": "Il suffit d’une nuit de pluie. Le matin, les mêmes images tournent sur WhatsApp : des voitures à l’arrêt à Ndokoti, des riverains qui écopent leur salon à Makepe, des enfants portés sur les épaules pour aller à l’école. Et chaque année, la même question : pourquoi encore ici ?"
+      },
+      {
+        "_key": "b-01",
+        "_type": "aRetenir",
+        "points": [
+          "Plusieurs quartiers sont construits sur d’anciennes zones humides qui absorbaient l’eau.",
+          "Les caniveaux bouchés par les déchets réduisent fortement l’écoulement.",
+          "Les travaux de drainage avancent, mais par tronçons, et pas toujours là où l’eau stagne le plus."
+        ]
+      },
+      {
+        "_key": "b-02",
+        "_type": "intertitre",
+        "texte": "Une ville construite sur l’eau"
+      },
+      {
+        "_key": "b-03",
+        "_type": "paragraphe",
+        "texte": "Douala est une ville d’estuaire. Une partie de son territoire se trouve à peine au-dessus du niveau de la mer, entre mangroves, rivières et marécages. À mesure que la ville grandit, ces espaces sont remblayés pour construire. L’eau, elle, n’a pas changé d’avis : elle continue de suivre la pente."
+      },
+      {
+        "_key": "b-04",
+        "_type": "citation",
+        "texte": "« Avant, ici, c’était un bas-fond. On cultivait du macabo. Aujourd’hui il y a des maisons partout, et l’eau ne sait plus où aller. »",
+        "auteur": "Pauline, 54 ans, habitante de Makepe"
+      },
+      {
+        "_key": "b-05",
+        "_type": "intertitre",
+        "texte": "Des caniveaux qui servent de poubelle"
+      },
+      {
+        "_key": "b-06",
+        "_type": "paragraphe",
+        "texte": "Deuxième coupable, moins spectaculaire : les déchets. Bouteilles, sachets, sable des chantiers. Quand le caniveau est plein avant la pluie, il ne sert à rien pendant. Les opérations de curage existent, mais elles arrivent souvent après les premières grosses averses."
+      },
+      {
+        "_key": "b-07",
+        "_type": "photoArticle",
+        "legende": "Caniveau obstrué après une averse",
+        "imageUrl": "https://images.unsplash.com/photo-1578222587194-d69bbe8ef092?auto=format&fit=crop&w=1400&q=70"
+      },
+      {
+        "_key": "b-08",
+        "_type": "intertitre",
+        "texte": "Ce qui peut changer"
+      },
+      {
+        "_key": "b-09",
+        "_type": "paragraphe",
+        "texte": "Les chantiers de drainage en cours sur certains axes devraient soulager une partie des quartiers. Les urbanistes que nous avons interrogés insistent sur un autre point : arrêter de construire dans les zones inondables, et garder des espaces où l’eau peut s’infiltrer. Moins visible qu’un pont, mais plus efficace sur la durée."
+      },
+      {
+        "_key": "b-10",
+        "_type": "paragraphe",
+        "texte": "En attendant, les habitants s’adaptent : murets devant les portes, meubles surélevés, groupes WhatsApp d’alerte par quartier. La débrouille, encore. On se dit tout : elle ne devrait pas être la seule solution."
+      }
+    ],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-2",
+    "_type": "article",
+    "titre": "Rentrée 2026 : ce que coûte vraiment un cartable",
+    "slug": {
+      "_type": "slug",
+      "current": "rentree-2026-ce-que-coute-vraiment-un-cartable"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-actualite"
+    },
+    "themes": [
+      "Faits",
+      "Chroniques"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a1"
+    },
+    "datePublication": "2026-09-29T08:00:00.000Z",
+    "tempsLecture": 5,
+    "chapo": "Fournitures, uniformes, frais APEE : on a fait les comptes avec trois familles de Yaoundé. Le total pique un peu.",
+    "photoDescription": "Fournitures scolaires au marché",
+    "photoUrl": "https://images.unsplash.com/photo-1748708986722-fa98ea7e35ee?auto=format&fit=crop&w=1400&q=70",
+    "corps": [],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-3",
+    "_type": "article",
+    "titre": "Délestages à Yaoundé : ce qu’il faut retenir du nouveau planning",
+    "slug": {
+      "_type": "slug",
+      "current": "delestages-a-yaounde-ce-quil-faut-retenir-du-nouveau-planning"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-actualite"
+    },
+    "themes": [
+      "Faits"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a1"
+    },
+    "datePublication": "2026-09-30T08:00:00.000Z",
+    "tempsLecture": 3,
+    "chapo": "Quartiers concernés, horaires, durée annoncée. L’essentiel en deux minutes, et ce qu’on sait (ou pas) sur la suite.",
+    "photoDescription": "Poteau électrique au crépuscule",
+    "photoUrl": "https://images.unsplash.com/photo-1474302173007-293973cab927?auto=format&fit=crop&w=1400&q=70",
+    "corps": [],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-4",
+    "_type": "article",
+    "titre": "Carte d’identité biométrique : les délais ont-ils vraiment raccourci ?",
+    "slug": {
+      "_type": "slug",
+      "current": "carte-didentite-biometrique-les-delais-ont-ils-vraiment-raccourci"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-actualite"
+    },
+    "themes": [
+      "Décryptages",
+      "Réactions"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a4"
+    },
+    "datePublication": "2026-09-26T08:00:00.000Z",
+    "tempsLecture": 6,
+    "chapo": "Les autorités annoncent quelques semaines d’attente. Sur le terrain, les témoignages varient. On a vérifié.",
+    "photoDescription": "File d’attente devant un guichet",
+    "photoUrl": "https://images.unsplash.com/photo-1659947234294-b217aaeb25f8?auto=format&fit=crop&w=1400&q=70",
+    "corps": [],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-5",
+    "_type": "article",
+    "titre": "Les fintechs veulent remplacer la tontine. Pas si vite.",
+    "slug": {
+      "_type": "slug",
+      "current": "les-fintechs-veulent-remplacer-la-tontine-pas-si-vite"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-business"
+    },
+    "themes": [
+      "Startups",
+      "Marchés"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a2"
+    },
+    "datePublication": "2026-09-30T08:00:00.000Z",
+    "tempsLecture": 8,
+    "chapo": "Applications d’épargne collective, mobile money, cagnottes en ligne : la tontine se digitalise. Mais ce qui fait sa force ne tient pas dans une appli.",
+    "photoDescription": "Réunion de tontine, carnet et billets",
+    "photoUrl": "https://images.unsplash.com/photo-1513904989243-829fd07f1725?auto=format&fit=crop&w=1400&q=70",
+    "corps": [
+      {
+        "_key": "b-00",
+        "_type": "paragraphe",
+        "texte": "Chaque dernier dimanche du mois, la scène est la même chez Mama Rose, à Bépanda : un cahier d’écolier, des billets comptés deux fois, et une vingtaine de membres qui se connaissent depuis quinze ans. Sa tontine a survécu à trois déménagements et une crise sanitaire. Une appli peut-elle faire mieux ?"
+      },
+      {
+        "_key": "b-01",
+        "_type": "aRetenir",
+        "points": [
+          "Plusieurs applications proposent désormais des tontines gérées par mobile money.",
+          "Elles promettent transparence et rappels automatiques des cotisations.",
+          "La confiance entre membres reste le vrai moteur, et elle ne se télécharge pas."
+        ]
+      },
+      {
+        "_key": "b-02",
+        "_type": "intertitre",
+        "texte": "Ce que les applis apportent"
+      },
+      {
+        "_key": "b-03",
+        "_type": "paragraphe",
+        "texte": "Fini le trésorier qui « oublie » le cahier. Les plateformes affichent qui a payé, qui doit, et qui touche le pot ce mois-ci. Pour les tontines entre collègues ou avec la diaspora, c’est un vrai plus : plus besoin d’être dans la même pièce."
+      },
+      {
+        "_key": "b-04",
+        "_type": "citation",
+        "texte": "« Avec l’appli, je vois tout en temps réel. Avant, je devais appeler trois personnes pour savoir où on en était. »",
+        "auteur": "Kévin, 29 ans, comptable à Douala"
+      },
+      {
+        "_key": "b-05",
+        "_type": "intertitre",
+        "texte": "Ce qu’elles ne remplacent pas"
+      },
+      {
+        "_key": "b-06",
+        "_type": "paragraphe",
+        "texte": "La tontine n’est pas qu’un outil d’épargne. C’est un réseau d’entraide, un rendez-vous, parfois une assurance maladie informelle. Quand un membre ne peut pas cotiser, on discute, on arrange. Une appli, elle, envoie une relance."
+      },
+      {
+        "_key": "b-07",
+        "_type": "paragraphe",
+        "texte": "Les fintechs l’ont compris et ajoutent des fonctions « communauté » : messagerie, votes, caisse de secours. Reste une question que plusieurs utilisateurs nous ont posée : que se passe-t-il si l’application ferme ? Voilà ce qu’il faut vérifier avant de confier votre cotisation à un écran."
+      }
+    ],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-6",
+    "_type": "article",
+    "titre": "Le prix du plantain a presque doublé en un an. Voilà pourquoi.",
+    "slug": {
+      "_type": "slug",
+      "current": "le-prix-du-plantain-a-presque-double-en-un-an-voila-pourquoi"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-business"
+    },
+    "themes": [
+      "Marchés"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a2"
+    },
+    "datePublication": "2026-09-28T08:00:00.000Z",
+    "tempsLecture": 5,
+    "chapo": "Routes, saison, exportations vers les pays voisins : trois raisons qui expliquent la facture au marché.",
+    "photoDescription": "Régimes de plantain au marché",
+    "photoUrl": "https://images.unsplash.com/photo-1666281005061-97380deccc50?auto=format&fit=crop&w=1400&q=70",
+    "corps": [],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-7",
+    "_type": "article",
+    "titre": "Elle a lancé sa marque de cosmétiques avec 200 000 FCFA",
+    "slug": {
+      "_type": "slug",
+      "current": "elle-a-lance-sa-marque-de-cosmetiques-avec-200-000-fcfa"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-business"
+    },
+    "themes": [
+      "Entrepreneurs"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a2"
+    },
+    "datePublication": "2026-09-25T08:00:00.000Z",
+    "tempsLecture": 6,
+    "chapo": "Beurre de karité, packaging fait maison et beaucoup de WhatsApp. Portrait d’une entrepreneuse de Bafoussam qui vend aujourd’hui dans quatre villes.",
+    "photoDescription": "Entrepreneuse dans son atelier",
+    "photoUrl": "https://images.unsplash.com/photo-1608560938854-96a63d9214a8?auto=format&fit=crop&w=1400&q=70",
+    "corps": [],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-8",
+    "_type": "article",
+    "titre": "Port de Kribi : ce que le nouveau terminal change pour l’emploi local",
+    "slug": {
+      "_type": "slug",
+      "current": "port-de-kribi-ce-que-le-nouveau-terminal-change-pour-lemploi-local"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-business"
+    },
+    "themes": [
+      "Emploi",
+      "Marchés"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a2"
+    },
+    "datePublication": "2026-09-22T08:00:00.000Z",
+    "tempsLecture": 7,
+    "chapo": "Promesses d’embauche, formations, sous-traitance : on a demandé aux habitants ce qu’ils en voient vraiment.",
+    "photoDescription": "Grues du port de Kribi",
+    "photoUrl": "https://images.unsplash.com/photo-1576487194710-67873008c0c6?auto=format&fit=crop&w=1400&q=70",
+    "corps": [],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-9",
+    "_type": "article",
+    "titre": "Colocation à Yaoundé : les étudiants écrivent leurs propres règles",
+    "slug": {
+      "_type": "slug",
+      "current": "colocation-a-yaounde-les-etudiants-ecrivent-leurs-propres-regles"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-societe"
+    },
+    "themes": [
+      "Jeunesse",
+      "Vie quotidienne"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a4"
+    },
+    "datePublication": "2026-09-29T08:00:00.000Z",
+    "tempsLecture": 6,
+    "chapo": "Loyer partagé, tours de ménage, visiteurs après 22h. À Ngoa-Ekellé, la coloc s’organise comme une petite république.",
+    "photoDescription": "Chambre d’étudiants à Ngoa-Ekellé",
+    "photoUrl": "https://images.unsplash.com/photo-1486487687687-e105fd869528?auto=format&fit=crop&w=1400&q=70",
+    "corps": [],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-10",
+    "_type": "article",
+    "titre": "La dot, combien et pour qui ? On en a parlé (calmement) en famille",
+    "slug": {
+      "_type": "slug",
+      "current": "la-dot-combien-et-pour-qui-on-en-a-parle-calmement-en-famille"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-societe"
+    },
+    "themes": [
+      "Tendances sociales"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a4"
+    },
+    "datePublication": "2026-09-27T08:00:00.000Z",
+    "tempsLecture": 9,
+    "chapo": "Entre tradition, pression sociale et budgets serrés, la question divise les générations. Cinq témoignages, zéro jugement.",
+    "photoDescription": "Cérémonie de mariage coutumier",
+    "photoUrl": "https://images.unsplash.com/photo-1594385464373-91a02a3afeda?auto=format&fit=crop&w=1400&q=70",
+    "corps": [],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-11",
+    "_type": "article",
+    "titre": "Une journée avec les benskineurs qui font rouler Douala",
+    "slug": {
+      "_type": "slug",
+      "current": "une-journee-avec-les-benskineurs-qui-font-rouler-douala"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-societe"
+    },
+    "themes": [
+      "Vie quotidienne"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a4"
+    },
+    "datePublication": "2026-09-24T08:00:00.000Z",
+    "tempsLecture": 7,
+    "chapo": "Départ à 5h, 120 km dans la journée, et une connaissance de la ville que Google Maps peut envier.",
+    "photoDescription": "Moto-taxi dans la circulation",
+    "photoUrl": "https://images.unsplash.com/photo-1601979112151-26f9fa4520b5?auto=format&fit=crop&w=1400&q=70",
+    "corps": [],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-12",
+    "_type": "article",
+    "titre": "Santé mentale : les jeunes en parlent enfin, un peu",
+    "slug": {
+      "_type": "slug",
+      "current": "sante-mentale-les-jeunes-en-parlent-enfin-un-peu"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-societe"
+    },
+    "themes": [
+      "Jeunesse"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a1"
+    },
+    "datePublication": "2026-09-20T08:00:00.000Z",
+    "tempsLecture": 8,
+    "chapo": "Comptes Instagram, groupes de parole, psychologues en ligne. Le sujet sort doucement du silence, avec ses limites.",
+    "photoDescription": "Groupe de parole",
+    "photoUrl": "https://images.unsplash.com/photo-1642344741786-97a10415a0ba?auto=format&fit=crop&w=1400&q=70",
+    "corps": [],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-13",
+    "_type": "article",
+    "titre": "Le makossa revient-il vraiment ? On a posé la question aux DJ",
+    "slug": {
+      "_type": "slug",
+      "current": "le-makossa-revient-il-vraiment-on-a-pose-la-question-aux-dj"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-culture"
+    },
+    "themes": [
+      "Musique",
+      "Artistes"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a3"
+    },
+    "datePublication": "2026-09-30T08:00:00.000Z",
+    "tempsLecture": 6,
+    "chapo": "Samples dans l’afrobeats, soirées revival, playlists de mariage : le son de Douala a la cote. Effet nostalgie ou vrai retour ?",
+    "photoDescription": "DJ en soirée à Akwa",
+    "photoUrl": "https://images.unsplash.com/photo-1630163664357-370482810342?auto=format&fit=crop&w=1400&q=70",
+    "corps": [],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-14",
+    "_type": "article",
+    "titre": "Écrans Noirs : les cinq films à ne pas rater cette année",
+    "slug": {
+      "_type": "slug",
+      "current": "ecrans-noirs-les-cinq-films-a-ne-pas-rater-cette-annee"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-culture"
+    },
+    "themes": [
+      "Cinéma",
+      "Événements"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a3"
+    },
+    "datePublication": "2026-09-26T08:00:00.000Z",
+    "tempsLecture": 5,
+    "chapo": "Comédie, documentaire, drame. Notre sélection pour le festival de Yaoundé, avec ce qu’il faut savoir avant d’y aller.",
+    "photoDescription": "Salle de cinéma",
+    "photoUrl": "https://images.unsplash.com/photo-1563303672-ab195c9c1610?auto=format&fit=crop&w=1400&q=70",
+    "corps": [],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-15",
+    "_type": "article",
+    "titre": "Bikutsi, mbolé, afro-trap : la nouvelle carte du son camerounais",
+    "slug": {
+      "_type": "slug",
+      "current": "bikutsi-mbole-afro-trap-la-nouvelle-carte-du-son-camerounais"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-culture"
+    },
+    "themes": [
+      "Musique"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a3"
+    },
+    "datePublication": "2026-09-23T08:00:00.000Z",
+    "tempsLecture": 10,
+    "chapo": "D’Ebolowa à Bonabéri, on a cartographié les scènes qui comptent. Spoiler : tout se passe sur les réseaux.",
+    "photoDescription": "Concert en plein air",
+    "photoUrl": "https://images.unsplash.com/photo-1544293161-64ee2334980d?auto=format&fit=crop&w=1400&q=70",
+    "corps": [],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-16",
+    "_type": "article",
+    "titre": "Il dessine des BD en ewondo, et les lecteurs en redemandent",
+    "slug": {
+      "_type": "slug",
+      "current": "il-dessine-des-bd-en-ewondo-et-les-lecteurs-en-redemandent"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-culture"
+    },
+    "themes": [
+      "Artistes"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a3"
+    },
+    "datePublication": "2026-09-19T08:00:00.000Z",
+    "tempsLecture": 5,
+    "chapo": "Trois tomes autoédités, une communauté fidèle sur Facebook et une ambition : que les enfants lisent dans leur langue.",
+    "photoDescription": "Planches de BD sur une table",
+    "photoUrl": "https://images.unsplash.com/photo-1741211699648-8884bc6f70f2?auto=format&fit=crop&w=1400&q=70",
+    "corps": [],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-17",
+    "_type": "article",
+    "titre": "Vous avez vu ça ? Le défi du ndolé en 15 minutes envahit TikTok",
+    "slug": {
+      "_type": "slug",
+      "current": "vous-avez-vu-ca-le-defi-du-ndole-en-15-minutes-envahit-tiktok"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-tendances"
+    },
+    "themes": [
+      "Réseaux sociaux",
+      "Phénomènes"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a3"
+    },
+    "datePublication": "2026-10-01T08:00:00.000Z",
+    "tempsLecture": 4,
+    "chapo": "Le plat qui prend normalement une demi-journée, version chrono. Les puristes s’étranglent, les vidéos cumulent les vues. On a testé.",
+    "photoDescription": "Plat de ndolé filmé au téléphone",
+    "photoUrl": "https://images.unsplash.com/photo-1594999945795-e570338fdd12?auto=format&fit=crop&w=1400&q=70",
+    "corps": [
+      {
+        "_key": "b-00",
+        "_type": "paragraphe",
+        "texte": "Il est 19h, la cuisine est filmée en plongée, un chronomètre s’affiche en haut de l’écran. Feuilles de ndolé déjà lavées, arachides moulues d’avance, crevettes prêtes. Quinze minutes plus tard, le plat est servi. Les commentaires, eux, mijotent beaucoup plus longtemps."
+      },
+      {
+        "_key": "b-01",
+        "_type": "aRetenir",
+        "points": [
+          "Le défi consiste à préparer un ndolé en 15 minutes chrono, en vidéo.",
+          "La plupart des participants préparent les ingrédients à l’avance (et ne le disent pas toujours).",
+          "Le débat oppose surtout la « team rapide » aux gardiens de la recette familiale."
+        ]
+      },
+      {
+        "_key": "b-02",
+        "_type": "intertitre",
+        "texte": "Pourquoi ça marche"
+      },
+      {
+        "_key": "b-03",
+        "_type": "paragraphe",
+        "texte": "Le format coche toutes les cases : un plat que tout le monde connaît, un défi simple à comprendre, et un débat garanti. Chaque vidéo ressemble à une provocation polie envers les mamans et les tantes."
+      },
+      {
+        "_key": "b-04",
+        "_type": "citation",
+        "texte": "« Quinze minutes ? Mon ndolé, c’est un projet de week-end. Mais j’avoue que j’ai regardé toutes les vidéos. »",
+        "auteur": "Une internaute, en commentaire"
+      },
+      {
+        "_key": "b-05",
+        "_type": "intertitre",
+        "texte": "On a testé"
+      },
+      {
+        "_key": "b-06",
+        "_type": "paragraphe",
+        "texte": "Verdict de la rédaction : c’est faisable, à condition de tricher un peu sur la préparation. Le goût ? Correct. Pas celui du dimanche chez la grand-mère, mais personne n’a laissé son assiette. On attend vos chronos."
+      }
+    ],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-18",
+    "_type": "article",
+    "titre": "Camfranglais : les expressions de l’année, expliquées à votre tonton",
+    "slug": {
+      "_type": "slug",
+      "current": "camfranglais-les-expressions-de-lannee-expliquees-a-votre-tonton"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-tendances"
+    },
+    "themes": [
+      "Internet",
+      "Phénomènes"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a3"
+    },
+    "datePublication": "2026-09-28T08:00:00.000Z",
+    "tempsLecture": 4,
+    "chapo": "Vous les entendez partout sans toujours oser demander. Petit lexique pour suivre la conversation au prochain repas de famille.",
+    "photoDescription": "Jeunes qui discutent en terrasse",
+    "photoUrl": "https://images.unsplash.com/photo-1601979112079-f08540b2a4f7?auto=format&fit=crop&w=1400&q=70",
+    "corps": [],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-19",
+    "_type": "article",
+    "titre": "Les friperies de Mokolo, nouveau spot mode de la Gen Z",
+    "slug": {
+      "_type": "slug",
+      "current": "les-friperies-de-mokolo-nouveau-spot-mode-de-la-gen-z"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-tendances"
+    },
+    "themes": [
+      "Phénomènes"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a3"
+    },
+    "datePublication": "2026-09-25T08:00:00.000Z",
+    "tempsLecture": 5,
+    "chapo": "Vintage, pièces rares et négociation obligatoire. Le marché devient un décor de shooting à ciel ouvert.",
+    "photoDescription": "Stand de friperie au marché",
+    "photoUrl": "https://images.unsplash.com/photo-1594386167307-e448a81529ab?auto=format&fit=crop&w=1400&q=70",
+    "corps": [],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "article-20",
+    "_type": "article",
+    "titre": "Statuts WhatsApp, chaînes, captures : comment l’info circule vraiment",
+    "slug": {
+      "_type": "slug",
+      "current": "statuts-whatsapp-chaines-captures-comment-linfo-circule-vraiment"
+    },
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-tendances"
+    },
+    "themes": [
+      "Réseaux sociaux",
+      "Internet"
+    ],
+    "auteur": {
+      "_type": "reference",
+      "_ref": "auteur-a1"
+    },
+    "datePublication": "2026-09-21T08:00:00.000Z",
+    "tempsLecture": 7,
+    "chapo": "Une rumeur peut faire le tour de la ville avant midi. On a suivi le parcours d’un message, du premier partage au démenti.",
+    "photoDescription": "Téléphone affichant des messages",
+    "photoUrl": "https://images.unsplash.com/photo-1659947234309-804b7fa01cf2?auto=format&fit=crop&w=1400&q=70",
+    "corps": [],
+    "exemple": true,
+    "relu": false
+  },
+  {
+    "_id": "video-ep42",
+    "_type": "video",
+    "format": "episode",
+    "titre": "La pluie, le plantain et le port",
+    "numero": 42,
+    "duree": "12 min",
+    "datePublication": "2026-09-25T17:00:00.000Z",
+    "description": "Inondations à Douala, prix du plantain et nouveau terminal de Kribi : les trois sujets de la semaine.",
+    "miniatureUrl": "https://images.unsplash.com/photo-1659947234309-804b7fa01cf2?auto=format&fit=crop&w=1400&q=70",
+    "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/friday.mp4",
+    "exemple": true
+  },
+  {
+    "_id": "video-ep41",
+    "_type": "video",
+    "format": "episode",
+    "titre": "Rentrée : ce que ça coûte vraiment",
+    "numero": 41,
+    "duree": "11 min",
+    "datePublication": "2026-09-18T17:00:00.000Z",
+    "description": "Fournitures, uniformes, frais APEE. On refait les comptes avec des familles de Yaoundé.",
+    "miniatureUrl": "https://images.unsplash.com/photo-1748708986722-fa98ea7e35ee?auto=format&fit=crop&w=1400&q=70",
+    "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+    "exemple": true
+  },
+  {
+    "_id": "video-ep40",
+    "_type": "video",
+    "format": "episode",
+    "titre": "Le retour du makossa",
+    "numero": 40,
+    "duree": "14 min",
+    "datePublication": "2026-09-11T17:00:00.000Z",
+    "description": "DJ, playlists de mariage et samples afrobeats : le son de Douala revient sur le devant de la scène.",
+    "miniatureUrl": "https://images.unsplash.com/photo-1777734448502-33378ae93861?auto=format&fit=crop&w=1400&q=70",
+    "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/friday.mp4",
+    "exemple": true
+  },
+  {
+    "_id": "video-ep39",
+    "_type": "video",
+    "format": "episode",
+    "titre": "Kribi, le port qui fait rêver",
+    "numero": 39,
+    "duree": "13 min",
+    "datePublication": "2026-09-04T17:00:00.000Z",
+    "description": "Emplois promis, formations, sous-traitance : ce que les habitants voient vraiment.",
+    "miniatureUrl": "https://images.unsplash.com/photo-1659947234285-ebf2826cfe15?auto=format&fit=crop&w=1400&q=70",
+    "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+    "exemple": true
+  },
+  {
+    "_id": "video-ep38",
+    "_type": "video",
+    "format": "episode",
+    "titre": "Délestages : la ville dans le noir",
+    "numero": 38,
+    "duree": "10 min",
+    "datePublication": "2026-08-28T17:00:00.000Z",
+    "description": "Nouveau planning, quartiers concernés et débrouille au quotidien.",
+    "miniatureUrl": "https://images.unsplash.com/photo-1636385918427-7aa474ffa8ae?auto=format&fit=crop&w=1400&q=70",
+    "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/friday.mp4",
+    "exemple": true
+  },
+  {
+    "_id": "video-ep37",
+    "_type": "video",
+    "format": "episode",
+    "titre": "Tontines 2.0",
+    "numero": 37,
+    "duree": "12 min",
+    "datePublication": "2026-08-21T17:00:00.000Z",
+    "description": "Les fintechs veulent digitaliser la tontine. Ce qui marche, et ce qui ne passe pas.",
+    "miniatureUrl": "https://images.unsplash.com/photo-1597340432864-d2daf0051d99?auto=format&fit=crop&w=1400&q=70",
+    "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/friday.mp4",
+    "exemple": true
+  },
+  {
+    "_id": "video-s1",
+    "_type": "video",
+    "format": "short",
+    "titre": "Le plantain en 60 secondes",
+    "duree": "0:58",
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-business"
+    },
+    "datePublication": "2026-09-21T12:00:00.000Z",
+    "miniatureUrl": "https://images.unsplash.com/photo-1601979107569-731e84cee3e8?auto=format&fit=crop&w=1400&q=70",
+    "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+    "exemple": true
+  },
+  {
+    "_id": "video-s2",
+    "_type": "video",
+    "format": "short",
+    "titre": "Ndolé chrono : on a testé",
+    "duree": "1:12",
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-tendances"
+    },
+    "datePublication": "2026-09-22T12:00:00.000Z",
+    "miniatureUrl": "https://images.unsplash.com/photo-1655074084308-901ea6b88fd3?auto=format&fit=crop&w=1400&q=70",
+    "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/friday.mp4",
+    "exemple": true
+  },
+  {
+    "_id": "video-s3",
+    "_type": "video",
+    "format": "short",
+    "titre": "3 choses à savoir sur les délestages",
+    "duree": "0:45",
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-actualite"
+    },
+    "datePublication": "2026-09-23T12:00:00.000Z",
+    "miniatureUrl": "https://images.unsplash.com/photo-1659947234324-635155dbca59?auto=format&fit=crop&w=1400&q=70",
+    "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+    "exemple": true
+  },
+  {
+    "_id": "video-s4",
+    "_type": "video",
+    "format": "short",
+    "titre": "Makossa revival : le son de la semaine",
+    "duree": "0:52",
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-culture"
+    },
+    "datePublication": "2026-09-24T12:00:00.000Z",
+    "miniatureUrl": "https://images.unsplash.com/photo-1777734448502-33378ae93861?auto=format&fit=crop&w=1400&q=70",
+    "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/friday.mp4",
+    "exemple": true
+  },
+  {
+    "_id": "video-s5",
+    "_type": "video",
+    "format": "short",
+    "titre": "Coloc à Ngoa-Ekellé : le règlement",
+    "duree": "1:05",
+    "rubrique": {
+      "_type": "reference",
+      "_ref": "rubrique-societe"
+    },
+    "datePublication": "2026-09-25T12:00:00.000Z",
+    "miniatureUrl": "https://images.unsplash.com/photo-1615463669098-521a22047a1e?auto=format&fit=crop&w=1400&q=70",
+    "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/friday.mp4",
+    "exemple": true
+  },
+  {
+    "_id": "accueil",
+    "_type": "accueil",
+    "une": {
+      "_type": "reference",
+      "_ref": "article-1"
+    },
+    "aLaUne": [
+      {
+        "_type": "reference",
+        "_ref": "article-5",
+        "_key": "u-00"
+      },
+      {
+        "_type": "reference",
+        "_ref": "article-13",
+        "_key": "u-01"
+      },
+      {
+        "_type": "reference",
+        "_ref": "article-9",
+        "_key": "u-02"
+      },
+      {
+        "_type": "reference",
+        "_ref": "article-17",
+        "_key": "u-03"
+      }
+    ],
+    "tendances": [
+      {
+        "_type": "reference",
+        "_ref": "article-17",
+        "_key": "t-00"
+      },
+      {
+        "_type": "reference",
+        "_ref": "article-6",
+        "_key": "t-01"
+      },
+      {
+        "_type": "reference",
+        "_ref": "article-13",
+        "_key": "t-02"
+      },
+      {
+        "_type": "reference",
+        "_ref": "article-3",
+        "_key": "t-03"
+      },
+      {
+        "_type": "reference",
+        "_ref": "article-10",
+        "_key": "t-04"
+      }
+    ],
+    "bandeau": [
+      {
+        "_type": "reference",
+        "_ref": "article-17",
+        "_key": "d-00"
+      },
+      {
+        "_type": "reference",
+        "_ref": "article-6",
+        "_key": "d-01"
+      },
+      {
+        "_type": "reference",
+        "_ref": "article-13",
+        "_key": "d-02"
+      },
+      {
+        "_type": "reference",
+        "_ref": "article-3",
+        "_key": "d-03"
+      },
+      {
+        "_type": "reference",
+        "_ref": "article-10",
+        "_key": "d-04"
+      },
+      {
+        "_type": "reference",
+        "_ref": "article-1",
+        "_key": "d-05"
+      },
+      {
+        "_type": "reference",
+        "_ref": "article-5",
+        "_key": "d-06"
+      }
+    ]
+  },
+  {
+    "_id": "reglages",
+    "_type": "reglages",
+    "reseaux": [
+      {
+        "_key": "r-01",
+        "_type": "reseau",
+        "plateforme": "Instagram",
+        "url": "https://www.instagram.com/xadikoa",
+        "identifiant": "@xadikoa",
+        "format": "Carrousels & stories"
+      },
+      {
+        "_key": "r-02",
+        "_type": "reseau",
+        "plateforme": "TikTok",
+        "url": "https://www.tiktok.com/@xadikoa",
+        "identifiant": "@xadikoa",
+        "format": "Vidéos courtes"
+      },
+      {
+        "_key": "r-03",
+        "_type": "reseau",
+        "plateforme": "Facebook",
+        "url": "https://www.facebook.com/profile.php?id=61593740588874",
+        "identifiant": "Page XADIKOA",
+        "format": "Articles & lives"
+      },
+      {
+        "_key": "r-04",
+        "_type": "reseau",
+        "plateforme": "YouTube",
+        "url": "https://www.youtube.com/@xadikoa",
+        "identifiant": "@xadikoa",
+        "format": "Le Brief XDK"
+      },
+      {
+        "_key": "r-05",
+        "_type": "reseau",
+        "plateforme": "X",
+        "url": "https://x.com/XaDiKoa_",
+        "identifiant": "@XaDiKoa_",
+        "format": "Actus en bref"
+      }
+    ]
+  }
+]

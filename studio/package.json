@@ -1,0 +1,26 @@
+{
+  "name": "xadikoa-studio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Éditeur de contenu (Sanity Studio) du média XADIKOA",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "seed": "node scripts/seed.mjs",
+    "check": "node scripts/check-seed.mjs"
+  },
+  "dependencies": {
+    "@sanity/vision": "^6.18.0",
+    "react": "^19.2.2",
+    "react-dom": "^19.2.2",
+    "sanity": "^6.18.0",
+    "styled-components": "^6.1.15"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "@types/react": "^19.0.0"
+  },
+  "engines": { "node": ">=22.12" }
+}

@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>XADIKOA, on se dit tout</title>
+<script>
+/* Connexion au back-end (Sanity). Tant que projectId est vide, le site affiche son contenu intégré.
+   Renseigner ici le même projectId que dans studio/config.json. */
+window.XDK_CONFIG = { sanity: { projectId: '', dataset: 'production', apiVersion: '2025-02-19' } };
+</script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -144,6 +149,7 @@ footer [style*="display: flex"][style*="justify-content: space-between"]{flex-wr
 }
 </style>
 </helmet>
+<sc-if value="{{ ready }}" hint-placeholder-val="{{ true }}">
 <div style="min-height:100vh;display:flex;flex-direction:column;font-family:'General Sans',system-ui,sans-serif">
 
 <div style="background:#000;color:#fff">
@@ -289,7 +295,7 @@ footer [style*="display: flex"][style*="justify-content: space-between"]{flex-wr
 <div style="position:relative;aspect-ratio:16/9;background:#0066FC;border-radius:22px;overflow:hidden">
 <sc-if value="{{ patterns }}" hint-placeholder-val="{{ true }}"><sc-for list="{{ tunnel }}" as="r" hint-placeholder-count="9"><div style="position:absolute;top:{{ r.t }};left:{{ r.l }};right:{{ r.l }};bottom:{{ r.b }};border:2px solid #000;border-radius:{{ r.r }};animation:xdkPulse 3.2s ease-in-out {{ r.delay }} infinite"></div></sc-for></sc-if>
 <img src="assets/xadikoa-logo.png" alt="" style="position:absolute;left:50%;top:44%;width:38%;transform:translate(-50%,-50%) rotate(-3deg);animation:xdkWobble 5s ease-in-out infinite">
-<a href="#" onClick="{{ playEpisode }}" style="border-radius:999px;position:absolute;left:24px;bottom:24px;display:flex;align-items:center;gap:14px;height:56px;padding:0 20px;background:#D3F90F;color:#000;border:0;font:600 16px/1 'General Sans',sans-serif" style-hover="background:#fff;color:#000"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>Regarder l’épisode 42</a>
+<sc-if value="{{ hasEpisodes }}" hint-placeholder-val="{{ true }}"><a href="#" onClick="{{ playEpisode }}" style="border-radius:999px;position:absolute;left:24px;bottom:24px;display:flex;align-items:center;gap:14px;height:56px;padding:0 20px;background:#D3F90F;color:#000;border:0;font:600 16px/1 'General Sans',sans-serif" style-hover="background:#fff;color:#000"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>Regarder l’épisode {{ lastEpNum }}</a></sc-if>
 </div>
 </div>
 </section>
@@ -588,7 +594,7 @@ footer [style*="display: flex"][style*="justify-content: space-between"]{flex-wr
 </div>
 <figure style="margin:40px 0 0;display:flex;flex-direction:column;gap:12px">
 <div style="position:relative;aspect-ratio:21/9;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ art.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div>
-<figcaption style="font:500 14px/1.4 'General Sans',sans-serif;color:#555">{{ art.photo }}. Photo : Unsplash</figcaption>
+<figcaption style="font:500 14px/1.4 'General Sans',sans-serif;color:#555">{{ art.caption }}</figcaption>
 </figure>
 </section>
 <section style="max-width:1440px;margin:0 auto;padding:56px 48px 0;display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
@@ -598,7 +604,7 @@ footer [style*="display: flex"][style*="justify-content: space-between"]{flex-wr
 <sc-if value="{{ b.isP }}"><p style="margin:0;font:400 19px/1.7 'General Sans',sans-serif;color:#111;text-wrap:pretty">{{ b.text }}</p></sc-if>
 <sc-if value="{{ b.isH2 }}"><h2 style="margin:18px 0 0;font:600 32px/1.12 'General Sans',sans-serif;letter-spacing:-.02em">{{ b.text }}</h2></sc-if>
 <sc-if value="{{ b.isQuote }}"><figure style="margin:14px 0;padding:28px 0;border-top:1px solid rgba(0,0,0,.12);border-bottom:1px solid rgba(0,0,0,.12);display:flex;flex-direction:column;gap:14px"><blockquote style="margin:0;font:500 30px/1.25 'General Sans',sans-serif;letter-spacing:-.015em;text-wrap:pretty">{{ b.text }}</blockquote><figcaption style="font:700 26px/1 'Caveat',cursive;color:#0066FC">— {{ b.by }}</figcaption></figure></sc-if>
-<sc-if value="{{ b.isImg }}"><figure style="margin:14px 0;display:flex;flex-direction:column;gap:10px"><div style="position:relative;aspect-ratio:3/2;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ b.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div><figcaption style="font:500 14px/1.4 'General Sans',sans-serif;color:#555">{{ b.text }}. Photo : XADIKOA</figcaption></figure></sc-if>
+<sc-if value="{{ b.isImg }}"><figure style="margin:14px 0;display:flex;flex-direction:column;gap:10px"><div style="position:relative;aspect-ratio:3/2;border-radius:18px;overflow:hidden;background:#EFEDE8"><img src="{{ b.img }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.2,.7,.2,1)" style-hover="transform:scale(1.06)"></div><figcaption style="font:500 14px/1.4 'General Sans',sans-serif;color:#555">{{ b.caption }}</figcaption></figure></sc-if>
 <sc-if value="{{ b.isRetenir }}"><div style="background:#FFF3C0;border-radius:24px;padding:32px 34px;display:flex;flex-direction:column;gap:16px"><span style="font:700 30px/1 'Caveat',cursive;color:#0066FC">Voilà ce qu’il faut retenir.</span><ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px"><sc-for list="{{ b.items }}" as="it" hint-placeholder-count="3"><li style="display:grid;grid-template-columns:20px minmax(0,1fr);gap:12px;font:500 17px/1.5 'General Sans',sans-serif"><span style="width:8px;height:8px;border-radius:50%;background:#0066FC;margin-top:9px"></span>{{ it }}</li></sc-for></ul></div></sc-if>
 </sc-for>
 </sc-if>
@@ -971,6 +977,8 @@ footer [style*="display: flex"][style*="justify-content: space-between"]{flex-wr
 </div>
 <div style="position:relative;width:{{ video.boxW }};aspect-ratio:{{ video.ratio }};margin:0 auto;border-radius:22px;overflow:hidden;background:#000;box-shadow:0 40px 90px -30px rgba(0,102,252,.55)">
 <sc-for list="{{ videoList }}" as="vid" hint-placeholder-count="0"><video src="{{ vid.src }}" poster="{{ vid.img }}" controls="" autoplay="" playsinline="" ref="{{ videoRef }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"></video></sc-for>
+<sc-for list="{{ embedList }}" as="em" hint-placeholder-count="0"><iframe src="{{ em.embed }}" title="{{ em.t }}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;inset:0;width:100%;height:100%;border:0;display:block"></iframe></sc-for>
+<sc-for list="{{ extList }}" as="ex" hint-placeholder-count="0"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center;color:#fff;background:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.75)),center/cover no-repeat url({{ ex.img }})"><span style="font:700 30px/1 'Caveat',cursive;color:#D3F90F">à voir sur {{ ex.extName }}</span><a href="{{ ex.ext }}" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:10px;height:52px;padding:0 20px;border-radius:999px;background:#D3F90F;color:#000;font:600 16px/1 'General Sans',sans-serif" style-hover="background:#fff">Ouvrir sur {{ ex.extName }}</a></div></sc-for>
 <sc-if value="{{ videoErr }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center;color:#fff;background:linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.75)),center/cover no-repeat url({{ video.img }})"><span style="font:700 30px/1 'Caveat',cursive;color:#D3F90F">cette vidéo n’est pas disponible pour le moment</span><a href="#" onClick="{{ videoYoutube }}" style="display:flex;align-items:center;gap:10px;height:52px;padding:0 20px;border-radius:999px;background:#D3F90F;color:#000;font:600 16px/1 'General Sans',sans-serif" style-hover="background:#fff">Voir sur YouTube</a></div></sc-if>
 </div>
 <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font:500 14px/1.3 'General Sans',sans-serif;color:#aaa"><span>{{ video.meta }}</span></div>
@@ -983,6 +991,27 @@ footer [style*="display: flex"][style*="justify-content: space-between"]{flex-wr
 </sc-if>
 
 </div>
+</sc-if>
+
+<sc-if value="{{ isLoading }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100vh;display:grid;place-items:center;background:#fff">
+<div style="display:flex;flex-direction:column;align-items:center;gap:18px">
+<img src="assets/xadikoa-logo.png" alt="XADIKOA" style="height:56px;animation:xdkPulse 1.4s ease-in-out infinite">
+<span style="font:600 15px/1 'General Sans',sans-serif;color:#555">Chargement…</span>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isError }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100vh;display:grid;place-items:center;background:#fff;padding:24px">
+<div style="max-width:440px;text-align:center;display:flex;flex-direction:column;gap:16px;align-items:center">
+<img src="assets/xadikoa-logo.png" alt="XADIKOA" style="height:48px">
+<h1 style="margin:0;font:600 28px/1.15 'General Sans',sans-serif;letter-spacing:-.02em">Le site n’arrive pas à charger ses articles.</h1>
+<p style="margin:0;font:400 17px/1.45 'General Sans',sans-serif;color:#444">Vérifiez votre connexion, puis réessayez.</p>
+<button type="button" onClick="{{ retry }}" style="height:52px;padding:0 26px;border:0;border-radius:999px;background:#000;color:#fff;font:600 16px/1 'General Sans',sans-serif;cursor:pointer">Réessayer</button>
+</div>
+</div>
+</sc-if>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;homeDirection&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;A&quot;,&quot;B&quot;],&quot;default&quot;:&quot;A&quot;,&quot;tsType&quot;:&quot;'A' | 'B'&quot;,&quot;section&quot;:&quot;Accueil&quot;},&quot;patterns&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Marque&quot;}}">
 class Component extends DCLogic {
@@ -1081,25 +1110,184 @@ class Component extends DCLogic {
       { n: 'Ép. 37', t: 'Tontines 2.0', d: '12 min', date: '2026-08-21', ph: '1597340432864-d2daf0051d99', src: SAMPLE('ForBiggerJoyrides'), desc: 'Les fintechs veulent digitaliser la tontine. Ce qui marche, et ce qui ne passe pas.' },
     ];
     const SHORT_SRC = { s1: SAMPLE('ForBiggerFun'), s2: SAMPLE('ForBiggerBlazes'), s3: SAMPLE('ForBiggerEscapes'), s4: SAMPLE('ForBiggerJoyrides'), s5: SAMPLE('ForBiggerMeltdowns') };
-    return { CATS, AUTHORS, ARTICLES, BODIES, SHORTS, U, PH, AUTH_PH, SHORT_PH, BODY_PH, EPISODES, SHORT_SRC };
+    const slugify = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
+    ARTICLES.forEach(a => { a.slug = slugify(a.title); });
+    const HOME = { une: 1, aLaUne: [5, 13, 9, 17], tendances: [17, 6, 13, 3, 10], bandeau: [17, 6, 13, 3, 10, 1, 5] };
+    return { CATS, AUTHORS, ARTICLES, BODIES, SHORTS, U, PH, AUTH_PH, SHORT_PH, BODY_PH, EPISODES, SHORT_SRC, HOME, HOT: null, SOCIALS: null };
   })();
 
-  state = { page: 'home', cat: 'actualite', articleId: 1, authorId: 'a1', query: '', searchCat: 'all', sort: 'pertinence', rubTag: 'all', homeTab: 'business', dir: null, toast: null, nlEmail: '', nlDone: false, nlFreq: 'matin', nlCats: ['actualite', 'business', 'societe', 'culture', 'tendances'], nlInline: '', nlInlineDone: false, contactDone: false, video: null, vFilter: 'all' };
+  state = { page: 'home', cat: 'actualite', articleId: null, authorId: null, live: (window.XDK_CONFIG && window.XDK_CONFIG.sanity && window.XDK_CONFIG.sanity.projectId) ? 'loading' : 'embedded', query: '', searchCat: 'all', sort: 'pertinence', rubTag: 'all', homeTab: 'business', dir: null, toast: null, nlEmail: '', nlDone: false, nlFreq: 'matin', nlCats: ['actualite', 'business', 'societe', 'culture', 'tendances'], nlInline: '', nlInlineDone: false, contactDone: false, video: null, vFilter: 'all' };
   searchRef = React.createRef();
 
-  go(page, extra = {}) { this.setState({ page, ...extra }); try { window.scrollTo(0, 0); } catch (e) {} }
+  // ── Adresses des pages : #/article/mon-titre, #/rubrique/business, #/videos… ──
+  routeOf(page, st) {
+    const { ARTICLES } = this.D;
+    switch (page) {
+      case 'rubrique': return '/rubrique/' + st.cat;
+      case 'article': { const a = ARTICLES.find(x => x.id === st.articleId); return a ? '/article/' + a.slug : '/'; }
+      case 'author': return '/auteur/' + encodeURIComponent(st.authorId);
+      case 'videos': return '/videos';
+      case 'newsletter': return '/newsletter';
+      case 'search': return '/recherche';
+      case 'about': return '/a-propos';
+      default: return '/';
+    }
+  }
+  applyRoute() {
+    const { ARTICLES, CATS, AUTHORS } = this.D;
+    const [p, arg] = (location.hash || '').replace(/^#\/?/, '').split('/').map(x => { try { return decodeURIComponent(x); } catch (e) { return x; } });
+    let next = { page: 'home' };
+    if (p === 'article') { const a = ARTICLES.find(x => x.slug === arg); if (a) next = { page: 'article', articleId: a.id }; }
+    else if (p === 'rubrique') { if (CATS.some(c => c.id === arg)) next = { page: 'rubrique', cat: arg, rubTag: 'all' }; }
+    else if (p === 'auteur') { if (AUTHORS.some(a => a.id === arg)) next = { page: 'author', authorId: arg }; }
+    else if (p === 'videos') next = { page: 'videos' };
+    else if (p === 'newsletter') next = { page: 'newsletter' };
+    else if (p === 'recherche') next = { page: 'search' };
+    else if (p === 'a-propos') next = { page: 'about' };
+    this.setState(next);
+  }
+  go(page, extra = {}) {
+    this.setState({ page, ...extra });
+    try {
+      const r = '#' + this.routeOf(page, { ...this.state, ...extra });
+      if (location.hash !== r) history.pushState(null, '', r);
+      window.scrollTo(0, 0);
+    } catch (e) {}
+  }
+  syncTitle() {
+    try {
+      const s = this.state, D = this.D; let t = 'XADIKOA, on se dit tout';
+      if (s.page === 'article') { const a = D.ARTICLES.find(x => x.id === s.articleId); if (a) t = a.title + ' — XADIKOA'; }
+      else if (s.page === 'rubrique') { const c = D.CATS.find(x => x.id === s.cat); if (c) t = c.name + ' — XADIKOA'; }
+      else if (s.page === 'author') { const a = D.AUTHORS.find(x => x.id === s.authorId); if (a) t = a.name + ' — XADIKOA'; }
+      else if (s.page === 'videos') t = 'Vidéos — XADIKOA';
+      else if (s.page === 'newsletter') t = 'Newsletter — XADIKOA';
+      else if (s.page === 'search') t = 'Recherche — XADIKOA';
+      else if (s.page === 'about') t = 'À propos — XADIKOA';
+      if (document.title !== t) document.title = t;
+    } catch (e) {}
+  }
+
+  // ── Chargement du contenu depuis Sanity ──
+  loadLive() {
+    const c = window.XDK_CONFIG.sanity;
+    this.setState({ live: 'loading' });
+    const url = 'https://' + c.projectId + '.apicdn.sanity.io/v' + c.apiVersion + '/data/query/' + c.dataset + '?query=' + encodeURIComponent(this.QUERY);
+    const ctl = new AbortController(); const timer = setTimeout(() => ctl.abort(), 12000);
+    fetch(url, { signal: ctl.signal })
+      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(j => {
+        const D = this.buildLive(j.result);
+        if (!D.ARTICLES.length || !D.CATS.length || !D.AUTHORS.length) throw new Error('contenu vide');
+        this.D = D;
+        this.setState({ live: 'ready', cat: D.CATS[0].id, homeTab: (D.CATS.find(x => x.id === 'business') || D.CATS[0]).id });
+        this.applyRoute();
+      })
+      .catch(e => { try { console.error('[XADIKOA] Chargement du contenu impossible :', e); } catch (x) {} this.setState({ live: 'error' }); })
+      .then(() => clearTimeout(timer));
+  }
+  QUERY = `{
+    "rubriques": *[_type=="rubrique"]|order(ordre asc){_id, code, nom, accroche, description, couleurFond, couleurTexte, couleurPale, themes},
+    "auteurs": *[_type=="auteur"]|order(_createdAt asc){_id, nom, fonction, accroche, bio, couleur, "photo": photo.asset->url, photoUrl},
+    "articles": *[_type=="article" && defined(slug.current) && !(_id in path("drafts.**"))]|order(datePublication desc){
+      _id, titre, "slug": slug.current, "rubrique": rubrique->code, "auteur": auteur._ref, themes, datePublication, tempsLecture, chapo,
+      "photo": photo.asset->url, photoUrl, photoDescription, photoLegende, photoCredit,
+      corps[]{_type, _key, texte, auteur, description, legende, credit, imageUrl, "image": image.asset->url, points}
+    },
+    "videos": *[_type=="video" && !(_id in path("drafts.**"))]|order(datePublication desc){
+      _id, format, titre, numero, duree, datePublication, description, "rubrique": rubrique->code, url, "fichier": fichier.asset->url, "miniature": miniature.asset->url, miniatureUrl
+    },
+    "accueil": *[_id=="accueil"][0]{"une": une._ref, "aLaUne": aLaUne[]._ref, "tendances": tendances[]._ref, "bandeau": bandeau[]._ref},
+    "reglages": *[_id=="reglages"][0]{reseaux[]{plateforme, url, identifiant, format}}
+  }`;
+  // Transforme la réponse de Sanity dans la forme attendue par le reste du site.
+  buildLive(raw) {
+    raw = raw || {};
+    const now = Date.now();
+    const https = u => (typeof u === 'string' && /^https:\/\//i.test(u)) ? u : '';
+    const PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900"><rect width="100%" height="100%" fill="#EFEDE8"/></svg>');
+    const U = (u, w) => {
+      u = https(u); if (!u) return PLACEHOLDER; w = w || 1400;
+      if (u.indexOf('cdn.sanity.io') > -1) return u.split('?')[0] + '?w=' + w + '&auto=format&q=75';
+      if (u.indexOf('images.unsplash.com') > -1) return u.replace(/([?&])w=\d+/, '$1w=' + w);
+      return u;
+    };
+    const toIso = d => new Date(d).toLocaleDateString('en-CA', { timeZone: 'Africa/Douala' });
+    const wordCount = t => String(t || '').split(/\s+/).filter(Boolean).length;
+    const media = (url, fichier) => {
+      fichier = https(fichier); url = https(url);
+      if (fichier) return { src: fichier };
+      if (!url) return {};
+      const yt = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([\w-]{11})/);
+      if (yt) return { embed: 'https://www.youtube-nocookie.com/embed/' + yt[1] + '?autoplay=1&rel=0&playsinline=1' };
+      if (/\.(mp4|webm|mov)(\?|$)/i.test(url)) return { src: url };
+      let host = ''; try { host = new URL(url).hostname.replace(/^www\./, ''); } catch (e) {}
+      const names = { 'tiktok.com': 'TikTok', 'instagram.com': 'Instagram', 'facebook.com': 'Facebook', 'fb.watch': 'Facebook', 'x.com': 'X', 'twitter.com': 'X' };
+      return { ext: url, extName: names[host] || host };
+    };
+
+    const CATS = (raw.rubriques || []).filter(r => r.code).map(r => ({ id: r.code, name: r.nom, bg: r.couleurFond, fg: r.couleurTexte, tint: r.couleurPale, short: r.accroche, role: r.description, tags: r.themes || [] }));
+    const catIds = new Set(CATS.map(c => c.id));
+    const AUTHORS = (raw.auteurs || []).map(a => ({ id: a._id, name: a.nom, role: a.fonction, color: a.couleur, hello: a.accroche || '', bio: a.bio || '' }));
+    const authIds = new Set(AUTHORS.map(a => a.id));
+    const AUTH_PH = {}; (raw.auteurs || []).forEach(a => { AUTH_PH[a._id] = a.photo || a.photoUrl; });
+
+    const ARTICLES = [], PH = {}, BODIES = {};
+    (raw.articles || []).forEach(a => {
+      if (!a.slug || !catIds.has(a.rubrique) || !authIds.has(a.auteur) || !a.datePublication) return;
+      if (new Date(a.datePublication).getTime() > now) return;                       // publication programmée : pas encore visible
+      const corps = (a.corps || []).map((b, i) => {
+        if (b._type === 'paragraphe') return b.texte ? { t: 'p', text: b.texte } : null;
+        if (b._type === 'intertitre') return b.texte ? { t: 'h2', text: b.texte } : null;
+        if (b._type === 'citation') return b.texte ? { t: 'quote', text: b.texte, by: b.auteur || '' } : null;
+        if (b._type === 'aRetenir') return (b.points && b.points.length) ? { t: 'retenir', items: b.points } : null;
+        if (b._type === 'photoArticle') {
+          const imgUrl = b.image || b.imageUrl; if (!https(imgUrl)) return null;
+          const credit = b.credit || (!b.image ? 'Photo : Unsplash' : '');
+          return { t: 'img', imgUrl, text: b.legende || b.description || '', caption: [b.legende || b.description, credit].filter(Boolean).join('. ') };
+        }
+        return null;
+      }).filter(Boolean);
+      const own = a.photo, ph = own || a.photoUrl;
+      const credit = a.photoCredit || (!own && a.photoUrl ? 'Photo : Unsplash' : '');
+      PH[a._id] = ph; BODIES[a._id] = corps;
+      const words = wordCount(a.chapo) + (a.corps || []).reduce((n, b) => n + wordCount(b.texte) + wordCount((b.points || []).join(' ')), 0);
+      ARTICLES.push({ id: a._id, slug: a.slug, cat: a.rubrique, title: a.titre, chapo: a.chapo || '', author: a.auteur, date: toIso(a.datePublication),
+        read: a.tempsLecture || Math.max(1, Math.round(words / 200)), tags: a.themes || [], photo: a.photoDescription || '',
+        caption: [a.photoLegende || a.photoDescription, credit].filter(Boolean).join('. ') });
+    });
+
+    const EPISODES = [], SHORTS = [], SHORT_PH = {}, SHORT_SRC = {};
+    (raw.videos || []).forEach(v => {
+      if (!v.datePublication || new Date(v.datePublication).getTime() > now) return;
+      const m = media(v.url, v.fichier), thumb = v.miniature || v.miniatureUrl;
+      if (v.format === 'episode') EPISODES.push({ n: 'Ép. ' + (v.numero || ''), t: v.titre, d: v.duree || '', date: toIso(v.datePublication), ph: thumb, desc: v.description || '', ...m });
+      else if (v.format === 'short' && catIds.has(v.rubrique)) { SHORTS.push({ id: v._id, t: v.titre, d: v.duree || '', cat: v.rubrique, photo: v.titre, ...m }); SHORT_PH[v._id] = thumb; }
+    });
+
+    const a = raw.accueil || {};
+    const HOME = { une: a.une || null, aLaUne: a.aLaUne || [], tendances: a.tendances || [], bandeau: a.bandeau || [] };
+    const SOCIALS = (raw.reglages && raw.reglages.reseaux || []).filter(r => r.plateforme && https(r.url)).map(r => ({ name: r.plateforme, url: r.url, handle: r.identifiant || '', format: r.format || '' }));
+    const freq = {}; ARTICLES.forEach(x => x.tags.forEach(t => { freq[t] = (freq[t] || 0) + 1; }));
+    const HOT = Object.keys(freq).sort((x, y) => freq[y] - freq[x]).slice(0, 9);
+    return { CATS, AUTHORS, ARTICLES, BODIES, SHORTS, U, PH, AUTH_PH, SHORT_PH, BODY_PH: [], EPISODES, SHORT_SRC, HOME, HOT, SOCIALS: SOCIALS.length ? SOCIALS : null };
+  }
   showToast(msg) { clearTimeout(this._t); this.setState({ toast: msg }); this._t = setTimeout(() => this.setState({ toast: null }), 2400); }
   componentDidMount() {
     this._key = e => { if (e.key === 'Escape' && this.state.video) this.setState({ video: null }); };
     window.addEventListener('keydown', this._key);
+    this._pop = () => { if (this.state.live !== 'loading' && this.state.live !== 'error') this.applyRoute(); };
+    window.addEventListener('popstate', this._pop); window.addEventListener('hashchange', this._pop);
+    if (this.state.live === 'loading') this.loadLive(); else this.applyRoute();
     this.reveal();
   }
   componentDidUpdate(pp, ps) {
+    this.syncTitle();
     if (this.state.page === 'search' && ps.page !== 'search') setTimeout(() => this.searchRef.current && this.searchRef.current.focus(), 60);
     this.reveal();
     this.bindVideo();
   }
-  componentWillUnmount() { clearTimeout(this._t); window.removeEventListener('keydown', this._key); this._io && this._io.disconnect(); }
+  componentWillUnmount() { clearTimeout(this._t); window.removeEventListener('keydown', this._key); window.removeEventListener('popstate', this._pop); window.removeEventListener('hashchange', this._pop); this._io && this._io.disconnect(); }
   reveal() {
     try {
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !window.IntersectionObserver) return;
@@ -1121,7 +1309,7 @@ class Component extends DCLogic {
   openVideo(v) { this.setState({ video: v, videoErr: false }); }
 
   renderVals() {
-    const { CATS, AUTHORS, ARTICLES, BODIES, SHORTS, U, PH, AUTH_PH, SHORT_PH, BODY_PH, EPISODES, SHORT_SRC } = this.D;
+    const { CATS, AUTHORS, ARTICLES, BODIES, SHORTS, U, PH, AUTH_PH, SHORT_PH, BODY_PH, EPISODES, SHORT_SRC, HOME, HOT, SOCIALS } = this.D;
     const s = this.state;
     const h = fn => e => { if (e && e.preventDefault) e.preventDefault(); fn(); };
     const MONTHS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
@@ -1136,8 +1324,9 @@ class Component extends DCLogic {
     const norm = t => (t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 
     const CAT = {}; CATS.forEach(c => { CAT[c.id] = { ...c, bgLine: c.id === 'tendances' ? '#000' : c.bg, open: h(() => this.go('rubrique', { cat: c.id, rubTag: 'all' })) }; });
-    const AUTH = {}; AUTHORS.forEach(a => { AUTH[a.id] = { ...a, imgId: 'author-' + a.id, img: U(AUTH_PH[a.id], 800), initials: a.name.split(' ').map(w => w[0]).join(''), initFg: a.id === 'a2' ? '#fff' : '#000', open: h(() => this.go('author', { authorId: a.id })) }; });
-    const dec = a => ({ ...a, c: CAT[a.cat], authorName: AUTH[a.author].name, dateLabel: fmt(a.date), dateLong: fmtLong(a.date), imgId: 'img-' + a.id, img: U(PH[a.id]),
+    const lum = hex => { const m = /^#?([0-9a-f]{6})$/i.exec(hex || ''); if (!m) return 1; const n = parseInt(m[1], 16); return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255; };
+    const AUTH = {}; AUTHORS.forEach(a => { AUTH[a.id] = { ...a, imgId: 'author-' + a.id, img: U(AUTH_PH[a.id], 800), initials: a.name.split(' ').map(w => w[0]).join(''), initFg: lum(a.color) < 0.45 ? '#fff' : '#000', open: h(() => this.go('author', { authorId: a.id })) }; });
+    const dec = a => ({ ...a, caption: a.caption !== undefined ? a.caption : (a.photo + '. Photo : Unsplash'), c: CAT[a.cat], authorName: AUTH[a.author].name, dateLabel: fmt(a.date), dateLong: fmtLong(a.date), imgId: 'img-' + a.id, img: U(PH[a.id]),
       open: h(() => this.go('article', { articleId: a.id })), openCat: CAT[a.cat].open, openAuthor: AUTH[a.author].open,
       tagList: a.tags.map(t => ({ name: t, open: h(() => this.go('search', { query: t, searchCat: 'all' })) })) });
     const ALL = ARTICLES.map(dec);
@@ -1151,10 +1340,13 @@ class Component extends DCLogic {
 
     const navCats = CATS.map(c => { const C = CAT[c.id]; const active = page === 'rubrique' && s.cat === c.id; return { ...C, navBg: active ? c.bg : 'transparent', navBorder: active ? '#000' : 'transparent' }; });
 
-    const hero = byId(1);
-    const aLaUne = [5, 13, 9, 17].map(byId);
-    const trending = [17, 6, 13, 3, 10].map((id, i) => ({ ...byId(id), rank: '0' + (i + 1) }));
-    const exclude = new Set([1]);
+    // Sélections de l'accueil : celles choisies dans l'éditeur, complétées par les articles les plus récents.
+    const recent = [...ALL].sort(byDate);
+    const pick = (ids, n, pool) => { const out = []; (ids || []).forEach(id => { const x = byId(id); if (x && !out.includes(x)) out.push(x); }); for (const x of pool) { if (out.length >= n) break; if (!out.includes(x)) out.push(x); } return out.slice(0, n); };
+    const hero = pick(HOME.une ? [HOME.une] : [], 1, recent)[0];
+    const aLaUne = pick(HOME.aLaUne, 4, recent.filter(x => x !== hero));
+    const trending = pick(HOME.tendances, 5, recent.filter(x => x !== hero)).map((x, i) => ({ ...x, rank: '0' + (i + 1) }));
+    const exclude = new Set([hero.id]);
     const sec = c => { const list = ofCat(c.id).filter(a => !exclude.has(a.id)); const all = ofCat(c.id); return { c: CAT[c.id], lead: list[0], rest: list.slice(1, 4), all }; };
     const secs = CATS.map(sec);
 
@@ -1162,22 +1354,24 @@ class Component extends DCLogic {
     const tabList = ofCat(s.homeTab);
     const tabs = CATS.map(c => ({ ...CAT[c.id], tabBg: c.id === s.homeTab ? c.bg : '#fff', tabFg: c.id === s.homeTab ? c.fg : '#000', select: () => this.setState({ homeTab: c.id }) }));
 
-    const SOCIAL_URLS = { Instagram: 'https://www.instagram.com/xadikoa', TikTok: 'https://www.tiktok.com/@xadikoa', Facebook: 'https://www.facebook.com/profile.php?id=61593740588874', YouTube: 'https://www.youtube.com/@xadikoa', X: 'https://x.com/XaDiKoa_' };
-    const openSocial = name => window.open(SOCIAL_URLS[name], '_blank', 'noopener');
-    const socials = [
-      { name: 'Instagram', handle: '@xadikoa', format: 'Carrousels & stories', hover: '#FC4284' }, { name: 'TikTok', handle: '@xadikoa', format: 'Vidéos courtes', hover: '#D3F90F' },
-      { name: 'Facebook', handle: 'Page XADIKOA', format: 'Articles & lives', hover: '#0066FC' }, { name: 'YouTube', handle: '@xadikoa', format: 'Le Brief XDK', hover: '#FC4284' },
-      { name: 'X', handle: '@XaDiKoa_', format: 'Actus en bref', hover: '#D3F90F' },
-    ].map(x => ({ ...x, open: h(() => openSocial(x.name)) }));
+    const SOCIAL_DEFAULT = [
+      { name: 'Instagram', url: 'https://www.instagram.com/xadikoa', handle: '@xadikoa', format: 'Carrousels & stories' }, { name: 'TikTok', url: 'https://www.tiktok.com/@xadikoa', handle: '@xadikoa', format: 'Vidéos courtes' },
+      { name: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61593740588874', handle: 'Page XADIKOA', format: 'Articles & lives' }, { name: 'YouTube', url: 'https://www.youtube.com/@xadikoa', handle: '@xadikoa', format: 'Le Brief XDK' },
+      { name: 'X', url: 'https://x.com/XaDiKoa_', handle: '@XaDiKoa_', format: 'Actus en bref' },
+    ];
+    const socialSrc = SOCIALS || SOCIAL_DEFAULT;
+    const HOVERS = ['#FC4284', '#D3F90F', '#0066FC'];
+    const openSocial = name => { const x = socialSrc.find(y => y.name === name); if (x) window.open(x.url, '_blank', 'noopener'); };
+    const socials = socialSrc.map((x, i) => ({ name: x.name, handle: x.handle, format: x.format, hover: HOVERS[i % 3], open: h(() => window.open(x.url, '_blank', 'noopener')) }));
 
     const H16 = 'min(100%, calc(70vh * 16 / 9))', V916 = 'min(100%, calc(70vh * 9 / 16))';
     const episodesAll = EPISODES.map(e => { const img = U(e.ph); const dateLabel = fmt(e.date); return { ...e, img, dateLabel,
-      play: h(() => this.openVideo({ t: e.t, kicker: 'Le Brief XDK · ' + e.n, meta: e.d + ' · ' + fmtLong(e.date), img, src: e.src, ratio: '16 / 9', boxW: H16 })) }; });
+      play: h(() => this.openVideo({ t: e.t, kicker: 'Le Brief XDK · ' + e.n, meta: e.d + ' · ' + fmtLong(e.date), img, src: e.src, embed: e.embed, ext: e.ext, extName: e.extName, ratio: '16 / 9', boxW: H16 })) }; });
     const episodes = episodesAll.slice(0, 3);
     const shorts = SHORTS.map(v => { const img = U(SHORT_PH[v.id], 800); return { ...v, c: CAT[v.cat], imgId: 'short-' + v.id, img,
-      play: h(() => this.openVideo({ t: v.t, kicker: 'XDK en 60 secondes · ' + CAT[v.cat].name, meta: v.d, img, src: SHORT_SRC[v.id], ratio: '9 / 16', boxW: V916 })) }; });
+      play: h(() => this.openVideo({ t: v.t, kicker: 'XDK en 60 secondes · ' + CAT[v.cat].name, meta: v.d, img, src: v.src !== undefined ? v.src : SHORT_SRC[v.id], embed: v.embed, ext: v.ext, extName: v.extName, ratio: '9 / 16', boxW: V916 })) }; });
     const tunnel = Array.from({ length: 9 }, (_, i) => ({ t: (i * 7.5) + '%', l: (i * 5.2) + '%', b: (i * 2.2) + '%', r: Math.max(6, 34 - i * 3.5) + 'px', delay: (i * 0.22).toFixed(2) + 's' }));
-    const tickerBase = [17, 6, 13, 3, 10, 1, 5].map(byId);
+    const tickerBase = (HOME.bandeau || []).length ? pick(HOME.bandeau, 8, []) : pick([], 7, recent);   // choix de la rédaction, sinon les 7 derniers articles
     const tickerItems = [...tickerBase, ...tickerBase].map((a, i) => ({ ...a, key: i }));
     const videoFilters = [{ id: 'all', name: 'Tout' }, { id: 'brief', name: 'Le Brief XDK' }, { id: 'shorts', name: 'XDK en 60 secondes' }].map(o => { const on = s.vFilter === o.id; return { ...o, bg: on ? '#D3F90F' : 'transparent', fg: on ? '#000' : '#fff', select: () => this.setState({ vFilter: o.id }) }; });
 
@@ -1191,7 +1385,7 @@ class Component extends DCLogic {
 
     // article
     const art = byId(s.articleId) || hero;
-    const body = (BODIES[art.id] || []).map((b, i) => ({ ...b, isP: b.t === 'p', isH2: b.t === 'h2', isQuote: b.t === 'quote', isImg: b.t === 'img', isRetenir: b.t === 'retenir', imgId: 'body-' + art.id + '-' + i, img: U(BODY_PH[i % BODY_PH.length]) }));
+    const body = (BODIES[art.id] || []).map((b, i) => ({ ...b, isP: b.t === 'p', isH2: b.t === 'h2', isQuote: b.t === 'quote', isImg: b.t === 'img', isRetenir: b.t === 'retenir', imgId: 'body-' + art.id + '-' + i, img: b.imgUrl ? U(b.imgUrl) : U(BODY_PH[i % BODY_PH.length]), caption: b.caption !== undefined ? b.caption : (b.text + '. Photo : XADIKOA') }));
     const artToc = body.filter(b => b.isH2);
     const sameCat = ofCat(art.cat).filter(a => a.id !== art.id).slice(0, 3);
     const related = ALL.filter(a => a.cat !== art.cat).map(a => ({ a, sc: a.tags.filter(t => art.tags.includes(t)).length })).sort((x, y) => y.sc - x.sc || byDate(x.a, y.a)).slice(0, 4).map(x => x.a);
@@ -1211,12 +1405,12 @@ class Component extends DCLogic {
     results = results.map(x => x.a);
     const searchCats = [{ id: 'all', name: 'Toutes', bg: '#000', fg: '#fff' }, ...CATS].map(c => { const on = s.searchCat === c.id; return { name: c.name, chipBg: on ? (c.id === 'all' ? '#000' : c.bg) : '#fff', chipFg: on ? (c.id === 'all' ? '#fff' : c.fg) : '#000', select: () => this.setState({ searchCat: c.id }) }; });
     const sortOpts = [{ id: 'pertinence', name: 'Pertinence' }, { id: 'recence', name: 'Récence' }].map(o => ({ ...o, bg: s.sort === o.id ? '#000' : '#fff', fg: s.sort === o.id ? '#fff' : '#000', select: () => this.setState({ sort: o.id }) }));
-    const hotTags = ['Douala', 'Tontine', 'Plantain', 'Makossa', 'Ndolé', 'Délestages', 'Coloc', 'Kribi', 'Camfranglais'].map(t => ({ name: t, select: () => this.setState({ query: t }) }));
+    const hotTags = (HOT || ['Douala', 'Tontine', 'Plantain', 'Makossa', 'Ndolé', 'Délestages', 'Coloc', 'Kribi', 'Camfranglais']).map(t => ({ name: t, select: () => this.setState({ query: t }) }));
     const n = results.length;
     const resultsLabel = q ? (n + (n > 1 ? ' résultats' : ' résultat') + ' pour « ' + s.query.trim() + ' »') : 'Tous les articles, du plus récent au plus ancien';
 
     // author
-    const author = AUTH[s.authorId];
+    const author = AUTH[s.authorId] || AUTH[AUTHORS[0].id];
     const authorArticles = ALL.filter(a => a.author === author.id).sort(byDate);
     const authorCats = [...new Set(authorArticles.map(a => a.cat))].map(cid => CAT[cid]);
 
@@ -1239,12 +1433,12 @@ class Component extends DCLogic {
       isRubrique: page === 'rubrique', isArticle: page === 'article', isSearch: page === 'search', isAuthor: page === 'author', isNewsletter: page === 'newsletter', isAbout: page === 'about',
       dirOpts: [{ id: 'A', name: 'A · Couverture' }, { id: 'B', name: 'B · Kiosque' }].map(o => ({ ...o, bg: dir === o.id ? '#D3F90F' : 'transparent', fg: dir === o.id ? '#000' : '#fff', select: () => this.setState({ dir: o.id }) })),
       hero, aLaUne, trending, secTop: secs.slice(0, 2), secBottom: secs.slice(2), episodes, shorts, tunnel,
-      playEpisode: episodesAll[0].play, tickerItems,
+      playEpisode: episodesAll[0] ? episodesAll[0].play : () => {}, hasEpisodes: episodesAll.length > 0, lastEpNum: episodesAll[0] ? String(episodesAll[0].n).replace(/\D/g, '') : '', tickerItems,
       isVideos: page === 'videos', goVideos: h(() => this.go('videos')), videosNavBg: page === 'videos' ? '#D3F90F' : 'transparent',
-      featuredList: [episodesAll[0]], videoList: s.video ? [s.video] : [], episodesAll, videoFilters, showEpisodes: s.vFilter !== 'shorts', showShorts: s.vFilter !== 'brief',
+      featuredList: episodesAll.length ? [episodesAll[0]] : [], videoList: s.video && s.video.src ? [s.video] : [], embedList: s.video && s.video.embed ? [s.video] : [], extList: s.video && s.video.ext ? [s.video] : [], episodesAll, videoFilters, showEpisodes: s.vFilter !== 'shorts', showShorts: s.vFilter !== 'brief',
       videoSocials: socials.filter(x => ['YouTube', 'TikTok', 'Instagram'].includes(x.name)),
       hasVideo: !!s.video, videoErr: !!s.videoErr, videoRef: this.videoRef, videoYoutube: h(() => openSocial('YouTube')), video: s.video || {}, closeVideo: h(() => this.setState({ video: null })), stopClick: e => e.stopPropagation(),
-      m1: aLaUne[0], m2: aLaUne[1], m3: aLaUne[2], m4: byId(6), m5: aLaUne[3],
+      m1: aLaUne[0], m2: aLaUne[1], m3: aLaUne[2], m4: trending[1] || aLaUne[3] || hero, m5: aLaUne[3],
       tabs, tab: tabC, tabLead: tabList[0], tabRest: tabList.slice(1, 4),
       nlInline: s.nlInline, nlInlineOpen: !s.nlInlineDone, nlInlineDone: s.nlInlineDone,
       onInlineEmail: e => this.setState({ nlInline: e.target.value }),
@@ -1269,10 +1463,11 @@ class Component extends DCLogic {
       footerLinks: [
         { name: 'À propos', open: h(() => this.go('about')) }, { name: 'Contact & partenariats', open: h(() => this.go('about')) },
         { name: 'Vidéos', open: h(() => this.go('videos')) }, { name: 'Newsletter', open: h(() => this.go('newsletter')) }, { name: 'Recherche', open: h(() => this.go('search')) },
-        { name: 'La rédaction', open: h(() => this.go('author', { authorId: 'a1' })) },
+        { name: 'La rédaction', open: h(() => this.go('author', { authorId: AUTHORS[0].id })) },
       ],
       legalLinks: ['Mentions légales', 'Confidentialité', 'Cookies'].map(n => ({ name: n, open: h(() => this.showToast('La page « ' + n + ' » sera publiée prochainement.')) })),
       hasToast: !!s.toast, toast: s.toast,
+      ready: s.live === 'ready' || s.live === 'embedded', isLoading: s.live === 'loading', isError: s.live === 'error', retry: h(() => this.loadLive()),
     };
   }
 }
