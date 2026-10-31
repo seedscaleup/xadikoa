@@ -27,9 +27,11 @@ async function open(browser, { docs, hash = '', http = null, viewport = { width:
   const page = await ctx.newPage();
   const errs = []; page.on('pageerror', (e) => errs.push(e.message.slice(0, 160)));
   const state = { calls: 0, http: http };
-  if (docs) await page.route('**/index.html', async (route) => {
+  // Le vrai identifiant de projet est inscrit dans index.html : on le remplace par un faux (mode Sanity simulé)
+  // ou par une valeur vide (mode « contenu intégré »), pour ne jamais appeler le vrai service pendant les essais.
+  await page.route('**/index.html', async (route) => {
     const r = await route.fetch(); let body = await r.text();
-    body = body.replace("projectId: ''", "projectId: 'testproj'");
+    body = body.replace(/projectId: '[^']*'/, docs ? "projectId: 'testproj'" : "projectId: ''");
     await route.fulfill({ response: r, body });
   });
   if (docs) await page.route('https://testproj.apicdn.sanity.io/**', async (route) => {
