@@ -1,0 +1,43 @@
+name: Publier les articles sur xadikoa.com
+
+# Déclenché quand l'agent Site dépose ou modifie un article dans publication/articles/<adresse>/,
+# ou à la demande (onglet « Actions » → « Publier les articles » → « Run workflow » : republie tout).
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'publication/articles/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publier-articles
+  cancel-in-progress: false
+
+jobs:
+  publier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Trouver les articles modifiés
+        id: liste
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "dossiers=" >> "$GITHUB_OUTPUT"
+          else
+            D=$(git diff --name-only HEAD~1 HEAD -- publication/articles | cut -d/ -f3 | sort -u | tr '\n' ' ')
+            echo "dossiers=$D" >> "$GITHUB_OUTPUT"
+            echo "Articles concernés : $D"
+          fi
+      - name: Envoyer à Sanity
+        working-directory: studio
+        run: node scripts/publier-articles.mjs ${{ steps.liste.outputs.dossiers }}
+        env:
+          SANITY_WRITE_TOKEN: ${{ secrets.SANITY_WRITE_TOKEN }}
