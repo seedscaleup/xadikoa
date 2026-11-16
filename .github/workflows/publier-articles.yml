@@ -22,22 +22,61 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          fetch-depth: 2
+          fetch-depth: 0
       - uses: actions/setup-node@v6
         with:
           node-version: 22
+      # Sécurité (M-011, constat M1 de M-004) : aucune valeur venant du dépôt n'est collée dans une commande ;
+      # elles passent par des variables. Seuls les noms de dossiers « a-z, 0-9, - » sont gardés.
+      # Garde : si un envoi modifie autre chose que publication/articles/, ou si l'envoi précédent est introuvable
+      # (push forcé), la publication automatique est bloquée (le propriétaire fait relire, puis lance « Run workflow » sur main).
+      # Limite : cette garde arrête les mélanges accidentels, pas un auteur malveillant (deux envois successifs la contournent).
+      # La vraie protection est côté GitHub : environnement « publication » limité à main, accès restreint de l'agent.
+      # Robustesse : on prend tous les articles modifiés depuis le dernier envoi (BEFORE..SHA), pas seulement le dernier commit.
       - name: Trouver les articles modifiés
         id: liste
+        env:
+          EVENT: ${{ github.event_name }}
+          BEFORE: ${{ github.event.before }}
+          SHA: ${{ github.sha }}
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          set -f
+          NOM='^[a-z0-9][a-z0-9-]{0,99}$'
+          if [ "$EVENT" = "workflow_dispatch" ]; then
             echo "dossiers=" >> "$GITHUB_OUTPUT"
-          else
-            D=$(git diff --name-only HEAD~1 HEAD -- publication/articles | cut -d/ -f3 | sort -u | tr '\n' ' ')
-            echo "dossiers=$D" >> "$GITHUB_OUTPUT"
-            echo "Articles concernés : $D"
+            echo "Tous les articles seront envoyés."
+            exit 0
           fi
+          if ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            echo "::error::Envoi précédent introuvable (push forcé ou premier envoi) : publication automatique bloquée. Faites relire, puis lancez « Run workflow » sur main."
+            exit 1
+          fi
+          AUTRES=$(git diff --no-renames --name-only "$BEFORE" "$SHA" | grep -v '^publication/articles/' || true)
+          if [ -n "$AUTRES" ]; then
+            echo "::error::Cet envoi modifie aussi des fichiers hors de publication/articles/ : publication automatique bloquée. Faites relire, puis lancez « Run workflow »."
+            printf '%s\n' "$AUTRES" | tr -c 'A-Za-z0-9._/\n-' '?'
+            exit 1
+          fi
+          TOUS=$(git diff --no-renames --name-only "$BEFORE" "$SHA" -- publication/articles | cut -d/ -f3 | sort -u)
+          D=$(printf '%s\n' "$TOUS" | grep -E "$NOM" | tr '\n' ' ' || true)
+          REJ=$(printf '%s\n' "$TOUS" | grep -vE "$NOM" | grep -vx 'LISEZMOI.md' | grep -v '^$' | tr -c 'A-Za-z0-9._-' '?' || true)
+          if [ -n "$REJ" ]; then echo "::warning::Dossiers ignorés (noms permis : a-z, 0-9, tirets) : $REJ"; fi
+          if [ -z "$D" ]; then echo "Aucun dossier d'article valide : rien à envoyer."; echo "rien=1" >> "$GITHUB_OUTPUT"; fi
+          echo "dossiers=$D" >> "$GITHUB_OUTPUT"
+          echo "Articles concernés : $D"
+      - name: Vérifier la destination et la clé
+        if: steps.liste.outputs.rien != '1'
+        env:
+          CLE_PRESENTE: ${{ secrets.SANITY_WRITE_TOKEN != '' }}
+        run: |
+          node -e "const c=require('./studio/config.json'); if (c.projectId!=='ky1o8bon' || c.dataset!=='production' || !/^[0-9-]+$/.test(String(c.apiVersion))) { console.log('::error::studio/config.json ne vise plus le projet Sanity attendu (ky1o8bon / production) : envoi bloqué.'); process.exit(1) }"
+          if [ "$CLE_PRESENTE" != "true" ]; then echo "::error::Le secret SANITY_WRITE_TOKEN est absent : voir studio/INSTALLATION.md, étape 9."; exit 1; fi
       - name: Envoyer à Sanity
+        if: steps.liste.outputs.rien != '1'
         working-directory: studio
-        run: node scripts/publier-articles.mjs ${{ steps.liste.outputs.dossiers }}
         env:
           SANITY_WRITE_TOKEN: ${{ secrets.SANITY_WRITE_TOKEN }}
+          DOSSIERS: ${{ steps.liste.outputs.dossiers }}
+        run: |
+          set -f
+          node scripts/publier-articles.mjs $DOSSIERS

@@ -4,7 +4,7 @@ Ce guide est pour la personne qui administre le site. Comptez 30 à 45 minutes.
 Vous n'avez rien à programmer : il s'agit de créer un compte, de copier deux « clés » et de les enregistrer dans GitHub.
 
 > **Règle d'or : ne collez jamais une clé (« token ») dans une conversation, un e-mail ou un fichier du dépôt.**
-> Elle se colle uniquement dans GitHub (étape 5). Après usage, on la supprime (étape 9).
+> Elle se colle uniquement dans GitHub (étape 5). Voir l'étape 9 pour savoir laquelle garder.
 
 ## Étape 1 — Créer le compte Sanity
 1. Allez sur https://www.sanity.io et cliquez sur « Get started ».
@@ -48,8 +48,8 @@ Communiquez l'identifiant du projet (étape 2). Il sera inscrit dans `studio/con
 3. Seulement ensuite, l'identifiant du projet est inscrit dans `index.html` et le site est publié : `xadikoa.com` lit alors ses articles dans Sanity.
 
 ## Étape 9 — Nettoyer
-- Sur https://www.sanity.io/manage → API → Tokens : **supprimez la clé « Import contenu »** (elle ne sert plus).
-- Dans GitHub, supprimez le secret `SANITY_WRITE_TOKEN`.
+- **Attention (M-011)** : depuis le 14 nov., la publication automatique des articles (`publication/articles/`, action « Publier les articles sur xadikoa.com ») utilise le secret `SANITY_WRITE_TOKEN`. **Ne le supprimez pas** tant que l'agent de rédaction publie des articles : sans lui, les articles n'arrivent plus sur le site.
+- Si vous l'avez déjà supprimé (dans GitHub ou dans Sanity) : créez une nouvelle clé **Editor** nommée `Publication articles`, enregistrez-la dans GitHub sous le nom `SANITY_WRITE_TOKEN` (étape 5), puis lancez **Actions → « Publier les articles sur xadikoa.com » → Run workflow** pour envoyer les articles en retard.
 - Gardez la clé « Mise en ligne editeur » tant que vous modifiez le dossier `studio/`.
 
 ## Étape 10 — Inviter l'équipe
@@ -64,5 +64,5 @@ Toute personne qui doit écrire est donc Administrator : voir les précautions d
 
 ## En cas de panne
 - **Le site affiche « Le site n'arrive pas à charger ses articles »** : Sanity est injoignable ou l'identifiant de projet est faux. Le bouton « Réessayer » relance le chargement.
-- **Un article publié n'apparaît pas** : vérifiez que la case « Relu » est cochée, que la date n'est pas dans le futur et qu'il a une rubrique et un auteur.
-- **Retour en arrière d'urgence** : remettre `projectId: ''` dans `index.html` (en-tête) ; le site réaffiche son contenu intégré d'origine.
+- **Un article publié n'apparaît pas** : vérifiez que la date n'est pas dans le futur et qu'il a une rubrique et un auteur (le site n'affiche pas encore selon la case « Relu » : voir M-011). Pour un article de l'agent : regardez l'onglet Actions (« Publier les articles sur xadikoa.com », croix rouge = échec).
+- **Retour en arrière d'urgence** : depuis M-009, le site n'a plus de contenu intégré : remettre `projectId: ''` affiche l'écran « Le site n'arrive pas à charger ses articles ». En cas de problème dans Sanity, corrigez plutôt l'article dans l'éditeur.

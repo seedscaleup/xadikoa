@@ -5,7 +5,7 @@
 //   photo.jpg|png|webp (facultatif) — photo principale, paysage, ≥ 1600 px
 //   retirer       (fichier vide, facultatif) — retire l'article du site
 // Usage : SANITY_WRITE_TOKEN=... node scripts/publier-articles.mjs [dossier...]   (sans argument : tous les dossiers)
-import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs'
+import { readFileSync, readdirSync, existsSync, statSync, lstatSync } from 'node:fs'
 import { dirname, resolve, join, extname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -25,8 +25,15 @@ if (!token && !dryRun) { console.error('✗ SANITY_WRITE_TOKEN manquant.'); proc
 if (!existsSync(base)) { console.log('Aucun dossier publication/articles : rien à faire.'); process.exit(0) }
 
 const args = process.argv.slice(2).filter((a) => !a.startsWith('--'))
+// Sécurité (M-011) : les liens symboliques sont refusés (ils pourraient faire lire un fichier hors du dépôt).
+const lien = (p) => { try { return lstatSync(p).isSymbolicLink() } catch { return false } }
+const fichier = (p) => existsSync(p) && !lien(p)
 const dossiers = (args.length ? args.map((a) => a.split('/').filter(Boolean).pop()) : readdirSync(base))
-  .filter((d) => existsSync(join(base, d)) && statSync(join(base, d)).isDirectory())
+  .filter((d) => {
+    if (!existsSync(join(base, d)) || !statSync(join(base, d)).isDirectory()) return false
+    if (!/^[a-z0-9][a-z0-9-]{0,99}$/.test(d) || lien(join(base, d))) { console.log(`::warning::${d.replace(/[^A-Za-z0-9._-]/g, '?')} : nom de dossier non permis ou lien symbolique, ignoré`); return false }
+    return true
+  })
 
 async function mutate(mutations) {
   if (dryRun) { console.log('  (simulation)', JSON.stringify(mutations).slice(0, 300)); return }
@@ -50,11 +57,13 @@ for (const d of dossiers) {
   const dir = join(base, d)
   const id = 'article-xdk-' + slugify(d)
   try {
-    if (existsSync(join(dir, 'retirer'))) {
+    if (fichier(join(dir, 'retirer'))) {
       await mutate([{ delete: { id } }, { delete: { id: 'drafts.' + id } }])
       console.log(`✓ Retiré du site : ${d}`); continue
     }
-    if (!existsSync(join(dir, 'article.json'))) { console.log(`- ${d} : pas d'article.json, ignoré`); continue }
+    const liens = ['article.json', 'retirer', 'photo.jpg', 'photo.jpeg', 'photo.png', 'photo.webp'].filter((f) => lien(join(dir, f)))
+    if (liens.length) throw new Error('lien symbolique refusé : ' + liens.join(', '))
+    if (!fichier(join(dir, 'article.json'))) { console.log(`- ${d} : pas d'article.json, ignoré`); continue }
     const a = JSON.parse(readFileSync(join(dir, 'article.json'), 'utf8'))
     const manque = ['titre', 'rubrique', 'chapo', 'corps'].filter((k) => !a[k] || (Array.isArray(a[k]) && !a[k].length))
     if (manque.length) throw new Error('champs manquants : ' + manque.join(', '))
@@ -68,7 +77,7 @@ for (const d of dossiers) {
       datePublication: a.datePublication || new Date().toISOString(), relu: true, exemple: false,
       photoDescription: a.photoDescription || a.titre, photoLegende: a.photoLegende || '', photoCredit: a.photoCredit || '',
     }
-    const photo = ['photo.jpg', 'photo.jpeg', 'photo.png', 'photo.webp'].map((f) => join(dir, f)).find(existsSync)
+    const photo = ['photo.jpg', 'photo.jpeg', 'photo.png', 'photo.webp'].map((f) => join(dir, f)).find(fichier)
     if (photo) doc.photo = { _type: 'image', asset: { _type: 'reference', _ref: await envoyerPhoto(photo) } }
     else if (a.photoUrl) doc.photoUrl = a.photoUrl
     await mutate([{ createOrReplace: doc }, { delete: { id: 'drafts.' + id } }])
