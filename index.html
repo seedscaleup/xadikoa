@@ -59,6 +59,267 @@ window.XDK_HOME_QUERY = `{
 })();
 </script>
 <script src="./support.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════════════════════
+   M-018 — STATISTIQUES DE VISITE (Google Analytics 4) + BANDEAU DE CONSENTEMENT
+   Tout ce qui concerne la mesure est regroupé dans ce bloc (hors lien « Cookies » du pied de page,
+   appel à pageVue() dans componentDidUpdate, et paramètres utm des liens de partage, plus bas).
+   Règles :
+   - Aucun script Google n'est chargé, aucune requête n'est envoyée à Google tant que le lecteur n'a pas cliqué « Accepter ».
+   - Le choix est gardé sur l'appareil (localStorage, clé xdk:consentement:v1) et redemandé après 13 mois.
+   - Le bandeau n'apparaît qu'après l'affichage des articles (il ne ralentit pas le site et ne devient pas l'élément principal).
+   ═══════════════════════════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+  /* ► À REMPLACER EN UNE FOIS avant la mise en ligne (affichés sur la page « Confidentialité ») : */
+  var EDITEUR = 'SEED Group SARL, Essos, Yaoundé (Cameroun)';
+  var CONTACT = 'info@seedscaleup.com';
+  var ID_MESURE = 'G-RX0762C6GN';                    // identifiant public de la propriété Google Analytics 4
+  var CLE_CHOIX = 'xdk:consentement:v1';             // { choix: 'accepte' | 'refuse', date: 'AAAA-MM-JJT…' }
+  var CLE_INTERNE = 'xdk:interne:v1';                // '1' = appareil interne (visites de l'équipe, à exclure dans Google Analytics)
+  var DUREE_CHOIX = 396 * 24 * 3600 * 1000;          // 13 mois environ
+  var doc = document, win = window;
+
+  /* ── Mémoire locale, sans jamais faire échouer le site (navigation privée, stockage plein ou bloqué) ── */
+  function lire(cle) { try { return win.localStorage.getItem(cle); } catch (e) { return null; } }
+  function ecrire(cle, val) { try { win.localStorage.setItem(cle, val); } catch (e) {} }
+  function effacer(cle) { try { win.localStorage.removeItem(cle); } catch (e) {} }
+
+  /* Choix mémorisé : 'accepte', 'refuse', ou null (jamais choisi, choix illisible ou plus vieux que 13 mois) */
+  function choixMemorise() {
+    var brut = lire(CLE_CHOIX);
+    if (brut === null) return null;
+    try {
+      var c = JSON.parse(brut || 'null');
+      var t = c && Date.parse(c.date);
+      if (c && (c.choix === 'accepte' || c.choix === 'refuse') && t > 0 && Date.now() - t <= DUREE_CHOIX && t - Date.now() <= 24 * 3600 * 1000) return c.choix;
+    } catch (e) {}
+    effacer(CLE_CHOIX);            // choix périmé ou illisible : on l'efface de la mémoire locale
+    return null;
+  }
+
+  /* ── Visites internes : ?interne=1 marque l'appareil, ?interne=0 retire la marque ── */
+  try {
+    var p = new URLSearchParams(win.location.search).get('interne');
+    if (p === '1') ecrire(CLE_INTERNE, '1'); else if (p === '0') effacer(CLE_INTERNE);
+  } catch (e) {}
+  function estInterne() { return lire(CLE_INTERNE) === '1'; }
+
+  /* ── Google Analytics (chargé seulement après accord) ── */
+  var actif = false, charge = false, derniere = null, precedente = null, premiere = true;
+  var courante = null;       // page affichée, donnée par le site : { chemin: '/article/…', titre: '…' }
+
+  /* gtag local (référence privée : on n'utilise pas window.gtag, que d'autres scripts pourraient remplacer) */
+  function gt() { (win.dataLayer = win.dataLayer || []).push(arguments); }
+
+  function demarrerMesure() {
+    actif = true;
+    win['ga-disable-' + ID_MESURE] = false;
+    if (!charge) {
+      charge = true;
+      win.dataLayer = win.dataLayer || [];
+      gt('js', new Date());
+      // Pas de publicité ni de signaux Google : seul le stockage de mesure est accordé
+      gt('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'granted' });
+      if (courante) gt('set', { page_location: adresseLisible(true), page_title: courante.titre });   // adresse nettoyée, pour les événements automatiques aussi
+      var cfg = { send_page_view: false, cookie_expires: 34128000, cookie_update: false,           // cookies Google : 13 mois, durée non prolongée à chaque visite
+                  allow_google_signals: false, allow_ad_personalization_signals: false };
+      if (estInterne()) cfg.traffic_type = 'internal';
+      gt('config', ID_MESURE, cfg);
+      var s = doc.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID_MESURE;
+      doc.head.appendChild(s);
+    }
+    derniere = null;               // après un (nouvel) accord, la page en cours est comptée
+    pageVue();
+  }
+
+  /* Supprime les cookies _ga et _ga_* du domaine (avec et sans « www » / point initial) */
+  function supprimerCookies() {
+    try {
+      var h = win.location.hostname.split('.'), domaines = [''];
+      for (var i = 0; i < h.length - 1; i++) { var d = h.slice(i).join('.'); domaines.push(d, '.' + d); }
+      doc.cookie.split(';').forEach(function (c) {
+        var nom = c.split('=')[0].replace(/^\s+/, '');
+        if (nom !== '_ga' && nom.indexOf('_ga_') !== 0) return;
+        domaines.forEach(function (d) { doc.cookie = nom + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + (d ? '; domain=' + d : ''); });
+      });
+    } catch (e) {}
+  }
+
+  function arreterMesure() {
+    actif = false;
+    win['ga-disable-' + ID_MESURE] = true;     // même si gtag.js est déjà chargé, plus rien n'est envoyé
+    if (charge) gt('consent', 'update', { analytics_storage: 'denied' });
+    supprimerCookies();
+  }
+
+  /* Adresse lisible sans dièse, dérivée de la page réellement affichée (donnée par le site, jamais de l'adresse brute
+     du navigateur) : accueil → <origine>/ ; article → <origine>/article/<slug>. Une adresse inconnue ne part donc jamais. */
+  function adresseLisible(avecUtm) {
+    return win.location.origin + (courante ? courante.chemin : '/') + (avecUtm ? utmArrivee() : '');
+  }
+
+  /* Paramètres utm de l'adresse d'arrivée (avant le dièse) : seulement les 5 utm connus, 100 caractères au plus chacun.
+     Conservés pour le premier page_view seulement. */
+  function utmArrivee() {
+    try {
+      var src = new URLSearchParams(win.location.search), out = new URLSearchParams();
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(function (k) {
+        var v = src.get(k); if (v) out.append(k, v.slice(0, 100));
+      });
+      var s = out.toString();
+      return s ? '?' + s : '';
+    } catch (e) { return ''; }
+  }
+
+  /* Envoie UN page_view par page vue : les répétitions de la même page (double rendu, même page rouverte) sont ignorées */
+  function pageVue() {
+    if (!actif || !courante) return;                   // pas d'accord, ou contenu pas encore affiché
+    var base = adresseLisible(false);
+    if (base === derniere) return;
+    derniere = base;
+    var adresse = adresseLisible(premiere);
+    var param = { page_location: adresse, page_title: courante.titre };
+    if (precedente) param.page_referrer = precedente;
+    if (estInterne()) param.traffic_type = 'internal';
+    premiere = false; precedente = base;
+    gt('set', { page_location: adresse, page_title: courante.titre });
+    gt('event', 'page_view', param);
+  }
+
+  /* ── Bandeau de consentement ── */
+  var bandeau = null, ouvertParLien = false, dernierFocus = null;
+
+  var CSS = '' +
+    '#xdk-cb{position:fixed;left:0;right:0;bottom:0;z-index:2147483000;background:#000;color:#fff;border-top:3px solid #D3F90F;font:400 14px/1.4 "General Sans",system-ui,sans-serif;max-height:70vh;overflow-y:auto;box-shadow:0 -6px 24px rgba(0,0,0,.35)}' +
+    '#xdk-cb[hidden]{display:none}' +
+    '#xdk-cb .xdk-cb-in{max-width:960px;margin:0 auto;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px))}' +
+    '#xdk-cb p{margin:0 0 2px}' +
+    '#xdk-cb .xdk-cb-plus{display:block;min-height:44px;margin:0;padding:0 2px;border:0;background:none;color:#D3F90F;font:inherit;font-weight:600;text-decoration:underline;cursor:pointer}' +
+    '#xdk-cb .xdk-cb-det{margin:0 0 8px;padding:8px 12px;border-left:3px solid #D3F90F;background:rgba(255,255,255,.08);font-size:14px}' +
+    '#xdk-cb .xdk-cb-det ul{margin:0;padding-left:18px}' +
+    '#xdk-cb .xdk-cb-det li{margin:0 0 4px}' +
+    '#xdk-cb .xdk-cb-det a{display:inline-block;padding:12px 0;color:#D3F90F;font-weight:600}' +
+    '#xdk-cb .xdk-cb-btns{display:flex;gap:10px}' +
+    '#xdk-cb .xdk-cb-btn{flex:1 1 0;min-width:0;min-height:44px;padding:0 12px;border:2px solid #fff;border-radius:999px;background:#0066FC;color:#fff;font:600 15px/1 "General Sans",system-ui,sans-serif;cursor:pointer}' +
+    '#xdk-cb button:focus-visible,#xdk-cb a:focus-visible{outline:3px solid #D3F90F;outline-offset:3px}' +
+    '#xdk-cb:focus{outline:none}' +
+    '.xdk-cb-on footer{padding-bottom:var(--xdk-cb-h,0px)}' +
+    '@media (min-width:700px){#xdk-cb .xdk-cb-in{max-width:1100px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 28px}#xdk-cb .xdk-cb-in>p{flex:1 1 420px;margin:0}#xdk-cb .xdk-cb-plus{order:2;flex:none;margin:0}#xdk-cb .xdk-cb-det{order:3;flex:1 1 100%;margin:0}#xdk-cb .xdk-cb-btns{flex:none}#xdk-cb .xdk-cb-btn{flex:0 0 170px}}' +
+    '@media (prefers-reduced-motion:no-preference){#xdk-cb.xdk-cb-anim{animation:xdkcb .25s ease-out}@keyframes xdkcb{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}}';
+
+  function construire() {
+    var st = doc.createElement('style'); st.textContent = CSS; doc.head.appendChild(st);
+    var b = doc.createElement('div');
+    b.id = 'xdk-cb'; b.hidden = true; b.tabIndex = -1;
+    b.setAttribute('role', 'region'); b.setAttribute('aria-label', 'Choix sur les cookies');
+    b.innerHTML =
+      '<div class="xdk-cb-in">' +
+      '<p>XADIKOA utilise Google Analytics (des cookies) pour compter ses lecteurs et voir quels articles plaisent. Ces mesures sont envoyées à Google. Refuser ne change rien pour vous ; vous pouvez changer d’avis via « Cookies », en bas de page.</p>' +
+      '<button type="button" class="xdk-cb-plus" aria-expanded="false" aria-controls="xdk-cb-det">Détails</button>' +
+      '<div class="xdk-cb-det" id="xdk-cb-det" hidden><ul>' +
+      '<li><strong>Ce qui est mesuré :</strong> les pages et articles consultés, d’où vous venez (par exemple WhatsApp), le type d’appareil, votre pays et votre ville (approximatifs). Pas votre nom ni votre e-mail.</li>' +
+      '<li><strong>Par qui :</strong> Google (Google Analytics). Les cookies _ga servent à reconnaître votre appareil d’une visite à l’autre.</li>' +
+      '<li><strong>Durée et choix :</strong> votre choix et les cookies sont gardés 13 mois sur cet appareil. Vous pouvez changer d’avis à tout moment avec le lien « Cookies » en bas de chaque page.</li></ul>' +
+      '<a href="#/confidentialite">Politique de confidentialité</a></div>' +
+      '<div class="xdk-cb-btns"><button type="button" class="xdk-cb-btn" data-xdk="refuse">Refuser</button>' +
+      '<button type="button" class="xdk-cb-btn" data-xdk="accepte">Accepter</button></div></div>';
+    var plus = b.querySelector('.xdk-cb-plus'), det = b.querySelector('#xdk-cb-det');
+    plus.addEventListener('click', function () {
+      var ouvert = plus.getAttribute('aria-expanded') === 'true';
+      plus.setAttribute('aria-expanded', ouvert ? 'false' : 'true'); det.hidden = ouvert;
+      plus.textContent = ouvert ? 'Détails' : 'Masquer';
+      reserver();
+    });
+    b.addEventListener('click', function (e) {
+      var c = e.target && e.target.getAttribute && e.target.getAttribute('data-xdk');
+      if (c) choisir(c);
+    });
+    b.addEventListener('keydown', function (e) { if (e.key === 'Escape' && ouvertParLien) fermer(); });
+    // Premier de la page dans l'ordre du clavier (il reste affiché en bas de l'écran)
+    doc.body.insertBefore(b, doc.body.firstChild);
+    if (win.ResizeObserver) new ResizeObserver(reserver).observe(b);
+    return b;
+  }
+
+  /* Réserve sous le pied de page la hauteur du bandeau (règle CSS « footer »), pour qu'il reste lisible en bas de page.
+     Rien n'est déplacé à l'écran : seul le bas du pied de page s'allonge. */
+  function reserver() {
+    if (!bandeau) return;
+    if (bandeau.hidden) { doc.documentElement.classList.remove('xdk-cb-on'); doc.documentElement.style.removeProperty('--xdk-cb-h'); return; }
+    doc.documentElement.style.setProperty('--xdk-cb-h', bandeau.offsetHeight + 'px');
+    doc.documentElement.classList.add('xdk-cb-on');
+  }
+
+  function montrer(parLien) {
+    if (!bandeau) bandeau = construire();
+    ouvertParLien = !!parLien;
+    bandeau.hidden = false;
+    bandeau.classList.add('xdk-cb-anim');
+    reserver();
+    if (parLien) { dernierFocus = doc.activeElement; bandeau.focus(); }
+  }
+
+  function fermer() {
+    if (!bandeau) return;
+    bandeau.hidden = true; reserver();
+    if (ouvertParLien && dernierFocus && dernierFocus.focus) { try { dernierFocus.focus(); } catch (e) {} }
+    ouvertParLien = false; dernierFocus = null;
+  }
+
+  function choisir(choix) {
+    ecrire(CLE_CHOIX, JSON.stringify({ choix: choix, date: new Date().toISOString() }));
+    fermer();
+    if (choix === 'accepte') { if (!actif) demarrerMesure(); }
+    else arreterMesure();
+  }
+
+  /* ── Démarrage : on attend que les articles soient affichés, puis un temps calme du navigateur ── */
+  function quandAffiche(fn) {
+    var fait = false, mo = null;
+    function lancer() {
+      if (fait) return; fait = true;
+      if (mo) mo.disconnect();
+      var apresIdle = function () { setTimeout(fn, 0); };
+      (win.requestAnimationFrame || setTimeout)(function () {
+        if (win.requestIdleCallback) win.requestIdleCallback(apresIdle, { timeout: 1500 }); else setTimeout(apresIdle, 300);
+      });
+    }
+    if (doc.querySelector('#dc-root main')) return lancer();
+    if (win.MutationObserver) {
+      mo = new MutationObserver(function () { if (doc.querySelector('#dc-root main')) lancer(); });
+      mo.observe(doc.documentElement, { childList: true, subtree: true });
+    }
+    setTimeout(lancer, 8000);        // filet de sécurité : si le contenu tarde (réseau très lent), on continue quand même
+  }
+
+  /* Interface publique, figée (personne ne peut la remplacer en cours de route) */
+  var interfacePublique = Object.freeze({
+    // appelée par le site après chaque rendu, une fois le contenu chargé : chemin lisible de la page affichée et titre déjà à jour
+    pageVue: function (chemin, titre) { courante = { chemin: String(chemin || '/'), titre: String(titre || doc.title) }; pageVue(); },
+    ouvrir: function () { montrer(true); },     // lien « Cookies » du pied de page
+    editeur: EDITEUR, contact: CONTACT           // affichés sur la page « Confidentialité »
+  });
+  try { Object.defineProperty(win, 'XDK_CONSENT', { value: interfacePublique, writable: false, configurable: false, enumerable: true }); } catch (e) { win.XDK_CONSENT = interfacePublique; }
+
+  /* Pas d'accord valide (jamais choisi, refus, choix périmé) : on retire d'éventuels cookies _ga restés d'une visite précédente */
+  if (choixMemorise() !== 'accepte') supprimerCookies();
+
+  /* Choix modifié dans un autre onglet : un retrait d'accord s'applique tout de suite ici aussi */
+  win.addEventListener('storage', function (e) {
+    if (e.key !== null && e.key !== CLE_CHOIX) return;
+    if (choixMemorise() !== 'accepte' && (actif || charge)) { arreterMesure(); if (bandeau && !bandeau.hidden && !ouvertParLien) fermer(); }
+  });
+
+  quandAffiche(function () {
+    var c = choixMemorise();
+    if (c === 'accepte') demarrerMesure();
+    else if (c !== 'refuse') montrer(false);
+  });
+})();
+</script>
 </head>
 <body>
 <x-dc>
@@ -993,6 +1254,32 @@ footer [style*="display: flex"][style*="justify-content: space-between"]{flex-wr
 </div>
 </sc-if>
 
+<sc-if value="{{ isPrivacy }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Confidentialité">
+<section style="max-width:820px;margin:0 auto;padding:48px clamp(20px,5vw,48px) 96px;display:flex;flex-direction:column;gap:18px;color:#111">
+<span style="font:700 30px/1 'Caveat',cursive;color:#0066FC">vos données, en clair.</span>
+<h1 style="margin:0;font:600 clamp(34px,6vw,56px)/1.05 'General Sans',sans-serif;letter-spacing:-.03em">Confidentialité</h1>
+<p style="margin:0;font:400 14px/1.4 'General Sans',sans-serif;color:#555">Mise à jour : 18 novembre 2026</p>
+<h2 style="margin:18px 0 0;font:600 24px/1.2 'General Sans',sans-serif">Qui est responsable ?</h2>
+<p style="margin:0;font:400 17px/1.6 'General Sans',sans-serif">XADIKOA est édité par <strong>{{ privEditeur }}</strong>. Pour toute question sur vos données : <strong>{{ privContact }}</strong>.</p>
+<h2 style="margin:18px 0 0;font:600 24px/1.2 'General Sans',sans-serif">Ce que nous mesurons, et seulement si vous acceptez</h2>
+<p style="margin:0;font:400 17px/1.6 'General Sans',sans-serif">Si vous cliquez sur « Accepter », nous comptons les visites pour savoir combien de personnes nous lisent et quels articles les intéressent : pages vues, d’où vous venez (par exemple un lien partagé sur WhatsApp), type d’appareil, pays et ville (approximatifs), temps passé sur la page, jusqu’où vous faites défiler un article (profondeur de lecture) et les clics vers des sites extérieurs. Ces deux dernières mesures font partie des mesures améliorées de Google Analytics, que nous gardons parce qu’elles servent à mesurer la lecture. Nous ne vous demandons ni nom ni e-mail pour cela. Si vous cliquez sur « Refuser », rien n’est mesuré et le site fonctionne de la même façon.</p>
+<h2 style="margin:18px 0 0;font:600 24px/1.2 'General Sans',sans-serif">Quel outil, et où vont les données ?</h2>
+<p style="margin:0;font:400 17px/1.6 'General Sans',sans-serif">Nous utilisons Google Analytics 4, un service de Google Ireland Ltd et de Google LLC. Vos données de mesure sont envoyées à Google et peuvent être transférées et traitées hors du Cameroun et de l’Union européenne, notamment aux États-Unis. Nous n’utilisons ni publicité, ni les signaux Google, ni le profilage publicitaire.</p>
+<h2 style="margin:18px 0 0;font:600 24px/1.2 'General Sans',sans-serif">Combien de temps ?</h2>
+<p style="margin:0;font:400 17px/1.6 'General Sans',sans-serif">Votre choix et les cookies de mesure (_ga, _ga_…) sont gardés 13 mois au plus ; ensuite nous vous redemandons votre accord. Les données détaillées sont conservées 14 mois au plus chez Google.</p>
+<h2 style="margin:18px 0 0;font:600 24px/1.2 'General Sans',sans-serif">Changer d’avis</h2>
+<p style="margin:0;font:400 17px/1.6 'General Sans',sans-serif">À tout moment, avec le lien <a href="#" onClick="{{ openCookies }}" style="color:#0066FC;font-weight:600;text-decoration:underline">Cookies</a> en bas de chaque page. Si vous retirez votre accord, la mesure s’arrête et les cookies _ga sont supprimés de cet appareil.</p>
+<h2 style="margin:18px 0 0;font:600 24px/1.2 'General Sans',sans-serif">Vos droits</h2>
+<p style="margin:0;font:400 17px/1.6 'General Sans',sans-serif">Vous pouvez demander l’accès à vos données, vous opposer à leur traitement, demander leur effacement, et saisir l’autorité de protection des données compétente de votre pays pour une réclamation. Pour exercer ces droits, écrivez-nous à l’adresse de contact ci-dessus.</p>
+<h2 style="margin:18px 0 0;font:600 24px/1.2 'General Sans',sans-serif">Mémoire locale du site</h2>
+<p style="margin:0;font:400 17px/1.6 'General Sans',sans-serif">Le site garde sur votre appareil trois petites informations, qui ne sont jamais envoyées à Google : <code>xdk:accueil:v1</code> (le dernier contenu public affiché, pour aller plus vite à la visite suivante), <code>xdk:consentement:v1</code> (votre choix sur les cookies) et <code>xdk:interne:v1</code> (réservée aux appareils de l’équipe).</p>
+<h2 style="margin:18px 0 0;font:600 24px/1.2 'General Sans',sans-serif">Autres services techniques</h2>
+<p style="margin:0;font:400 17px/1.6 'General Sans',sans-serif">Pour afficher le site, votre navigateur contacte, sans cookie de mesure : Google Fonts et Fontshare (polices), unpkg (bibliothèque d’affichage) et Sanity (contenus et photos). Ces services reçoivent votre adresse IP, comme tout site web que vous visitez. Les vidéos YouTube (youtube-nocookie) ne se chargent que si vous cliquez sur une vidéo.</p>
+</section>
+</div>
+</sc-if>
+
 </main>
 
 <footer style="background:#0066FC;color:#fff;border-top:1px solid rgba(0,0,0,.12)">
@@ -1084,6 +1371,7 @@ class Component extends DCLogic {
       case 'newsletter': return '/newsletter';
       case 'search': return '/recherche';
       case 'about': return '/a-propos';
+      case 'privacy': return '/confidentialite';
       default: return '/';
     }
   }
@@ -1100,6 +1388,7 @@ class Component extends DCLogic {
     else if (p === 'newsletter') next = { page: 'newsletter' };
     else if (p === 'recherche') next = { page: 'search' };
     else if (p === 'a-propos') next = { page: 'about' };
+    else if (p === 'confidentialite') next = { page: 'privacy' };
     if (strict && next.page === 'home' && p && p !== 'accueil') return null;
     return next;
   }
@@ -1121,6 +1410,7 @@ class Component extends DCLogic {
       else if (s.page === 'newsletter') t = 'Newsletter — XADIKOA';
       else if (s.page === 'search') t = 'Recherche — XADIKOA';
       else if (s.page === 'about') t = 'À propos — XADIKOA';
+      else if (s.page === 'privacy') t = 'Confidentialité — XADIKOA';
       if (document.title !== t) document.title = t;
     } catch (e) {}
   }
@@ -1312,6 +1602,7 @@ class Component extends DCLogic {
   }
   componentDidUpdate(pp, ps) {
     this.syncTitle();
+    if ((this.state.live === 'ready' || this.state.live === 'embedded') && window.XDK_CONSENT) window.XDK_CONSENT.pageVue(this.routeOf(this.state.page, this.state), document.title);   // M-018 : une page vue par page (ignorée sans accord)
     this.ensureBody();
     if (this.state.page === 'search' && ps.page !== 'search') setTimeout(() => this.searchRef.current && this.searchRef.current.focus(), 60);
     this.reveal();
@@ -1430,8 +1721,10 @@ class Component extends DCLogic {
     const artToc = body.filter(b => b.isH2);
     const sameCat = ofCat(art.cat).filter(a => a.id !== art.id).slice(0, 3);
     const related = ALL.filter(a => a.cat !== art.cat).map(a => ({ a, sc: a.tags.filter(t => art.tags.includes(t)).length })).sort((x, y) => y.sc - x.sc || byDate(x.a, y.a)).slice(0, 4).map(x => x.a);
-    const shareUrl = location.origin + location.pathname + '#/article/' + encodeURIComponent(art.slug), shareTitle = art.title;   // lien vers l'article lui-même
-    const shareLinks = { WhatsApp: 'https://wa.me/?text=' + encodeURIComponent(shareTitle + ' ' + shareUrl), Facebook: 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareUrl), X: 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareTitle) + '&url=' + encodeURIComponent(shareUrl), LinkedIn: 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(shareUrl) };
+    const shareTitle = art.title;
+    // M-018 : l'adresse partagée porte la source (utm_*), placée AVANT le dièse, pour retrouver d'où viennent les lecteurs dans Google Analytics
+    const shareUrl = src => location.origin + location.pathname + '?utm_source=' + src + '&utm_medium=social&utm_campaign=partage#/article/' + encodeURIComponent(art.slug);
+    const shareLinks = { WhatsApp: 'https://wa.me/?text=' + encodeURIComponent(shareTitle + ' ' + shareUrl('whatsapp')), Facebook: 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareUrl('facebook')), X: 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareTitle) + '&url=' + encodeURIComponent(shareUrl('x')), LinkedIn: 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(shareUrl('linkedin')) };
     const shareBtns = ['WhatsApp', 'Facebook', 'X', 'LinkedIn'].map(n => ({ name: n, share: () => window.open(shareLinks[n], '_blank', 'noopener') }));
 
     // search
@@ -1471,7 +1764,8 @@ class Component extends DCLogic {
       searchBtnBg: page === 'search' ? '#D3F90F' : '#fff',
       goHome: h(() => this.go('home')), goSearch: h(() => this.go('search')), goNewsletter: h(() => this.go('newsletter')),
       isHome: page === 'home', isHomeA: page === 'home' && dir === 'A', isHomeB: page === 'home' && dir === 'B',
-      isRubrique: page === 'rubrique', isArticle: page === 'article', isSearch: page === 'search', isAuthor: page === 'author', isNewsletter: page === 'newsletter', isAbout: page === 'about',
+      isRubrique: page === 'rubrique', isArticle: page === 'article', isSearch: page === 'search', isAuthor: page === 'author', isNewsletter: page === 'newsletter', isAbout: page === 'about', isPrivacy: page === 'privacy', privEditeur: window.XDK_CONSENT ? window.XDK_CONSENT.editeur : '', privContact: window.XDK_CONSENT ? window.XDK_CONSENT.contact : '', openCookies: h(() => window.XDK_CONSENT && window.XDK_CONSENT.ouvrir()),   // M-018 : page Confidentialité
+     
       dirOpts: [{ id: 'A', name: 'A · Couverture' }, { id: 'B', name: 'B · Kiosque' }].map(o => ({ ...o, bg: dir === o.id ? '#D3F90F' : 'transparent', fg: dir === o.id ? '#000' : '#fff', select: () => this.setState({ dir: o.id }) })),
       hero, aLaUne, trending, secTop: secs.slice(0, 2), secBottom: secs.slice(2), episodes, shorts, tunnel,
       playEpisode: episodesAll[0] ? episodesAll[0].play : () => {}, hasEpisodes: episodesAll.length > 0, lastEpNum: episodesAll[0] ? String(episodesAll[0].n).replace(/\D/g, '') : '', tickerItems,
@@ -1506,7 +1800,7 @@ class Component extends DCLogic {
         { name: 'Vidéos', open: h(() => this.go('videos')) }, { name: 'Newsletter', open: h(() => this.go('newsletter')) }, { name: 'Recherche', open: h(() => this.go('search')) },
         { name: 'La rédaction', open: h(() => this.go('author', { authorId: AUTHORS[0].id })) },
       ],
-      legalLinks: ['Mentions légales', 'Confidentialité', 'Cookies'].map(n => ({ name: n, open: h(() => this.showToast('La page « ' + n + ' » sera publiée prochainement.')) })),
+      legalLinks: ['Mentions légales', 'Confidentialité', 'Cookies'].map(n => ({ name: n, open: h(() => (n === 'Cookies' && window.XDK_CONSENT) ? window.XDK_CONSENT.ouvrir() : n === 'Confidentialité' ? this.go('privacy') : this.showToast('La page « ' + n + ' » sera publiée prochainement.')) })),   // M-018 : « Cookies » rouvre le bandeau de consentement
       hasToast: !!s.toast, toast: s.toast,
       ready: s.live === 'ready' || s.live === 'embedded', isLoading: s.live === 'loading', isError: s.live === 'error', retry: h(() => this.loadLive()),
     };
