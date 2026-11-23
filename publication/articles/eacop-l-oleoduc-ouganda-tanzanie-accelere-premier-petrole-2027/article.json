@@ -1,76 +1,79 @@
 {
-  "titre": "EACOP : l'oléoduc Ouganda-Tanzanie veut accélérer",
-  "rubrique": "business",
-  "chapo": "Museveni a reçu le vice-président tanzanien le 4 novembre pour accélérer les projets d'infrastructures, EACOP en tête. L'oléoduc de plus de 1 400 km serait achevé à environ 92 %.",
-  "corps": [
-    {
-      "_type": "paragraphe",
-      "texte": "Pour un pays sans accès à la mer, le pétrole a besoin d'un chemin vers l'océan. C'est le rôle de l'EACOP, l'oléoduc qui doit relier les champs pétroliers de l'ouest de l'Ouganda au port de Tanga, en Tanzanie. Début novembre 2026, les deux pays ont promis d'aller plus vite."
-    },
-    {
-      "_type": "intertitre",
-      "texte": "Une visite pour accélérer"
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "Le 4 novembre 2026, le président ougandais Yoweri Museveni a reçu à State House, à Entebbe, le vice-président tanzanien Deogratius Ndejembi, en visite de travail d'une journée. Ce dernier a transmis les salutations de la présidente Samia Suluhu Hassan."
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "Au menu : commerce, corridors de transport régionaux et projets énergétiques stratégiques, avec l'EACOP comme sujet le plus discuté, selon le Daily Monitor. Les deux parties se sont engagées à accélérer l'exécution des projets transfrontaliers et à renforcer la coopération institutionnelle pour superviser l'oléoduc, rapporte The EastAfrican. Museveni a plaidé pour un dialogue soutenu entre les deux gouvernements afin d'éviter les blocages administratifs."
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "« Uganda remains fully committed to working closely with our Tanzanian brothers and sisters », a-t-il déclaré, selon le Monitor."
-    },
-    {
-      "_type": "intertitre",
-      "texte": "Où en est le chantier ?"
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "L'oléoduc est présenté comme un investissement de l'ordre de 5 milliards de dollars par The EastAfrican. Son tracé fait environ 1 443 km, de Hoima, en Ouganda, jusqu'à la péninsule de Chongoleani, près de Tanga. Selon des responsables cités en octobre, l'avancement avoisinerait 92 %."
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "Le premier pétrole a pourtant pris du retard : la cible du 31 juillet 2026 n'a pas été tenue. Une nouvelle échéance est évoquée avant la fin juin 2027, soit la fin de l'exercice budgétaire ougandais. D'autres dates circulent pour les étapes suivantes, mais elles ne sont pas confirmées."
-    },
-    {
-      "_type": "intertitre",
-      "texte": "Ce que ça change"
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "Pour l'Ouganda, l'oléoduc ouvre une route d'exportation vers l'océan. Pour la Tanzanie, il apporte des chantiers et des recettes : son opérateur public TPDC a indiqué environ 10 000 emplois créés pendant la construction, dont 7 500 pour des Tanzaniens, et plus de 200 entreprises tanzaniennes sous contrat. Ces chiffres sont ceux de la partie tanzanienne et n'ont pas été recoupés de façon indépendante."
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "Le projet reste très suivi : calendrier, coûts et supervision conjointe sont au cœur des discussions entre les deux capitales."
-    },
-    {
-      "_type": "aRetenir",
-      "points": [
-        "Museveni a reçu le vice-président tanzanien le 4 novembre 2026.",
-        "Les deux pays veulent accélérer l'EACOP et renforcer sa supervision.",
-        "L'oléoduc fait environ 1 443 km, de Hoima à Tanga.",
-        "Le premier pétrole vise désormais avant fin juin 2027."
-      ]
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "Un oléoduc, c'est une chance de développement pour certains, un pari pour d'autres. Qu'en pensez-vous ?"
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "Recevez l'actu XADIKOA chaque jour sur WhatsApp : https://whatsapp.com/channel/0029VbE2m7u0wajvDTnIfs2Y"
-    }
-  ],
-  "themes": [
-    "EACOP",
-    "Pétrole",
-    "Ouganda",
-    "Tanzanie",
-    "Infrastructures"
-  ],
-  "datePublication": "2026-11-20T12:13:09.000Z"
+ "titre": "EACOP : l'oléoduc Ouganda-Tanzanie veut accélérer",
+ "rubrique": "business",
+ "chapo": "Museveni a reçu le vice-président tanzanien le 4 novembre pour accélérer les projets d'infrastructures, EACOP en tête. L'oléoduc de plus de 1 400 km serait achevé à environ 92 %.",
+ "corps": [
+  {
+   "_type": "paragraphe",
+   "texte": "Pour un pays sans accès à la mer, le pétrole a besoin d'un chemin vers l'océan. C'est le rôle de l'EACOP, l'oléoduc qui doit relier les champs pétroliers de l'ouest de l'Ouganda au port de Tanga, en Tanzanie. Début novembre 2026, les deux pays ont promis d'aller plus vite."
+  },
+  {
+   "_type": "intertitre",
+   "texte": "Une visite pour accélérer"
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "Le 4 novembre 2026, le président ougandais Yoweri Museveni a reçu à State House, à Entebbe, le vice-président tanzanien Deogratius Ndejembi, en visite de travail d'une journée. Ce dernier a transmis les salutations de la présidente Samia Suluhu Hassan."
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "Au menu : commerce, corridors de transport régionaux et projets énergétiques stratégiques, avec l'EACOP comme sujet le plus discuté, selon le Daily Monitor. Les deux parties se sont engagées à accélérer l'exécution des projets transfrontaliers et à renforcer la coopération institutionnelle pour superviser l'oléoduc, rapporte The EastAfrican. Museveni a plaidé pour un dialogue soutenu entre les deux gouvernements afin d'éviter les blocages administratifs."
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "« Uganda remains fully committed to working closely with our Tanzanian brothers and sisters », a-t-il déclaré, selon le Monitor."
+  },
+  {
+   "_type": "intertitre",
+   "texte": "Où en est le chantier ?"
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "L'oléoduc est présenté comme un investissement de l'ordre de 5 milliards de dollars par The EastAfrican. Son tracé fait environ 1 443 km, de Hoima, en Ouganda, jusqu'à la péninsule de Chongoleani, près de Tanga. Selon des responsables cités en octobre, l'avancement avoisinerait 92 %."
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "Le premier pétrole a pourtant pris du retard : la cible du 31 juillet 2026 n'a pas été tenue. Une nouvelle échéance est évoquée avant la fin juin 2027, soit la fin de l'exercice budgétaire ougandais. D'autres dates circulent pour les étapes suivantes, mais elles ne sont pas confirmées."
+  },
+  {
+   "_type": "intertitre",
+   "texte": "Ce que ça change"
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "Pour l'Ouganda, l'oléoduc ouvre une route d'exportation vers l'océan. Pour la Tanzanie, il apporte des chantiers et des recettes : son opérateur public TPDC a indiqué environ 10 000 emplois créés pendant la construction, dont 7 500 pour des Tanzaniens, et plus de 200 entreprises tanzaniennes sous contrat. Ces chiffres sont ceux de la partie tanzanienne et n'ont pas été recoupés de façon indépendante."
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "Le projet reste très suivi : calendrier, coûts et supervision conjointe sont au cœur des discussions entre les deux capitales."
+  },
+  {
+   "_type": "aRetenir",
+   "points": [
+    "Museveni a reçu le vice-président tanzanien le 4 novembre 2026.",
+    "Les deux pays veulent accélérer l'EACOP et renforcer sa supervision.",
+    "L'oléoduc fait environ 1 443 km, de Hoima à Tanga.",
+    "Le premier pétrole vise désormais avant fin juin 2027."
+   ]
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "Un oléoduc, c'est une chance de développement pour certains, un pari pour d'autres. Qu'en pensez-vous ?"
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "Recevez l'actu XADIKOA chaque jour sur WhatsApp : https://whatsapp.com/channel/0029VbE2m7u0wajvDTnIfs2Y"
+  }
+ ],
+ "themes": [
+  "EACOP",
+  "Pétrole",
+  "Ouganda",
+  "Tanzanie",
+  "Infrastructures"
+ ],
+ "datePublication": "2026-11-20T12:13:09.000Z",
+ "photoDescription": "Le lac Albert vu depuis la rive à Buhuka, dans l'ouest de l'Ouganda, zone pétrolière dont part l'oléoduc",
+ "photoLegende": "Le lac Albert, dans l'ouest de l'Ouganda, région pétrolière du projet EACOP.",
+ "photoCredit": "Macholi, CC BY-SA 4.0, via Wikimedia Commons"
 }

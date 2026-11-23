@@ -1,84 +1,87 @@
 {
-  "titre": "Soudan : les drones tuent près de 3 civils sur 4, selon l'ONU",
-  "rubrique": "actu",
-  "chapo": "Entre janvier et fin octobre 2026, le Haut-Commissariat de l'ONU aux droits de l'homme a confirmé 2 230 civils tués au Soudan. Les attaques de drones en expliquent près des trois quarts.",
-  "corps": [
-    {
-      "_type": "paragraphe",
-      "texte": "La guerre au Soudan ne fait plus la une tous les jours, mais elle continue de tuer. Et elle a changé de visage : ce sont désormais surtout des drones qui frappent les civils. C'est le constat du Haut-Commissariat de l'ONU aux droits de l'homme (HCDH), relayé par RFI le 17 novembre 2026."
-    },
-    {
-      "_type": "intertitre",
-      "texte": "Les chiffres de l'ONU"
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "Sur la période allant de début janvier à fin octobre 2026, le HCDH a confirmé la mort de 2 230 civils. Parmi eux, plus de 1 630 ont été tués dans des attaques de drones. Cela représente près de 75 % des décès, soit près des trois quarts."
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "L'organisation précise que le bilan réel est probablement plus élevé : ce sont des décès confirmés, c'est-à-dire ceux que les enquêteurs ont pu documenter. Dans un pays où l'accès au terrain est très difficile, beaucoup de victimes échappent aux comptages."
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "Pour situer l'ampleur du conflit, le chiffre de plus de 200 000 morts au total depuis le début de la guerre est avancé dans l'article de RFI. Il s'agit d'une estimation, non attribuée à l'ONU dans le texte."
-    },
-    {
-      "_type": "intertitre",
-      "texte": "Une guerre qui se déplace"
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "Selon le HCDH, plus des deux tiers des victimes civiles recensées l'ont été dans la région du Kordofan. Le Darfour est également cité. La guerre oppose depuis avril 2023 l'armée soudanaise, dirigée par le général Abdel Fattah al-Burhan, aux Forces de soutien rapide, dirigées par le général Mohamed Hamdan Dogolo, dit « Hemedti »."
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "Le rapport du HCDH note que les six premiers mois de l'année ont été marqués par « une augmentation indéniable des frappes de drones contre des civils et des biens de caractère civil ». En clair : l'arme est devenue centrale, et les marchés, les hôpitaux ou les dépôts de carburant ne sont pas épargnés."
-    },
-    {
-      "_type": "intertitre",
-      "texte": "Ce que dit l'ONU"
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "Le Haut-Commissaire, Volker Türk, parle de « l'insupportable souffrance civile sans relâche engendrée par la guerre au Soudan ». Dans un communiqué publié en mai 2026, il avait déjà alerté sur un recours croissant aux drones, qui permet aux hostilités de se poursuivre sans relâche."
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "Attention aux comparaisons : les chiffres de mai, portant sur les premiers mois de l'année, et ceux de novembre, couvrant dix mois, ne sont pas une même série. Chaque bilan a sa période et sa méthode."
-    },
-    {
-      "_type": "intertitre",
-      "texte": "Pourquoi on en parle"
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "Le Soudan, c'est un pays africain, des familles touchées, et une diaspora qui suit les nouvelles avec inquiétude. Les drones, eux, rappellent qu'une guerre moderne peut frapper loin du front, sans prévenir. Ce n'est pas un sujet de camp : l'ONU décrit des violences dans les deux parties du conflit."
-    },
-    {
-      "_type": "aRetenir",
-      "points": [
-        "Le HCDH a confirmé 2 230 civils tués de début janvier à fin octobre 2026.",
-        "Plus de 1 630 l'ont été par des drones, soit près de 75 %.",
-        "Le Kordofan concentre plus des deux tiers des victimes civiles recensées.",
-        "Le bilan réel est probablement plus élevé, selon l'ONU."
-      ]
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "Comment protéger les civils quand l'arme frappe du ciel et que le terrain reste inaccessible ? La question est ouverte, et votre avis compte : dites-nous ce que vous en pensez en commentaire."
-    },
-    {
-      "_type": "paragraphe",
-      "texte": "Recevez l'actu XADIKOA chaque jour sur WhatsApp : https://whatsapp.com/channel/0029VbE2m7u0wajvDTnIfs2Y"
-    }
-  ],
-  "themes": [
-    "Soudan",
-    "ONU",
-    "Drones",
-    "Guerre",
-    "Civils"
-  ],
-  "datePublication": "2026-11-20T12:13:09.000Z"
+ "titre": "Soudan : les drones tuent près de 3 civils sur 4, selon l'ONU",
+ "rubrique": "actu",
+ "chapo": "Entre janvier et fin octobre 2026, le Haut-Commissariat de l'ONU aux droits de l'homme a confirmé 2 230 civils tués au Soudan. Les attaques de drones en expliquent près des trois quarts.",
+ "corps": [
+  {
+   "_type": "paragraphe",
+   "texte": "La guerre au Soudan ne fait plus la une tous les jours, mais elle continue de tuer. Et elle a changé de visage : ce sont désormais surtout des drones qui frappent les civils. C'est le constat du Haut-Commissariat de l'ONU aux droits de l'homme (HCDH), relayé par RFI le 17 novembre 2026."
+  },
+  {
+   "_type": "intertitre",
+   "texte": "Les chiffres de l'ONU"
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "Sur la période allant de début janvier à fin octobre 2026, le HCDH a confirmé la mort de 2 230 civils. Parmi eux, plus de 1 630 ont été tués dans des attaques de drones. Cela représente près de 75 % des décès, soit près des trois quarts."
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "L'organisation précise que le bilan réel est probablement plus élevé : ce sont des décès confirmés, c'est-à-dire ceux que les enquêteurs ont pu documenter. Dans un pays où l'accès au terrain est très difficile, beaucoup de victimes échappent aux comptages."
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "Pour situer l'ampleur du conflit, le chiffre de plus de 200 000 morts au total depuis le début de la guerre est avancé dans l'article de RFI. Il s'agit d'une estimation, non attribuée à l'ONU dans le texte."
+  },
+  {
+   "_type": "intertitre",
+   "texte": "Une guerre qui se déplace"
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "Selon le HCDH, plus des deux tiers des victimes civiles recensées l'ont été dans la région du Kordofan. Le Darfour est également cité. La guerre oppose depuis avril 2023 l'armée soudanaise, dirigée par le général Abdel Fattah al-Burhan, aux Forces de soutien rapide, dirigées par le général Mohamed Hamdan Dogolo, dit « Hemedti »."
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "Le rapport du HCDH note que les six premiers mois de l'année ont été marqués par « une augmentation indéniable des frappes de drones contre des civils et des biens de caractère civil ». En clair : l'arme est devenue centrale, et les marchés, les hôpitaux ou les dépôts de carburant ne sont pas épargnés."
+  },
+  {
+   "_type": "intertitre",
+   "texte": "Ce que dit l'ONU"
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "Le Haut-Commissaire, Volker Türk, parle de « l'insupportable souffrance civile sans relâche engendrée par la guerre au Soudan ». Dans un communiqué publié en mai 2026, il avait déjà alerté sur un recours croissant aux drones, qui permet aux hostilités de se poursuivre sans relâche."
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "Attention aux comparaisons : les chiffres de mai, portant sur les premiers mois de l'année, et ceux de novembre, couvrant dix mois, ne sont pas une même série. Chaque bilan a sa période et sa méthode."
+  },
+  {
+   "_type": "intertitre",
+   "texte": "Pourquoi on en parle"
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "Le Soudan, c'est un pays africain, des familles touchées, et une diaspora qui suit les nouvelles avec inquiétude. Les drones, eux, rappellent qu'une guerre moderne peut frapper loin du front, sans prévenir. Ce n'est pas un sujet de camp : l'ONU décrit des violences dans les deux parties du conflit."
+  },
+  {
+   "_type": "aRetenir",
+   "points": [
+    "Le HCDH a confirmé 2 230 civils tués de début janvier à fin octobre 2026.",
+    "Plus de 1 630 l'ont été par des drones, soit près de 75 %.",
+    "Le Kordofan concentre plus des deux tiers des victimes civiles recensées.",
+    "Le bilan réel est probablement plus élevé, selon l'ONU."
+   ]
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "Comment protéger les civils quand l'arme frappe du ciel et que le terrain reste inaccessible ? La question est ouverte, et votre avis compte : dites-nous ce que vous en pensez en commentaire."
+  },
+  {
+   "_type": "paragraphe",
+   "texte": "Recevez l'actu XADIKOA chaque jour sur WhatsApp : https://whatsapp.com/channel/0029VbE2m7u0wajvDTnIfs2Y"
+  }
+ ],
+ "themes": [
+  "Soudan",
+  "ONU",
+  "Drones",
+  "Guerre",
+  "Civils"
+ ],
+ "datePublication": "2026-11-20T12:13:09.000Z",
+ "photoDescription": "Un marché de Khartoum, au Soudan (photo d'archive)",
+ "photoLegende": "Marché de Khartoum, au Soudan (photo d'archive).",
+ "photoCredit": "Dr. Ondřej Havelka (cestovatel), CC BY-SA 4.0, via Wikimedia Commons"
 }
